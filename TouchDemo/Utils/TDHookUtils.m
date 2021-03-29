@@ -10,7 +10,12 @@
 
 @implementation TDHookUtils
 
+#define HOOK_FLAG 0
+
 + (void)setup {
+#if HOOK_FLAG == 1
+    
+    [self hookHitTest];
     
     [self hookEventInit];
     [self hookEventClone];
@@ -19,33 +24,57 @@
     [self hookTouchInit];
     [self hookTouchDealloc];
     
+    [self hookTouches];
+    
+#endif
+}
+
+NSString *shortDesc(id obj) {
+    if ([obj isKindOfClass:[NSValue class]]) {
+        return [obj description];
+    }
+    NSString *desc = [obj description];
+    if (desc.length > 40) {
+        return [NSString stringWithFormat:@"%@(%p)", [obj class], obj];
+    } else {
+        return desc;
+    }
 }
 
 + (void)catchArgs:(id)arg0, ... {
-    void (^block)(void) = ^{
-//        if ([arg0 isKindOfClass:[UIEvent class]]) {
-//            NSLog(@"-------------------------------------");
-//        } else {
-//            NSLog(@"=====================================");
-//        }
-    };
     
-    block();
+    static NSArray<Class> *array = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        array = @[
+            [UIResponder class],
+        ];
+    });
     
-    va_list args;
     if (arg0) {
-//        NSLog(@"arg0 : %@", arg0);
+        __block BOOL contains = NO;
+        [array enumerateObjectsUsingBlock:^(Class _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([arg0 isKindOfClass:obj]) {
+                contains = YES;
+                *stop = YES;
+            }
+        }];
+        if (!contains) {
+            return;
+        }
+        
+        NSString *desc = [NSString stringWithFormat:@"arg0 : %@", shortDesc(arg0)];
+        va_list args;
         va_start(args, arg0);
         id next = nil;
         int idx = 1;
         while ((next = va_arg(args, id))) {
-//            NSLog(@"arg%d : %@", idx, next);
+            desc = [desc stringByAppendingFormat:@" | arg%d : %@", idx, shortDesc(next)];
             ++idx;
         }
         va_end(args);
+        NSLog(@"%@", desc);
     }
-    
-    block();
 }
 
 + (void)hookHitTest {

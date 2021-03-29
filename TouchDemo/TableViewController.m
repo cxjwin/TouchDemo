@@ -8,11 +8,14 @@
 #import "TableViewController.h"
 #import "TDTouchViewController.h"
 #import "TDGestureViewController.h"
+#import "TDMutiGestureViewController.h"
+#import "TDControlViewController.h"
+#import "TDPanViewController.h"
 
 static NSString *const kTouchExampleCellId = @"touch_example";
 
 @interface TableViewController () {
-    NSArray<NSDictionary<NSString *, Class> *> *_configs;
+    NSArray<NSDictionary *> *_configs;
 }
 
 @end
@@ -25,6 +28,9 @@ static NSString *const kTouchExampleCellId = @"touch_example";
     _configs = @[
         @{@"title" : @"Touch Example", @"class" : [TDTouchViewController class]},
         @{@"title" : @"Gesture Example", @"class" : [TDGestureViewController class]},
+        @{@"title" : @"Muti Gesture Example", @"class" : [TDMutiGestureViewController class]},
+        @{@"title" : @"Control Example", @"class" : [TDControlViewController class]},
+        @{@"title" : @"Pan Example", @"class" : [TDPanViewController class]},
     ];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kTouchExampleCellId];
@@ -48,40 +54,6 @@ static NSString *const kTouchExampleCellId = @"touch_example";
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -93,15 +65,5 @@ static NSString *const kTouchExampleCellId = @"touch_example";
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

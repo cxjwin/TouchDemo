@@ -15,19 +15,12 @@
 
 @implementation TDTouchViewController
 
-- (void)loadView {
-    CGRect frame = [[UIScreen mainScreen] bounds];
-    self.view = [[TDContainerView alloc] initWithFrame:frame];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.view.backgroundColor = [UIColor yellowColor];
-    
-    TDView *view = [[TDView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-    view.backgroundColor = [UIColor redColor];
+        
+    TDView *view = [[TDView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    view.backgroundColor = [UIColor yellowColor];
     view.center = self.view.center;
     [self.view addSubview:view];
 }

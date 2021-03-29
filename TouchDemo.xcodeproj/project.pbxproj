@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A7790E726118DC500B0D5CD /* TDPanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7790E626118DC500B0D5CD /* TDPanViewController.m */; };
+		2A7790ED26118FD900B0D5CD /* TDPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7790EC26118FD900B0D5CD /* TDPanGestureRecognizer.m */; };
 		2A88F3DA2602F02700CAAD28 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F3D92602F02700CAAD28 /* AppDelegate.m */; };
 		2A88F3DD2602F02700CAAD28 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F3DC2602F02700CAAD28 /* SceneDelegate.m */; };
 		2A88F3E02602F02700CAAD28 /* TDTouchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F3DF2602F02700CAAD28 /* TDTouchViewController.m */; };
@@ -25,6 +27,10 @@
 		2A88F45726033A9800CAAD28 /* TDTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F45626033A9800CAAD28 /* TDTapGestureRecognizer.m */; };
 		2A88F45E26033AE100CAAD28 /* TDGestureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F45D26033AE100CAAD28 /* TDGestureViewController.m */; };
 		2A88F46A2603767100CAAD28 /* TDLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F4692603767100CAAD28 /* TDLongPressGestureRecognizer.m */; };
+		2AFC81A526043FA40010B32C /* TDMutiGestureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC81A426043FA40010B32C /* TDMutiGestureViewController.m */; };
+		2AFC81AB260471340010B32C /* TDControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC81AA260471340010B32C /* TDControlViewController.m */; };
+		2AFC81B1260471810010B32C /* TDControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC81B0260471810010B32C /* TDControl.m */; };
+		2AFC81B7260471E70010B32C /* TDBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC81B6260471E70010B32C /* TDBaseViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +51,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A7790E526118DC500B0D5CD /* TDPanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDPanViewController.h; sourceTree = "<group>"; };
+		2A7790E626118DC500B0D5CD /* TDPanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDPanViewController.m; sourceTree = "<group>"; };
+		2A7790EB26118FD900B0D5CD /* TDPanGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDPanGestureRecognizer.h; sourceTree = "<group>"; };
+		2A7790EC26118FD900B0D5CD /* TDPanGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDPanGestureRecognizer.m; sourceTree = "<group>"; };
 		2A88F3D52602F02700CAAD28 /* TouchDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TouchDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A88F3D82602F02700CAAD28 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2A88F3D92602F02700CAAD28 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -81,6 +91,14 @@
 		2A88F45D26033AE100CAAD28 /* TDGestureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDGestureViewController.m; sourceTree = "<group>"; };
 		2A88F4682603767100CAAD28 /* TDLongPressGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDLongPressGestureRecognizer.h; sourceTree = "<group>"; };
 		2A88F4692603767100CAAD28 /* TDLongPressGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDLongPressGestureRecognizer.m; sourceTree = "<group>"; };
+		2AFC81A326043FA40010B32C /* TDMutiGestureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDMutiGestureViewController.h; sourceTree = "<group>"; };
+		2AFC81A426043FA40010B32C /* TDMutiGestureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDMutiGestureViewController.m; sourceTree = "<group>"; };
+		2AFC81A9260471340010B32C /* TDControlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDControlViewController.h; sourceTree = "<group>"; };
+		2AFC81AA260471340010B32C /* TDControlViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDControlViewController.m; sourceTree = "<group>"; };
+		2AFC81AF260471810010B32C /* TDControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDControl.h; sourceTree = "<group>"; };
+		2AFC81B0260471810010B32C /* TDControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDControl.m; sourceTree = "<group>"; };
+		2AFC81B5260471E70010B32C /* TDBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDBaseViewController.h; sourceTree = "<group>"; };
+		2AFC81B6260471E70010B32C /* TDBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDBaseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +198,10 @@
 				2A88F45626033A9800CAAD28 /* TDTapGestureRecognizer.m */,
 				2A88F4682603767100CAAD28 /* TDLongPressGestureRecognizer.h */,
 				2A88F4692603767100CAAD28 /* TDLongPressGestureRecognizer.m */,
+				2AFC81AF260471810010B32C /* TDControl.h */,
+				2AFC81B0260471810010B32C /* TDControl.m */,
+				2A7790EB26118FD900B0D5CD /* TDPanGestureRecognizer.h */,
+				2A7790EC26118FD900B0D5CD /* TDPanGestureRecognizer.m */,
 			);
 			path = Subclass;
 			sourceTree = "<group>";
@@ -198,10 +220,18 @@
 		2A88F45B26033AAF00CAAD28 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				2AFC81B5260471E70010B32C /* TDBaseViewController.h */,
+				2AFC81B6260471E70010B32C /* TDBaseViewController.m */,
 				2A88F3DE2602F02700CAAD28 /* TDTouchViewController.h */,
 				2A88F3DF2602F02700CAAD28 /* TDTouchViewController.m */,
 				2A88F45C26033AE100CAAD28 /* TDGestureViewController.h */,
 				2A88F45D26033AE100CAAD28 /* TDGestureViewController.m */,
+				2AFC81A326043FA40010B32C /* TDMutiGestureViewController.h */,
+				2AFC81A426043FA40010B32C /* TDMutiGestureViewController.m */,
+				2AFC81A9260471340010B32C /* TDControlViewController.h */,
+				2AFC81AA260471340010B32C /* TDControlViewController.m */,
+				2A7790E526118DC500B0D5CD /* TDPanViewController.h */,
+				2A7790E626118DC500B0D5CD /* TDPanViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -339,15 +369,21 @@
 				2A88F44826032EB600CAAD28 /* TDHookUtils.m in Sources */,
 				2A88F3E02602F02700CAAD28 /* TDTouchViewController.m in Sources */,
 				2A88F3DA2602F02700CAAD28 /* AppDelegate.m in Sources */,
+				2A7790E726118DC500B0D5CD /* TDPanViewController.m in Sources */,
 				2A88F42F2603297A00CAAD28 /* TDContainerView.m in Sources */,
 				2A88F3EB2602F02800CAAD28 /* main.m in Sources */,
+				2A7790ED26118FD900B0D5CD /* TDPanGestureRecognizer.m in Sources */,
 				2A88F46A2603767100CAAD28 /* TDLongPressGestureRecognizer.m in Sources */,
+				2AFC81A526043FA40010B32C /* TDMutiGestureViewController.m in Sources */,
 				2A88F45726033A9800CAAD28 /* TDTapGestureRecognizer.m in Sources */,
 				2A88F4132602F9DD00CAAD28 /* TableViewController.m in Sources */,
 				2A88F3DD2602F02700CAAD28 /* SceneDelegate.m in Sources */,
+				2AFC81AB260471340010B32C /* TDControlViewController.m in Sources */,
 				2A88F4252603209C00CAAD28 /* TDView.m in Sources */,
 				2A88F45E26033AE100CAAD28 /* TDGestureViewController.m in Sources */,
 				2A88F41C26030D3000CAAD28 /* TDWindow.m in Sources */,
+				2AFC81B7260471E70010B32C /* TDBaseViewController.m in Sources */,
+				2AFC81B1260471810010B32C /* TDControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

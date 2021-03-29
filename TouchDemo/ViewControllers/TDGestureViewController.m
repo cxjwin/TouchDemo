@@ -22,22 +22,16 @@
 
 @implementation TDGestureViewController
 
-- (void)loadView {
-    CGRect frame = [[UIScreen mainScreen] bounds];
-    self.view = [[TDContainerView alloc] initWithFrame:frame];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    TDView *view = [[TDView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+        
+    TDView *view = [[TDView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     _tdView = view;
     view.backgroundColor = [UIColor blueColor];
     view.center = self.view.center;
     
+    // add gesture
     {
         TDTapGestureRecognizer *tap = [[TDTapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
         tap.delegate = self;
@@ -48,7 +42,6 @@
         press.minimumPressDuration = 1;
         press.allowableMovement = 20;
         [view addGestureRecognizer:press];
-        
     }
     
     [self.view addSubview:view];
@@ -115,19 +108,8 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveEvent:(UIEvent *)event API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos) {
     
     _event = event;
-    
-    NSSet *touchs = event.allTouches;
-    _touch = [touchs anyObject];
-    NSLog(@"timestamp 1 : %@", @(_touch.timestamp));
-    
-//    NSLog(@"allTouches : %@", touchs);
-    touchs = [event touchesForView:_tdView];
-//    NSLog(@"tdView allTouches : %@", touchs);
-    touchs = [event touchesForWindow:_tdView.window];
-//    NSLog(@"window allTouches : %@", touchs);
-    touchs = [event touchesForGestureRecognizer:gestureRecognizer];
-//    NSLog(@"gestureRecognizer allTouches : %@", touchs);
-    
+    _touch = [event.allTouches anyObject];
+
     return YES;
 }
 

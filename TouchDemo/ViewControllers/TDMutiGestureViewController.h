@@ -1,8 +1,8 @@
 //
-//  TDGestureViewController.h
+//  TDMutiGestureViewController.h
 //  TouchDemo
 //
-//  Created by smart on 2021/3/18.
+//  Created by smart on 2021/3/19.
 //
 
 #import <UIKit/UIKit.h>
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TDGestureViewController : TDBaseViewController
+@interface TDMutiGestureViewController : TDBaseViewController
 
 @end
 

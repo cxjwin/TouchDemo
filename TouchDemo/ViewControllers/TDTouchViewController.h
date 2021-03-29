@@ -6,8 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TDBaseViewController.h"
 
-@interface TDTouchViewController : UIViewController
+@interface TDTouchViewController : TDBaseViewController
 
 
 @end
