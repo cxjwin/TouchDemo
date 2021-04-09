@@ -25,6 +25,11 @@
     control.backgroundColor = [UIColor greenColor];
     [control addTarget:self action:@selector(touch:) forControlEvents:UIControlEventTouchUpInside];
     
+    // add button
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    button.backgroundColor = [UIColor redColor];
+    [button addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
+    
     // add normal view
     TDView *normalView = [[TDView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     normalView.userInteractionEnabled = YES;
@@ -39,12 +44,18 @@
     
     control.center = CGPointMake(self.view.center.x, self.view.center.y - 50);
     [self.view addSubview:control];
-    normalView.center = CGPointMake(self.view.center.x, self.view.center.y + 50);
+    button.center = CGPointMake(self.view.center.x, self.view.center.y + 50);
+    [self.view addSubview:button];
+    normalView.center = CGPointMake(self.view.center.x, self.view.center.y + 100);
     [self.view addSubview:normalView];
 }
 
 - (void)touch:(TDControl *)control {
     NSLog(@"control : %@", control);
+}
+
+- (void)button:(UIButton *)button {
+    NSLog(@"button : %@", button);
 }
 
 - (void)tap:(TDTapGestureRecognizer *)tap {

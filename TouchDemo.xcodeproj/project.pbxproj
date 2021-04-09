@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A0F3761261CB6680009BF62 /* TDScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0F3760261CB6680009BF62 /* TDScrollViewController.m */; };
 		2A7790E726118DC500B0D5CD /* TDPanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7790E626118DC500B0D5CD /* TDPanViewController.m */; };
 		2A7790ED26118FD900B0D5CD /* TDPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7790EC26118FD900B0D5CD /* TDPanGestureRecognizer.m */; };
 		2A88F3DA2602F02700CAAD28 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F3D92602F02700CAAD28 /* AppDelegate.m */; };
@@ -51,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A0F375F261CB6680009BF62 /* TDScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDScrollViewController.h; sourceTree = "<group>"; };
+		2A0F3760261CB6680009BF62 /* TDScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDScrollViewController.m; sourceTree = "<group>"; };
 		2A7790E526118DC500B0D5CD /* TDPanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDPanViewController.h; sourceTree = "<group>"; };
 		2A7790E626118DC500B0D5CD /* TDPanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDPanViewController.m; sourceTree = "<group>"; };
 		2A7790EB26118FD900B0D5CD /* TDPanGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDPanGestureRecognizer.h; sourceTree = "<group>"; };
@@ -192,14 +195,14 @@
 				2A88F41B26030D3000CAAD28 /* TDWindow.m */,
 				2A88F4232603209C00CAAD28 /* TDView.h */,
 				2A88F4242603209C00CAAD28 /* TDView.m */,
+				2AFC81AF260471810010B32C /* TDControl.h */,
+				2AFC81B0260471810010B32C /* TDControl.m */,
 				2A88F42D2603297A00CAAD28 /* TDContainerView.h */,
 				2A88F42E2603297A00CAAD28 /* TDContainerView.m */,
 				2A88F45526033A9800CAAD28 /* TDTapGestureRecognizer.h */,
 				2A88F45626033A9800CAAD28 /* TDTapGestureRecognizer.m */,
 				2A88F4682603767100CAAD28 /* TDLongPressGestureRecognizer.h */,
 				2A88F4692603767100CAAD28 /* TDLongPressGestureRecognizer.m */,
-				2AFC81AF260471810010B32C /* TDControl.h */,
-				2AFC81B0260471810010B32C /* TDControl.m */,
 				2A7790EB26118FD900B0D5CD /* TDPanGestureRecognizer.h */,
 				2A7790EC26118FD900B0D5CD /* TDPanGestureRecognizer.m */,
 			);
@@ -230,6 +233,8 @@
 				2AFC81A426043FA40010B32C /* TDMutiGestureViewController.m */,
 				2AFC81A9260471340010B32C /* TDControlViewController.h */,
 				2AFC81AA260471340010B32C /* TDControlViewController.m */,
+				2A0F375F261CB6680009BF62 /* TDScrollViewController.h */,
+				2A0F3760261CB6680009BF62 /* TDScrollViewController.m */,
 				2A7790E526118DC500B0D5CD /* TDPanViewController.h */,
 				2A7790E626118DC500B0D5CD /* TDPanViewController.m */,
 			);
@@ -370,6 +375,7 @@
 				2A88F3E02602F02700CAAD28 /* TDTouchViewController.m in Sources */,
 				2A88F3DA2602F02700CAAD28 /* AppDelegate.m in Sources */,
 				2A7790E726118DC500B0D5CD /* TDPanViewController.m in Sources */,
+				2A0F3761261CB6680009BF62 /* TDScrollViewController.m in Sources */,
 				2A88F42F2603297A00CAAD28 /* TDContainerView.m in Sources */,
 				2A88F3EB2602F02800CAAD28 /* main.m in Sources */,
 				2A7790ED26118FD900B0D5CD /* TDPanGestureRecognizer.m in Sources */,
