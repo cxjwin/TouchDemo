@@ -12,6 +12,7 @@
 #import "TDControlViewController.h"
 #import "TDPanViewController.h"
 #import "TDScrollViewController.h"
+#import "TouchDemo-Swift.h"
 
 static NSString *const kTouchExampleCellId = @"touch_example";
 
@@ -32,7 +33,8 @@ static NSString *const kTouchExampleCellId = @"touch_example";
         @{@"title" : @"Muti Gesture Example", @"class" : [TDMutiGestureViewController class]},
         @{@"title" : @"Control Example", @"class" : [TDControlViewController class]},
         @{@"title" : @"Pan Example", @"class" : [TDPanViewController class]},
-        @{@"title" : @"Muti ScrollView", @"class" : [TDScrollViewController class]}
+        @{@"title" : @"Muti ScrollView", @"class" : [TDScrollViewController class]},
+        @{@"title" : @"WWDC2014-235", @"class" : [WWDCViewController class]}
     ];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kTouchExampleCellId];

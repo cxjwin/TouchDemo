@@ -1,15 +1,56 @@
 # iOS 手势学习
 
+## 要回答的几个问题 
+
+1. Touch 事件是怎么传递的?
+1. CASE: 父 View A 有子 View B 和 C, B 和 C frame 一样, 如果需要 B 的左半边和 C 的右半边都能响应点击, 需要怎么处理?
+1. UITouch 和 UIEvent 是什么关系? 和 UIGestureRecognizer 又是什么关系?
+1. Touch, UIControl 和 UIGestureRecognizer 该如何选择?
+1. 手势改如何选择?
+1. 多个手势会存在冲突吗? 如何处理冲突?
+1. 如何自定义手势?
+1. ScrollView 中的手势该如何处理? 
+1. TableView/CollectionView 中 Cell 上的手势该如何处理?
+
 ## Tips
 
-lldb 打印 
+### lldb 打印 
+
+#### 方法断点入口打印
+
+```
 po $arg1  // 调用对象
 po (SEL)$arg2 // 方法签名
 po $arg3 // 第一个参数
 po $arg4 // 第二个参数
 ... // 以此类推
+```
 
+#### 系统方法汇编代码点断打印
+对于系统方法执行过程中, 想要对某些方法体内部的方法进行调用的话, 可以直接对汇编代码进行断点, 然后打印寄存器中的变量.
+参考: [汇编基础（通用寄存器）](https://www.jianshu.com/p/842fbda059e1)
+第一个参数: RDI
+第二个参数: RSI
+第三个参数: RDX
+第四个参数: RCX
+第五个参数: R8
+第六个参数: R9
+超过7个以及上的参数会被分配到进程的栈区
+返回值: RAX
 
+所以使用 po 进行查看, 入参查看, 断点在 `callq` 之前:
+
+```
+po $rdi // 第一个参数
+po (SEL)$rsi // 第二个参数
+... // 以此类推
+```
+
+返回值查看, 断点在 `callq` 下一行:
+
+```
+po $rax // 查看返回值
+```
 
 ## iOS 手势原生响应机制处理流程
 
@@ -20,10 +61,10 @@ _UIApplicationHandleEventQueue 会把 IOHIDEvent 处理并包装成 UIEvent 进�
 
 ### com.apple.uikit.eventfetch-thread 线程
 
--[UIEventFetcher threadMain] 单起了一个线程, 该线程有自己的 RunLoop, 是一个常驻线程, Xcode Debug 模式下可以挂起测试, 点击事件都不响应了. 
+-[UIEventFetcher threadMain] 方法会单起了一个线程, 该线程有自己的 RunLoop, 是一个常驻线程, Xcode Debug 模式下可以挂起线程进行测试, 所有的点击事件都不响应了. 
 
-IOHIDEventSystemClientScheduleWithRunLoop
-IOHIDEventSystemClientRegisterEventCallback
+IOHIDEventSystemClientScheduleWithRunLoop 函数执行 RunLoop
+IOHIDEventSystemClientRegisterEventCallback 函数注册回调
 
 -[UIEventFetcher _setupFilterChain] // 设置 __UILogGetCategoryImpl
 
@@ -57,8 +98,8 @@ __CFMachPortPerform
 
 #### 转 Source0
 
+```
 __IOHIDEventSystemClientQueueCallback
-
     -[UIEventFetcher _receiveHIDEventInternal:] // 接收事件
     (lldb) po $arg3
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -67,8 +108,8 @@ __IOHIDEventSystemClientQueueCallback
     PrimaryUsagePage:    13
     PrimaryUsage:        4
     DeviceUsagePairs:   
-        DeviceUsagePage:     13
-        DeviceUsage:         4
+    DeviceUsagePage:     13
+    DeviceUsage:         4
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     (lldb) po [$arg3 class]
@@ -88,6 +129,7 @@ __IOHIDEventSystemClientQueueCallback
             CFRunLoopWakeUp(*(arg0 + 0x28));
             return;
     }
+```
 
 ### 主线程
 
@@ -116,6 +158,7 @@ _UIEventHIDUIWindowForHIDEvent // 通过 HIDEvent 获取处理该事件的 windo
 <TDWindow: 0x7fe03140aec0; baseClass = UIWindow; frame = (0 0; 428 926); gestureRecognizers = <NSArray: 0x60000185a610>; layer = <UIWindowLayer: 0x60000165cb40>>
 
 _UIEventHIDEnumerateChildren // 遍历子事件, 该函数有三个参数, 遍历出子事件后交由 ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke 处理
+
 ```
 (lldb) po $arg1
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -418,5 +461,18 @@ if (rax != 0x0) {
 
 ###  UIControl, UIGestureRecognizer 和 UIResponder 的优先级
 
+235_hd_advanced_scrollviews_and_touch_handling_techniques.mov
+235_sd_advanced_scrollviews_and_touch_handling_techniques.mov
+235_advanced_scrollviews_and_touch_handling_techniques.pdf
+
+### Advanced Scrollviews and Touch Handling Techniques
+
+这个是 WWDC 2014 Session 235 的议题, 在线视频已经没有了, 但是还可以下载到, 以下是链接:
+
+[235_hd_advanced_scrollviews_and_touch_handling_techniques.mov](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_hd_advanced_scrollviews_and_touch_handling_techniques.mov?dl=1)
+[235_sd_advanced_scrollviews_and_touch_handling_techniques.mov](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_sd_advanced_scrollviews_and_touch_handling_techniques.mov?dl=1	)
+[235_advanced_scrollviews_and_touch_handling_techniques.pdf](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_advanced_scrollviews_and_touch_handling_techniques.pdf?dl=1)
+
+Demo 我已经集成到了 TouchDemo 工程中 WWDC2014-235 目录下, 可以下载查看.
 
 

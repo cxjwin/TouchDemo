@@ -10,7 +10,7 @@
 
 @implementation TDHookUtils
 
-#define HOOK_FLAG 0
+#define HOOK_FLAG 1
 
 + (void)setup {
 #if HOOK_FLAG == 1
@@ -63,7 +63,7 @@ NSString *shortDesc(id obj) {
             return;
         }
         
-        NSString *desc = [NSString stringWithFormat:@"arg0 : %@", shortDesc(arg0)];
+        NSString *desc = [NSString stringWithFormat:@"🔥arg0 : %@", shortDesc(arg0)];
         va_list args;
         va_start(args, arg0);
         id next = nil;
@@ -86,10 +86,9 @@ NSString *shortDesc(id obj) {
                             RSSWArguments(CGPoint point, UIEvent *event),
                             RSSWReplacement(
     {
-        [TDHookUtils catchArgs:self, NSStringFromSelector(sel), [NSValue valueWithCGPoint:point], event, nil];
         // Calling original implementation
         UIView *res = RSSWCallOriginal(point, event);
-        // Returning modified return value.
+        [TDHookUtils catchArgs:self, NSStringFromSelector(sel), [NSValue valueWithCGPoint:point], event, res ?: @"nil", nil];
         return res;
     }), 0, NULL);
 }
@@ -187,8 +186,8 @@ NSString *shortDesc(id obj) {
         RSSWCallOriginal(touches, event);
     }), 0, NULL);
     
-    // - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event;
-    SEL sel2 = @selector(touchesCancelled:withEvent:);
+    // - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event;
+    SEL sel2 = @selector(touchesMoved:withEvent:);
     RSSwizzleInstanceMethod([UIResponder class],
                             sel2,
                             RSSWReturnType(void),
@@ -196,6 +195,34 @@ NSString *shortDesc(id obj) {
                             RSSWReplacement(
     {
         [TDHookUtils catchArgs:self, NSStringFromSelector(sel2), touches, event, nil];
+
+        // Calling original implementation
+        RSSWCallOriginal(touches, event);
+    }), 0, NULL);
+    
+    // - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event;
+    SEL sel3 = @selector(touchesEnded:withEvent:);
+    RSSwizzleInstanceMethod([UIResponder class],
+                            sel3,
+                            RSSWReturnType(void),
+                            RSSWArguments(NSSet<UITouch *> *touches, UIEvent *event),
+                            RSSWReplacement(
+    {
+        [TDHookUtils catchArgs:self, NSStringFromSelector(sel3), touches, event, nil];
+
+        // Calling original implementation
+        RSSWCallOriginal(touches, event);
+    }), 0, NULL);
+    
+    // - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event;
+    SEL sel4 = @selector(touchesCancelled:withEvent:);
+    RSSwizzleInstanceMethod([UIResponder class],
+                            sel4,
+                            RSSWReturnType(void),
+                            RSSWArguments(NSSet<UITouch *> *touches, UIEvent *event),
+                            RSSWReplacement(
+    {
+        [TDHookUtils catchArgs:self, NSStringFromSelector(sel4), touches, event, nil];
 
         // Calling original implementation
         RSSWCallOriginal(touches, event);

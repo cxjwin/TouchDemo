@@ -10,6 +10,12 @@
 		2A0F3761261CB6680009BF62 /* TDScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0F3760261CB6680009BF62 /* TDScrollViewController.m */; };
 		2A7790E726118DC500B0D5CD /* TDPanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7790E626118DC500B0D5CD /* TDPanViewController.m */; };
 		2A7790ED26118FD900B0D5CD /* TDPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7790EC26118FD900B0D5CD /* TDPanGestureRecognizer.m */; };
+		2A78EBFB2620085300953623 /* WWDCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78EBFA2620085300953623 /* WWDCViewController.swift */; };
+		2A78EC042620088100953623 /* TouchDelayGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78EBFF2620088100953623 /* TouchDelayGestureRecognizer.swift */; };
+		2A78EC052620088100953623 /* OverlayScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78EC002620088100953623 /* OverlayScrollView.swift */; };
+		2A78EC062620088100953623 /* AEColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78EC012620088100953623 /* AEColor.swift */; };
+		2A78EC072620088100953623 /* TouchIndicatorGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78EC022620088100953623 /* TouchIndicatorGestureRecognizer.swift */; };
+		2A78EC082620088100953623 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A78EC032620088100953623 /* DotView.swift */; };
 		2A88F3DA2602F02700CAAD28 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F3D92602F02700CAAD28 /* AppDelegate.m */; };
 		2A88F3DD2602F02700CAAD28 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F3DC2602F02700CAAD28 /* SceneDelegate.m */; };
 		2A88F3E02602F02700CAAD28 /* TDTouchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F3DF2602F02700CAAD28 /* TDTouchViewController.m */; };
@@ -58,6 +64,13 @@
 		2A7790E626118DC500B0D5CD /* TDPanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDPanViewController.m; sourceTree = "<group>"; };
 		2A7790EB26118FD900B0D5CD /* TDPanGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDPanGestureRecognizer.h; sourceTree = "<group>"; };
 		2A7790EC26118FD900B0D5CD /* TDPanGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDPanGestureRecognizer.m; sourceTree = "<group>"; };
+		2A78EBF92620085200953623 /* TouchDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TouchDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		2A78EBFA2620085300953623 /* WWDCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WWDCViewController.swift; sourceTree = "<group>"; };
+		2A78EBFF2620088100953623 /* TouchDelayGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchDelayGestureRecognizer.swift; sourceTree = "<group>"; };
+		2A78EC002620088100953623 /* OverlayScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayScrollView.swift; sourceTree = "<group>"; };
+		2A78EC012620088100953623 /* AEColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEColor.swift; sourceTree = "<group>"; };
+		2A78EC022620088100953623 /* TouchIndicatorGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIndicatorGestureRecognizer.swift; sourceTree = "<group>"; };
+		2A78EC032620088100953623 /* DotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		2A88F3D52602F02700CAAD28 /* TouchDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TouchDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A88F3D82602F02700CAAD28 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2A88F3D92602F02700CAAD28 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -129,6 +142,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A78EBF82620081700953623 /* WWDC2014-235 */ = {
+			isa = PBXGroup;
+			children = (
+				2A78EBF92620085200953623 /* TouchDemo-Bridging-Header.h */,
+				2A78EBFA2620085300953623 /* WWDCViewController.swift */,
+				2A78EC012620088100953623 /* AEColor.swift */,
+				2A78EC032620088100953623 /* DotView.swift */,
+				2A78EC002620088100953623 /* OverlayScrollView.swift */,
+				2A78EBFF2620088100953623 /* TouchDelayGestureRecognizer.swift */,
+				2A78EC022620088100953623 /* TouchIndicatorGestureRecognizer.swift */,
+			);
+			path = "WWDC2014-235";
+			sourceTree = "<group>";
+		};
 		2A88F3CC2602F02700CAAD28 = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +179,7 @@
 		2A88F3D72602F02700CAAD28 /* TouchDemo */ = {
 			isa = PBXGroup;
 			children = (
+				2A78EBF82620081700953623 /* WWDC2014-235 */,
 				2A88F45B26033AAF00CAAD28 /* ViewControllers */,
 				2A88F43626032A3400CAAD28 /* Utils */,
 				2A88F42C2603293600CAAD28 /* Subclass */,
@@ -231,12 +259,12 @@
 				2A88F45D26033AE100CAAD28 /* TDGestureViewController.m */,
 				2AFC81A326043FA40010B32C /* TDMutiGestureViewController.h */,
 				2AFC81A426043FA40010B32C /* TDMutiGestureViewController.m */,
+				2A7790E526118DC500B0D5CD /* TDPanViewController.h */,
+				2A7790E626118DC500B0D5CD /* TDPanViewController.m */,
 				2AFC81A9260471340010B32C /* TDControlViewController.h */,
 				2AFC81AA260471340010B32C /* TDControlViewController.m */,
 				2A0F375F261CB6680009BF62 /* TDScrollViewController.h */,
 				2A0F3760261CB6680009BF62 /* TDScrollViewController.m */,
-				2A7790E526118DC500B0D5CD /* TDPanViewController.h */,
-				2A7790E626118DC500B0D5CD /* TDPanViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -307,6 +335,7 @@
 				TargetAttributes = {
 					2A88F3D42602F02700CAAD28 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 					2A88F3EF2602F02800CAAD28 = {
 						CreatedOnToolsVersion = 12.4;
@@ -374,9 +403,14 @@
 				2A88F44826032EB600CAAD28 /* TDHookUtils.m in Sources */,
 				2A88F3E02602F02700CAAD28 /* TDTouchViewController.m in Sources */,
 				2A88F3DA2602F02700CAAD28 /* AppDelegate.m in Sources */,
+				2A78EBFB2620085300953623 /* WWDCViewController.swift in Sources */,
+				2A78EC062620088100953623 /* AEColor.swift in Sources */,
+				2A78EC042620088100953623 /* TouchDelayGestureRecognizer.swift in Sources */,
 				2A7790E726118DC500B0D5CD /* TDPanViewController.m in Sources */,
 				2A0F3761261CB6680009BF62 /* TDScrollViewController.m in Sources */,
 				2A88F42F2603297A00CAAD28 /* TDContainerView.m in Sources */,
+				2A78EC072620088100953623 /* TouchIndicatorGestureRecognizer.swift in Sources */,
+				2A78EC052620088100953623 /* OverlayScrollView.swift in Sources */,
 				2A88F3EB2602F02800CAAD28 /* main.m in Sources */,
 				2A7790ED26118FD900B0D5CD /* TDPanGestureRecognizer.m in Sources */,
 				2A88F46A2603767100CAAD28 /* TDLongPressGestureRecognizer.m in Sources */,
@@ -389,6 +423,7 @@
 				2A88F45E26033AE100CAAD28 /* TDGestureViewController.m in Sources */,
 				2A88F41C26030D3000CAAD28 /* TDWindow.m in Sources */,
 				2AFC81B7260471E70010B32C /* TDBaseViewController.m in Sources */,
+				2A78EC082620088100953623 /* DotView.swift in Sources */,
 				2AFC81B1260471810010B32C /* TDControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -561,6 +596,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 543F7AK74D;
 				INFOPLIST_FILE = TouchDemo/Info.plist;
@@ -570,6 +606,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TouchDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TouchDemo/WWDC2014-235/TouchDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -579,6 +618,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 543F7AK74D;
 				INFOPLIST_FILE = TouchDemo/Info.plist;
@@ -588,6 +628,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TouchDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TouchDemo/WWDC2014-235/TouchDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -595,6 +637,7 @@
 		2A88F4082602F02800CAAD28 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 543F7AK74D;
@@ -615,6 +658,7 @@
 		2A88F4092602F02800CAAD28 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 543F7AK74D;
@@ -635,6 +679,7 @@
 		2A88F40B2602F02800CAAD28 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 543F7AK74D;
 				INFOPLIST_FILE = TouchDemoUITests/Info.plist;
@@ -653,6 +698,7 @@
 		2A88F40C2602F02800CAAD28 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 543F7AK74D;
 				INFOPLIST_FILE = TouchDemoUITests/Info.plist;
