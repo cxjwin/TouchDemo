@@ -34,6 +34,7 @@
 		2A88F45726033A9800CAAD28 /* TDTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F45626033A9800CAAD28 /* TDTapGestureRecognizer.m */; };
 		2A88F45E26033AE100CAAD28 /* TDGestureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F45D26033AE100CAAD28 /* TDGestureViewController.m */; };
 		2A88F46A2603767100CAAD28 /* TDLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A88F4692603767100CAAD28 /* TDLongPressGestureRecognizer.m */; };
+		2AAD054426268D0800B26208 /* TDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAD054326268D0800B26208 /* TDLog.m */; };
 		2AFC81A526043FA40010B32C /* TDMutiGestureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC81A426043FA40010B32C /* TDMutiGestureViewController.m */; };
 		2AFC81AB260471340010B32C /* TDControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC81AA260471340010B32C /* TDControlViewController.m */; };
 		2AFC81B1260471810010B32C /* TDControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC81B0260471810010B32C /* TDControl.m */; };
@@ -107,6 +108,8 @@
 		2A88F45D26033AE100CAAD28 /* TDGestureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDGestureViewController.m; sourceTree = "<group>"; };
 		2A88F4682603767100CAAD28 /* TDLongPressGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDLongPressGestureRecognizer.h; sourceTree = "<group>"; };
 		2A88F4692603767100CAAD28 /* TDLongPressGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDLongPressGestureRecognizer.m; sourceTree = "<group>"; };
+		2AAD054226268D0800B26208 /* TDLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDLog.h; sourceTree = "<group>"; };
+		2AAD054326268D0800B26208 /* TDLog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDLog.m; sourceTree = "<group>"; };
 		2AFC81A326043FA40010B32C /* TDMutiGestureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDMutiGestureViewController.h; sourceTree = "<group>"; };
 		2AFC81A426043FA40010B32C /* TDMutiGestureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDMutiGestureViewController.m; sourceTree = "<group>"; };
 		2AFC81A9260471340010B32C /* TDControlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDControlViewController.h; sourceTree = "<group>"; };
@@ -244,6 +247,8 @@
 				2A88F44C260336A200CAAD28 /* RSSwizzle.m */,
 				2A88F44626032EB600CAAD28 /* TDHookUtils.h */,
 				2A88F44726032EB600CAAD28 /* TDHookUtils.m */,
+				2AAD054226268D0800B26208 /* TDLog.h */,
+				2AAD054326268D0800B26208 /* TDLog.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -417,6 +422,7 @@
 				2AFC81A526043FA40010B32C /* TDMutiGestureViewController.m in Sources */,
 				2A88F45726033A9800CAAD28 /* TDTapGestureRecognizer.m in Sources */,
 				2A88F4132602F9DD00CAAD28 /* TableViewController.m in Sources */,
+				2AAD054426268D0800B26208 /* TDLog.m in Sources */,
 				2A88F3DD2602F02700CAAD28 /* SceneDelegate.m in Sources */,
 				2AFC81AB260471340010B32C /* TDControlViewController.m in Sources */,
 				2A88F4252603209C00CAAD28 /* TDView.m in Sources */,

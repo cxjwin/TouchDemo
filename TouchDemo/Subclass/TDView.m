@@ -6,6 +6,7 @@
 //
 
 #import "TDView.h"
+#import "TDLog.h"
 
 @interface UIView (TDView)
 
@@ -29,7 +30,6 @@ static NSInteger g_viewId = 0;
     return _viewId;
 }
 
-
 // recursively calls -pointInside:withEvent:. point is in the receiver's coordinate system
 - (nullable UIView *)hitTest:(CGPoint)point withEvent:(nullable UIEvent *)event {
     UIView *view = [super hitTest:point withEvent:event];
@@ -43,23 +43,28 @@ static NSInteger g_viewId = 0;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ - %s", self, __func__);
+    TD_LOG_CURRENT_METHOD;
     [super touchesBegan:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ - %s", self, __func__);
+    TD_LOG_CURRENT_METHOD;
     [super touchesMoved:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ - %s", self, __func__);
+    TD_LOG_CURRENT_METHOD;
     [super touchesEnded:touches withEvent:event];
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ - %s", self, __func__);
+    TD_LOG_CURRENT_METHOD;
     [super touchesCancelled:touches withEvent:event];
+}
+
+- (NSString *)description {
+    NSString *desc = [super description];
+    return [NSString stringWithFormat:@"view id : %@ | %@", @(_viewId), desc];
 }
 
 @end

@@ -6,26 +6,27 @@
 //
 
 #import "TDContainerView.h"
+#import "TDLog.h"
 
 @implementation TDContainerView
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ - %s", self, __func__);
+    TD_LOG_CURRENT_METHOD;
     [super touchesBegan:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ - %s", self, __func__);
+    TD_LOG_CURRENT_METHOD;
     [super touchesMoved:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ - %s", self, __func__);
+    TD_LOG_CURRENT_METHOD;
     [super touchesEnded:touches withEvent:event];
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ - %s", self, __func__);
+    TD_LOG_CURRENT_METHOD;
     [super touchesCancelled:touches withEvent:event];
 }
 

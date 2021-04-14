@@ -6,11 +6,22 @@
 1. CASE: 父 View A 有子 View B 和 C, B 和 C frame 一样, 如果需要 B 的左半边和 C 的右半边都能响应点击, 需要怎么处理?
 1. UITouch 和 UIEvent 是什么关系? 和 UIGestureRecognizer 又是什么关系?
 1. Touch, UIControl 和 UIGestureRecognizer 该如何选择?
-1. 手势改如何选择?
+1. 手势该如何选择?
 1. 多个手势会存在冲突吗? 如何处理冲突?
 1. 如何自定义手势?
-1. ScrollView 中的手势该如何处理? 
+1. ScrollView 中的手势该如何处理?
 1. TableView/CollectionView 中 Cell 上的手势该如何处理?
+
+## Touch 事件是怎么传递的?
+
+### hitTesting 流程
+
+
+### 事件分发流程
+
+
+## 点击响应区域处理
+
 
 ## Tips
 
@@ -260,6 +271,7 @@ __sendSystemGestureLatentClientUpdate
 
 #### 事件分发
 
+```
 // 先由 UIApplication sendEvent:
 - [UIApplication sendEvent:]
 
@@ -271,9 +283,7 @@ __sendSystemGestureLatentClientUpdate
         -[UITouchesEvent _touchesForView:withPhase:] 
             -[UITouchesEvent touchesForView:] // 从 _keyedTouches 字典里面获取 UITouch
             // 通过上面获取的 View & Touch 调用 touchesBegan/touchesMoved/touchesEnded/touchesCancelled 等方法
-
-
-
+```
 
 ## hitTest 流程分析
 

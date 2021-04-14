@@ -10,7 +10,7 @@
 
 @implementation TDHookUtils
 
-#define HOOK_FLAG 1
+#define HOOK_FLAG 0
 
 + (void)setup {
 #if HOOK_FLAG == 1
