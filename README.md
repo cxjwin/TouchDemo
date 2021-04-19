@@ -1,6 +1,6 @@
 # iOS 手势学习
 
-## 要回答的几个问题 
+## 本文要解答的几个问题 
 
 1. Touch 事件是怎么传递的?
 1. CASE: 父 View A 有子 View B 和 C, B 和 C frame 一样, 如果需要 B 的左半边和 C 的右半边都能响应点击, 需要怎么处理?
@@ -16,11 +16,80 @@
 
 ### hitTesting 流程
 
+hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历, 具体伪代码如下:
+
+```
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event { 
+    if (/* point is in our bounds */) {
+        for (/* each subview, in reverse order */) {
+            UIView *hitView = /* recursive call on subview */
+            if (hitView != nil) {
+                return hitView;
+            } 
+        }
+        return self; 
+    }
+    return nil; 
+}
+```
+
+那么 hitTest 方法找到的是最顶层可以响应事件的子 View, 后续事件会派发给该 View.
+
+### 点击响应区域处理
+
+从上面的伪代码可以看到, 最开始的判断就是 `point is in our bounds` 的逻辑, 那么这个对应到 UIView 中的方法是:
+
+```
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    /* point is in our bounds */
+}
+```
+
+对应的可以参考 `TDTouchViewController` 中的例子.
 
 ### 事件分发流程
 
+![响应者链](./pics/responder_chain.png)
 
-## 点击响应区域处理
+### 以 Single Touch 为例
+
+*touch down*
+![touch_down](./pics/single_touch_down.png)
+
+*touch began*
+![touch_began](./pics/single_touch_began.png)
+
+*touch moves*
+![touch_moves](./pics/single_touch_moves.png)
+
+*touch ended*
+![touch_ended](./pics/single_touch_ended.png)
+
+*touch cancelled*
+![touch_cancelled](./pics/single_touch_cancelled.png)
+
+*summary*
+![touch_summary](./pics/single_touch_summary.png)
+
+### 加入手势以后
+
+*touch down*
+![touch_down](./pics/gesture_touch_down.png)
+
+*touch began*
+![touch_began](./pics/gesture_touch_began.png)
+
+*touch move*
+![touch_moves](./pics/gesture_touch_move.png)
+
+*touch move again*
+![touch_ended](./pics/gesture_touch_move_again.png)
+
+*touch lift*
+![touch_cancelled](./pics/gesture_touch_lift.png)
+
+## 为什么需要手势? 
+
 
 
 ## Tips
