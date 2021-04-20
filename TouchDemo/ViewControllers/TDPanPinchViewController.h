@@ -1,5 +1,5 @@
 //
-//  TDPanViewController.h
+//  TDPanPinchViewController.h
 //  TouchDemo
 //
 //  Created by smart on 2021/3/29.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TDPanViewController : TDBaseViewController
+@interface TDPanPinchViewController : TDBaseViewController
 
 @end
 

@@ -45,7 +45,7 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 }
 ```
 
-对应的可以参考 `TDTouchViewController` 中的例子.
+对应的可以参考 `TDTouchViewController` 中的例子, 解决了问题 2 中的 CASE.
 
 ### 事件分发流程
 
@@ -90,7 +90,72 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 ## 为什么需要手势? 
 
+### Touch 能否满足手势要求?
 
+#### Touch 的优点
+1. API 简单
+2. 满足一般的点击需求
+
+#### Touch 的劣势
+1. 准确度限制
+2. 同时发生多个点击时难以处理
+3. 对于手势规则判断的不确定性
+   1. Tap
+   2. Double-Tap
+   3. Pan
+   4. Long Press
+   5. Tap-and-a-half
+   6. ...
+4. 中间状态难以处理
+   1. Wait
+   2. Guess
+   3. Give up
+
+可以感受下下图:
+
+*touch problem*
+![touch_problem](./pics/touch_problem.png)
+
+### Gesture Recognizer 的优势
+
+#### Gesture Recognizer 采用状态机的设计
+
+采用状态机的设计, 准确定义手势的不同阶段的状态, 便于管理
+
+![gesture_state_machine](./pics/gesture_state_machine.png)
+
+#### Gesture Recognizer 的状态机互相独立, 各自管理
+
+![muti_gesture_state_machine](./pics/muti_gesture_state_machine.png)
+
+#### Gesture Recognizer 可以进行冲突管理
+
+![muti_gesture_handle_state](./pics/muti_gesture_handle_state.png)
+
+### 手势的状态
+
+`@property(nonatomic,readonly) UIGestureRecognizerState state;`
+
+1. 只用来标记的状态
+ - UIGestureRecognizerStatePossible 
+ - UIGestureRecognizerStateFailed
+
+2. 非连续的状态
+ - UIGestureRecognizerStateRecognized
+
+3. 连续性的状态
+ - UIGestureRecognizerStateBegan
+ - UIGestureRecognizerStateChanged
+ - UIGestureRecognizerStateEnded
+ - UIGestureRecognizerStateCancelled
+
+*正常结束*
+
+![gesture_state_ended](./pics/gesture_state_ended.png)
+
+*取消*
+
+![gesture_state_cancelled](./pics/gesture_state_cancelled.png)
 
 ## Tips
 

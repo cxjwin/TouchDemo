@@ -1,5 +1,5 @@
 //
-//  TDGestureViewController.h
+//  TDTapGestureViewController.h
 //  TouchDemo
 //
 //  Created by smart on 2021/3/18.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TDGestureViewController : TDBaseViewController
+@interface TDTapGestureViewController : TDBaseViewController
 
 @end
 

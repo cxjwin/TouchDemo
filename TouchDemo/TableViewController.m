@@ -7,10 +7,10 @@
 
 #import "TableViewController.h"
 #import "TDTouchViewController.h"
-#import "TDGestureViewController.h"
+#import "TDTapGestureViewController.h"
 #import "TDMutiGestureViewController.h"
 #import "TDControlViewController.h"
-#import "TDPanViewController.h"
+#import "TDPanPinchViewController.h"
 #import "TDScrollViewController.h"
 #import "TouchDemo-Swift.h"
 
@@ -29,10 +29,10 @@ static NSString *const kTouchExampleCellId = @"touch_example";
     
     _configs = @[
         @{@"title" : @"Touch Example", @"class" : [TDTouchViewController class]},
-        @{@"title" : @"Gesture Example", @"class" : [TDGestureViewController class]},
+        @{@"title" : @"Tap Gesture Example", @"class" : [TDTapGestureViewController class]},
         @{@"title" : @"Muti Gesture Example", @"class" : [TDMutiGestureViewController class]},
         @{@"title" : @"Control Example", @"class" : [TDControlViewController class]},
-        @{@"title" : @"Pan Example", @"class" : [TDPanViewController class]},
+        @{@"title" : @"Pan & Pinch Example", @"class" : [TDPanPinchViewController class]},
         @{@"title" : @"Muti ScrollView", @"class" : [TDScrollViewController class]},
         @{@"title" : @"WWDC2014-235", @"class" : [WWDCViewController class]}
     ];

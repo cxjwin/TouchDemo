@@ -6,7 +6,13 @@
 //
 
 #import "TDPanGestureRecognizer.h"
+#import <UIKit/UIGestureRecognizerSubclass.h>
 
 @implementation TDPanGestureRecognizer
+
+- (void)setState:(UIGestureRecognizerState)state {
+    NSLog(@"[TDPanGestureRecognizer] state : %@", @(state));
+    [super setState:state];
+}
 
 @end

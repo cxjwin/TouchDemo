@@ -1,15 +1,15 @@
 //
-//  TDTapGestureRecognizer.h
+//  TDPinchGestureRecognizer.h
 //  TouchDemo
 //
-//  Created by smart on 2021/3/18.
+//  Created by smart on 2021/4/20.
 //
 
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TDTapGestureRecognizer : UITapGestureRecognizer
+@interface TDPinchGestureRecognizer : UIPinchGestureRecognizer
 
 - (void)setEnabledLog:(BOOL)enableLog;
 
