@@ -38,7 +38,6 @@
     // add gesture
     {
         TDTapGestureRecognizer *tap = [[TDTapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-        tap.cancelsTouchesInView = NO;
         [self.view addGestureRecognizer:tap];
     }
     
@@ -46,7 +45,7 @@
     [self.view addSubview:control];
     button.center = CGPointMake(self.view.center.x, self.view.center.y + 50);
     [self.view addSubview:button];
-    normalView.center = CGPointMake(self.view.center.x, self.view.center.y + 100);
+    normalView.center = CGPointMake(self.view.center.x, self.view.center.y + 150);
     [self.view addSubview:normalView];
 }
 

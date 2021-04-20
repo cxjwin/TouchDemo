@@ -40,7 +40,7 @@
         _singleTap = tap;
     }
     
-    // add double tap
+    // add double tap gesture
     {
         TDTapGestureRecognizer *tap = [[TDTapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
         tap.numberOfTapsRequired = 2;

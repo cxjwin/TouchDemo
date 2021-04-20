@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define TD_LOG 1
+#define TD_LOG 0
 
 #if TD_LOG
 #define TD_LOG_CURRENT_METHOD NSLog(@"%@ - %s", self, __func__)

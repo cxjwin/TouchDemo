@@ -7,7 +7,7 @@
 
 #import "TDScrollViewController.h"
 
-@interface TDScrollViewController () {
+@interface TDScrollViewController () <UIScrollViewDelegate> {
     UIScrollView *_scrollView;
     UIScrollView *_subScrollView;
 }
@@ -36,8 +36,16 @@
         _subScrollView.backgroundColor = [UIColor redColor];
         _subScrollView.contentSize = CGSizeMake(200, 800);
         _subScrollView.center = _scrollView.center;
+        _subScrollView.bounces = NO;
         [_scrollView addSubview:_subScrollView];
     }
 }
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //
+}
+
 
 @end

@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2A0F3761261CB6680009BF62 /* TDScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0F3760261CB6680009BF62 /* TDScrollViewController.m */; };
+		2A4195BF262EE0D20052F55C /* TDCustomGestureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4195BE262EE0D20052F55C /* TDCustomGestureViewController.m */; };
+		2A419644262F0BE70052F55C /* MDCircleGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A419642262F0BE70052F55C /* MDCircleGestureRecognizer.m */; };
+		2A419645262F0BE70052F55C /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A419643262F0BE70052F55C /* CircleView.m */; };
+		2A419657262F0D780052F55C /* TDCircleGestureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A419656262F0D780052F55C /* TDCircleGestureViewController.m */; };
 		2A4CAD10262EB6D700A81AC6 /* TDPinchGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4CAD0F262EB6D700A81AC6 /* TDPinchGestureRecognizer.m */; };
 		2A4CAD1F262EC0DE00A81AC6 /* TDSimpleTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4CAD1E262EC0DE00A81AC6 /* TDSimpleTapGestureRecognizer.m */; };
 		2A7790E726118DC500B0D5CD /* TDPanPinchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7790E626118DC500B0D5CD /* TDPanPinchViewController.m */; };
@@ -63,6 +67,14 @@
 /* Begin PBXFileReference section */
 		2A0F375F261CB6680009BF62 /* TDScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDScrollViewController.h; sourceTree = "<group>"; };
 		2A0F3760261CB6680009BF62 /* TDScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDScrollViewController.m; sourceTree = "<group>"; };
+		2A4195BD262EE0D20052F55C /* TDCustomGestureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDCustomGestureViewController.h; sourceTree = "<group>"; };
+		2A4195BE262EE0D20052F55C /* TDCustomGestureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDCustomGestureViewController.m; sourceTree = "<group>"; };
+		2A419640262F0BE70052F55C /* MDCircleGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDCircleGestureRecognizer.h; sourceTree = "<group>"; };
+		2A419641262F0BE70052F55C /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
+		2A419642262F0BE70052F55C /* MDCircleGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDCircleGestureRecognizer.m; sourceTree = "<group>"; };
+		2A419643262F0BE70052F55C /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
+		2A419655262F0D780052F55C /* TDCircleGestureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDCircleGestureViewController.h; sourceTree = "<group>"; };
+		2A419656262F0D780052F55C /* TDCircleGestureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDCircleGestureViewController.m; sourceTree = "<group>"; };
 		2A4CAD0E262EB6D700A81AC6 /* TDPinchGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDPinchGestureRecognizer.h; sourceTree = "<group>"; };
 		2A4CAD0F262EB6D700A81AC6 /* TDPinchGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDPinchGestureRecognizer.m; sourceTree = "<group>"; };
 		2A4CAD1D262EC0DE00A81AC6 /* TDSimpleTapGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDSimpleTapGestureRecognizer.h; sourceTree = "<group>"; };
@@ -151,6 +163,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A41963F262F0BB00052F55C /* Circle-Detection */ = {
+			isa = PBXGroup;
+			children = (
+				2A419641262F0BE70052F55C /* CircleView.h */,
+				2A419643262F0BE70052F55C /* CircleView.m */,
+				2A419640262F0BE70052F55C /* MDCircleGestureRecognizer.h */,
+				2A419642262F0BE70052F55C /* MDCircleGestureRecognizer.m */,
+			);
+			path = "Circle-Detection";
+			sourceTree = "<group>";
+		};
 		2A78EBF82620081700953623 /* WWDC2014-235 */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,6 +211,7 @@
 		2A88F3D72602F02700CAAD28 /* TouchDemo */ = {
 			isa = PBXGroup;
 			children = (
+				2A41963F262F0BB00052F55C /* Circle-Detection */,
 				2A78EBF82620081700953623 /* WWDC2014-235 */,
 				2A88F45B26033AAF00CAAD28 /* ViewControllers */,
 				2A88F43626032A3400CAAD28 /* Utils */,
@@ -276,6 +300,10 @@
 				2AFC81A426043FA40010B32C /* TDMutiGestureViewController.m */,
 				2A7790E526118DC500B0D5CD /* TDPanPinchViewController.h */,
 				2A7790E626118DC500B0D5CD /* TDPanPinchViewController.m */,
+				2A4195BD262EE0D20052F55C /* TDCustomGestureViewController.h */,
+				2A4195BE262EE0D20052F55C /* TDCustomGestureViewController.m */,
+				2A419655262F0D780052F55C /* TDCircleGestureViewController.h */,
+				2A419656262F0D780052F55C /* TDCircleGestureViewController.m */,
 				2AFC81A9260471340010B32C /* TDControlViewController.h */,
 				2AFC81AA260471340010B32C /* TDControlViewController.m */,
 				2A0F375F261CB6680009BF62 /* TDScrollViewController.h */,
@@ -434,15 +462,19 @@
 				2A88F4132602F9DD00CAAD28 /* TableViewController.m in Sources */,
 				2AAD054426268D0800B26208 /* TDLog.m in Sources */,
 				2A88F3DD2602F02700CAAD28 /* SceneDelegate.m in Sources */,
+				2A419645262F0BE70052F55C /* CircleView.m in Sources */,
 				2AFC81AB260471340010B32C /* TDControlViewController.m in Sources */,
+				2A4195BF262EE0D20052F55C /* TDCustomGestureViewController.m in Sources */,
 				2A88F4252603209C00CAAD28 /* TDView.m in Sources */,
 				2A4CAD1F262EC0DE00A81AC6 /* TDSimpleTapGestureRecognizer.m in Sources */,
 				2A4CAD10262EB6D700A81AC6 /* TDPinchGestureRecognizer.m in Sources */,
 				2A88F45E26033AE100CAAD28 /* TDTapGestureViewController.m in Sources */,
 				2A88F41C26030D3000CAAD28 /* TDWindow.m in Sources */,
+				2A419657262F0D780052F55C /* TDCircleGestureViewController.m in Sources */,
 				2AFC81B7260471E70010B32C /* TDBaseViewController.m in Sources */,
 				2A78EC082620088100953623 /* DotView.swift in Sources */,
 				2AFC81B1260471810010B32C /* TDControl.m in Sources */,
+				2A419644262F0BE70052F55C /* MDCircleGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

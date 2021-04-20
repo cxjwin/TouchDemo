@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TDSimpleTapGestureRecognizer : UIGestureRecognizer
 
+@property (nonatomic, assign) NSUInteger numberOfTapsRequired;
+
 @end
 
 NS_ASSUME_NONNULL_END
