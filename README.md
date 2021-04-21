@@ -51,44 +51,49 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 ### 事件分发流程
 
+**响应者链**
 ![响应者链](./pics/responder_chain.png)
 
 ### 以 Single Touch 为例
 
-*touch down*
+**touch down**
 ![touch_down](./pics/single_touch_down.png)
 
-*touch began*
+**touch began**
 ![touch_began](./pics/single_touch_began.png)
 
-*touch moves*
+**touch moves**
 ![touch_moves](./pics/single_touch_moves.png)
 
-*touch ended*
+**touch ended**
 ![touch_ended](./pics/single_touch_ended.png)
 
-*touch cancelled*
+**touch cancelled**
 ![touch_cancelled](./pics/single_touch_cancelled.png)
 
-*summary*
+**summary**
 ![touch_summary](./pics/single_touch_summary.png)
 
 ### 加入手势以后
 
-*touch down*
+**touch down**
 ![touch_down](./pics/gesture_touch_down.png)
 
-*touch began*
+**touch began**
 ![touch_began](./pics/gesture_touch_began.png)
 
-*touch move*
+**touch move**
 ![touch_moves](./pics/gesture_touch_move.png)
 
-*touch move again*
+**touch move again**
 ![touch_ended](./pics/gesture_touch_move_again.png)
 
-*touch lift*
+**touch lift**
 ![touch_cancelled](./pics/gesture_touch_lift.png)
+
+### 多手势
+
+![muti_gesture_and_touch](./pics/muti_gesture_and_touch.png)
 
 ## 为什么需要手势? 
 
@@ -115,7 +120,7 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 可以感受下下图:
 
-*touch problem*
+**touch problem**
 ![touch_problem](./pics/touch_problem.png)
 
 ### Gesture Recognizer 的优势
