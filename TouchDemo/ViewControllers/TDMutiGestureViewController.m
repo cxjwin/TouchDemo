@@ -10,8 +10,6 @@
 #import "TDTapGestureRecognizer.h"
 #import "TDPinchGestureRecognizer.h"
 
-#define TD_LOG 1
-
 @interface TDMutiGestureViewController ()
 
 @end
@@ -60,5 +58,3 @@
 }
 
 @end
-
-#undef TD_LOG

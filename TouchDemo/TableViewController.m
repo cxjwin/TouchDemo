@@ -11,6 +11,7 @@
 #import "TDMutiGestureViewController.h"
 #import "TDCustomGestureViewController.h"
 #import "TDCircleGestureViewController.h"
+#import "TDGestureRecognizerDelegateViewController.h"
 #import "TDControlViewController.h"
 #import "TDPanPinchViewController.h"
 #import "TDScrollViewController.h"
@@ -37,6 +38,7 @@ static NSString *const kTouchExampleCellId = @"touch_example";
         @{@"title" : @"Pan & Pinch Example", @"class" : [TDPanPinchViewController class]},
         @{@"title" : @"Custom Gesture Example", @"class" : [TDCustomGestureViewController class]},
         @{@"title" : @"Circle Gesture Example", @"class" : [TDCircleGestureViewController class]},
+        @{@"title" : @"Gesture Delegate Example", @"class" : [TDGestureRecognizerDelegateViewController class]},
         @{@"title" : @"Muti ScrollView", @"class" : [TDScrollViewController class]},
         @{@"title" : @"WWDC2014-235", @"class" : [WWDCViewController class]}
     ];

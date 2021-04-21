@@ -10,7 +10,6 @@
 1. 多个手势会存在冲突吗? 如何处理冲突?
 1. 如何自定义手势?
 1. ScrollView 中的手势该如何处理?
-1. TableView/CollectionView 中 Cell 上的手势该如何处理?
 
 ## Touch 事件是怎么传递的?
 
@@ -45,6 +44,9 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 }
 ```
 
+#### 解决问题 2
+
+可以利用 `- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event` 方法解决,
 对应的可以参考 `TDTouchViewController` 中的例子, 解决了问题 2 中的 CASE.
 
 ### 事件分发流程
@@ -100,16 +102,16 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 1. 准确度限制
 2. 同时发生多个点击时难以处理
 3. 对于手势规则判断的不确定性
-   1. Tap
-   2. Double-Tap
-   3. Pan
-   4. Long Press
-   5. Tap-and-a-half
-   6. ...
+   - Tap
+   - Double-Tap
+   - Pan
+   - Long Press
+   - Tap-and-a-half
+   - ...
 4. 中间状态难以处理
-   1. Wait
-   2. Guess
-   3. Give up
+   - Wait
+   - Guess
+   - Give up
 
 可以感受下下图:
 
@@ -123,6 +125,8 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 采用状态机的设计, 准确定义手势的不同阶段的状态, 便于管理
 
 ![gesture_state_machine](./pics/gesture_state_machine.png)
+
+![gesture_state_machine_2](./pics/gesture_state_machine_2.png)
 
 #### Gesture Recognizer 的状态机互相独立, 各自管理
 
@@ -157,6 +161,189 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 ![gesture_state_cancelled](./pics/gesture_state_cancelled.png)
 
+### Demo
+
+下面我们来看下几个手势的例子
+
+#### CASE1: Single Tap 和 Double Tap
+
+参考 TDTapGestureViewController
+
+#### CASE2: Single Tap 和 Pinch 
+
+参考 TDMutiGestureViewController
+
+#### CASE3: Pan 和 Pinch
+
+参考 TDPanPinchViewController
+
+## Touch, UIControl 和 UIGestureRecognizer 该如何选择
+
+### Touch
+
+简单的点击事件可以使用 Touch 处理, 鉴于 View 中的 Touch 方法可能会被手势 Cancelled 掉, 一般建议优先使用 UIControl 或者手势.
+
+### UIControl
+
+UIKit 提供了比较丰富的 UIControl 子类控件, 基本可以满足日常开发需求. 
+
+UIButton, UIPageControl, UISegmentedControl, UIStepper
+    ( Prevents single taps using one finger )
+以上控件会拦截掉单指的单击手势
+
+UISlider
+    ( Prevents swipes and pans using one finger )
+以上控件会拦截掉单指的 swipe 和 pan 手势
+
+UIControl 有个好处, 点击或者滑动后, 对应的 UI 可以进行更新, 以达到良好的交互体验.
+
+### UIGestureRecognizer
+
+常用的有几下几类:
+
+- UITapGestureRecognizer
+- UIPanGestureRecognizer
+- UIRotationGestureRecognizer
+- UIPinchGestureRecognizer
+- UILongPressGestureRecognizer
+- UISwipeGestureRecognizer
+
+手势不提供 UI 支持, 所以对于不同的状态, 我们可能需要自己去处理 UI 更新. 
+
+## 手势冲突处理
+
+### 主动调用方法
+
+```
+// 如果不加这一行, 双击的时候会先触发单击手势
+[_singleTap requireGestureRecognizerToFail:_doubleTap];
+```
+
+### 代理方法处理
+
+```
+// called once per attempt to recognize, so failure requirements can be determined lazily and may be set up between recognizers across view hierarchies
+// return YES to set up a dynamic failure requirement between gestureRecognizer and otherGestureRecognizer
+//
+// note: returning YES is guaranteed to set up the failure requirement. returning NO does not guarantee that there will not be a failure requirement as the other gesture's counterpart delegate or subclass methods may return YES
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer API_AVAILABLE(ios(7.0)) {
+    
+    if ([gestureRecognizer isKindOfClass:[TDTapGestureRecognizer class]] &&
+        [otherGestureRecognizer isKindOfClass:[TDTapGestureRecognizer class]]) {
+        
+        if ([(TDTapGestureRecognizer *)gestureRecognizer numberOfTapsRequired] == 1 &&
+            [(TDTapGestureRecognizer *)otherGestureRecognizer numberOfTapsRequired] > 1) {
+            return YES;
+        }
+        
+    }
+    
+    return NO;
+}
+```
+
+### 子类方法处理
+
+```
+#pragma mark - Preventing exclusion
+
+/// Overriding these methods enables the same behavior as implementing the UIGestureRecognizerDelegate methods gestureRecognizerShouldBegin: and gestureRecognizer:shouldReceiveTouch:. However, by overriding them, subclasses can define class-wide prevention rules. For example, a UITapGestureRecognizer object never prevents another UITapGestureRecognizer object with a higher tap count.
+- (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer {
+    if ([preventedGestureRecognizer isKindOfClass:[TDSimpleTapGestureRecognizer class]] &&
+        preventedGestureRecognizer.numberOfTouches > self.numberOfTapsRequired) {
+        return NO;
+    }
+    return YES;
+}
+
+/// Overriding these methods enables the same behavior as implementing the UIGestureRecognizerDelegate methods gestureRecognizerShouldBegin: and gestureRecognizer:shouldReceiveTouch:. However, by overriding them, subclasses can define class-wide prevention rules. For example, a UITapGestureRecognizer object never prevents another UITapGestureRecognizer object with a higher tap count.
+- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer {
+    return YES;
+}
+```
+
+## 如何自定义手势
+
+一个简单示例可以参考: TDSimpleTapGestureRecognizer
+
+稍微复杂点的示例参考: MDCircleGestureRecognizer
+
+## ScrollView 中的手势该如何处理?
+
+ScrollView 中自带 pan 手势, 那么 ScrollView 中常见的手势冲突就是 pan 手势的冲突, 导致滚动异常.
+这里可以简单的看一下 ScrollView 嵌套的例子: TDScrollViewController
+这个示例只是简单的给个思路, 更多的实践需要根据项目中的实际情况采用上述手势冲突的解决方式进行调整.
+
+另一个例子 WWDC 2014 的官方 Demo, 在 WWDC2014-235 目录中, 这个 Demo 比较完整的展示了 ScrollView 中手势的处理. 
+
+## 总结
+
+至此, 开头提到的大部分问题已经有了比较好的答案. 我们也对 iOS 的手势处理有了进一步的了解. 当然实际项目中可能遇到的场景更为复杂, 这个就具体情况具体分析了.
+本次分享中的大部分内容, 历届 WWDC 都有提及, 而且 WWDC 讲解的更为透彻, 文后我会放出链接.
+
+### WWDC 链接
+
+#### WWDC 2010
+
+Simplifying Touch Event Handling with Gesture Recognizers · Session 120 
+
+- HD: https://developer.apple.com/devcenter/download.action?path=/videos/wwdc_2010__hd/session_120__simplifying_touch_event_handling_with_gesture_recognizers.mov
+- SD: https://developer.apple.com/devcenter/download.action?path=/videos/wwdc_2010__sd/session_120__simplifying_touch_event_handling_with_gesture_recognizers.mov
+- PDF: https://developer.apple.com/devcenter/download.action?path=/wwdc_2010/wwdc_2010_video_assets__pdfs/120__simplifying_touch_event_handling_with_gesture_recognizers.pdf
+
+Advanced Gesture Recognition · Session 121
+
+- HD: https://developer.apple.com/devcenter/download.action?path=/videos/wwdc_2010__hd/session_121__advanced_gesture_recognition.mov
+- SD: https://developer.apple.com/devcenter/download.action?path=/videos/wwdc_2010__sd/session_121__advanced_gesture_recognition.mov
+- PDF: https://developer.apple.com/devcenter/download.action?path=/wwdc_2010/wwdc_2010_video_assets__pdfs/121__advanced_gesture_recognition.pdf
+
+#### WWDC 2011
+
+Making the Most of Multi-Touch on iOS · Session 118
+- HD: https://developer.apple.com/devcenter/download.action?path=/videos/wwdc_2011__hd/session_118__making_the_most_of_multitouch_on_ios.m4v
+- PDF: https://developer.apple.com/devcenter/download.action?path=/wwdc_2011/adc_on_itunes__wwdc11_sessions__pdf/118_making_the_most_of_multitouch_on_ios.pdf
+
+#### WWDC 2012
+
+Building Advanced Gesture Recognizers : https://developer.apple.com/videos/play/wwdc2012/233/
+
+#### WWDC 2014
+
+这个是 WWDC 2014 Session 235 的议题, 在线视频已经没有了, 但是还可以下载到, 以下是链接:
+
+- [235_hd_advanced_scrollviews_and_touch_handling_techniques.mov](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_hd_advanced_scrollviews_and_touch_handling_techniques.mov?dl=1)
+- [235_sd_advanced_scrollviews_and_touch_handling_techniques.mov](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_sd_advanced_scrollviews_and_touch_handling_techniques.mov?dl=1)
+- [235_advanced_scrollviews_and_touch_handling_techniques.pdf](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_advanced_scrollviews_and_touch_handling_techniques.pdf?dl=1)
+
+#### WWDC 2017
+
+Modern User Interaction on iOS : https://developer.apple.com/videos/play/wwdc2017/219/
+
+* * *
+- - -
+
+## 番外
+
+准备此处分享的过程中, 也是经过了一些"坎坷", 这里大概梳理下, 以后再次准备类似分享的时候可以规避掉此类问题.
+
+### 过于发散
+
+一开始对于分散的内容过于发散, 不仅想从源头开始分析点击的原理, 也想把整个手势分析透彻, 还要结合到具体的场景去展示各种 CASE.
+其实对于一场分享, 因为时间有限 (无论是分享者还是听众), 聚焦一些内容还是有必要的. 如果内容过多可以分多次分享.
+
+### 无从下手
+
+基于第一点, 由于过于发散, 前期需要准备的素材过多, 包括 WWDC 的视频, 现有的博客, Github 源码, Demo 的编写, 每一项都需要花费不少的时间.
+
+### 到哪为止
+
+分享到什么程度也是个问题, 过细需要花费的时间很多, 过粗可能内容又没什么干货, 如何做的具有启发性, 听众能够根据你的思路去解决现有的问题, 这个度也需要拿捏的比较好.
+
+### 焦虑
+
+其实到后期还是有些焦虑的, 总觉的遗漏了很多东西, 很多东西自己还没有理解透彻怎么去给别人讲, Demo 写的比较粗糙, 文档写的不够完善等等. 
+其实源头还是没有聚焦. 下面分享下自己走过的弯路, 对于系统源码的一些分析.
+
 ## Tips
 
 ### lldb 打印 
@@ -174,14 +361,14 @@ po $arg4 // 第二个参数
 #### 系统方法汇编代码点断打印
 对于系统方法执行过程中, 想要对某些方法体内部的方法进行调用的话, 可以直接对汇编代码进行断点, 然后打印寄存器中的变量.
 参考: [汇编基础（通用寄存器）](https://www.jianshu.com/p/842fbda059e1)
-第一个参数: RDI
-第二个参数: RSI
-第三个参数: RDX
-第四个参数: RCX
-第五个参数: R8
-第六个参数: R9
-超过7个以及上的参数会被分配到进程的栈区
-返回值: RAX
+- 第一个参数: RDI
+- 第二个参数: RSI
+- 第三个参数: RDX
+- 第四个参数: RCX
+- 第五个参数: R8
+- 第六个参数: R9
+- 超过7个以及上的参数会被分配到进程的栈区
+- 返回值: RAX
 
 所以使用 po 进行查看, 入参查看, 断点在 `callq` 之前:
 
@@ -206,12 +393,10 @@ _UIApplicationHandleEventQueue 会把 IOHIDEvent 处理并包装成 UIEvent 进�
 
 ### com.apple.uikit.eventfetch-thread 线程
 
--[UIEventFetcher threadMain] 方法会单起了一个线程, 该线程有自己的 RunLoop, 是一个常驻线程, Xcode Debug 模式下可以挂起线程进行测试, 所有的点击事件都不响应了. 
-
-IOHIDEventSystemClientScheduleWithRunLoop 函数执行 RunLoop
-IOHIDEventSystemClientRegisterEventCallback 函数注册回调
-
--[UIEventFetcher _setupFilterChain] // 设置 __UILogGetCategoryImpl
+-[UIEventFetcher threadMain] 方法会单起了一个线程, 该线程有自己的 RunLoop, 是一个常驻线程, Xcode Debug 模式下可以挂起线程进行测试, 所有的点击事件都不响应了.  
+IOHIDEventSystemClientScheduleWithRunLoop 函数执行 RunLoop  
+IOHIDEventSystemClientRegisterEventCallback 函数注册回调  
+-[UIEventFetcher _setupFilterChain] // 设置 __UILogGetCategoryImpl  
 
 ### 点击触发 Source1
 
@@ -221,27 +406,33 @@ Source1 是基于 mach port 的, 用来接收系统事件.
 从 RunLoop 源码分析应该是 __CFRunLoopModeFindSourceForMachPort 触发的, 但是断点并没有执行.
 从其上一步 CFDictionaryGetValue 调用分析, 都是通过 port 取 CFRunLoopSource, 和 __CFRunLoopModeFindSourceForMachPort 实现一致, 初步推测可能是编译器给优化掉了, 但是实现并没有变:
 
+```
 断点 CFDictionaryGetValue 函数, 取 $arg1 (即字典本身), 取 allValues:
 <__NSArrayI_Transfer 0x283d96d00>(
 <CFRunLoopSource 0x2808a0540 [0x1ea4f5b20]>{signalled = No, valid = Yes, order = 0, context = <CFMachPort 0x280aa42c0 [0x1ea4f5b20]>{valid = Yes, port = 480f, source = 0x2808a0540, callout = <redacted> (0x1a3575770), context = <CFMachPort context 0x125e056d0>}},
 <CFRunLoopSource 0x2808a0600 [0x1ea4f5b20]>{signalled = No, valid = Yes, order = 0, context = <CFMachPort 0x280aa4370 [0x1ea4f5b20]>{valid = Yes, port = 3807, source = 0x2808a0600, callout = <redacted> (0x1a3575930), context = <CFMachPort context 0x125e056d0>}},
 <CFRunLoopSource 0x2808a06c0 [0x1ea4f5b20]>{signalled = No, valid = Yes, order = 1, context = <CFMachPort 0x280aa0160 [0x1ea4f5b20]>{valid = Yes, port = 3203, source = 0x2808a06c0, callout = <redacted> (0x1a358ba48), context = <CFMachPort context 0x2816a2290>}}
 )
+```
 
-打印 $arg2 port值为 18447 转化成 16进制 = 0x480F, 在字典中能够找到:
+打印 $arg2 port 值为 18447 转化成 16进制 = 0x480F, 在字典中能够找到:
+
+```
 (lldb) p $arg2
 (unsigned long) $14 = 18447
+``` 
 
 #### 触发 Source1
 
 然后触发 __CFRunLoopDoSource1
+
 __CFRunLoopDoSource1
 
 __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__
 
 __CFMachPortPerform
 
-#### 转 Source0
+#### Source1 转 Source0
 
 ```
 __IOHIDEventSystemClientQueueCallback
@@ -296,13 +487,16 @@ __processEventQueue // 关键函数
 
 整个主要的逻辑都在 __processEventQueue 里面, 通过汇编查看这个函数体非常的大, 也很复杂, 主要挑几个重点看一下吧
 
--[UIEventEnvironment UIKitEventForHIDEvent:] // 会将 HIDEvent -> UITouchesEvent
+-[UIEventEnvironment UIKitEventForHIDEvent:] // 会将 HIDEvent 转成 UITouchesEvent
 
-_UIEventHIDUIWindowForHIDEvent // 通过 HIDEvent 获取处理该事件的 window
+_UIEventHIDUIWindowForHIDEvent // 通过 HIDEvent 获取处理该事件的 Window
+
+```
 (lldb) po $rax
 <TDWindow: 0x7fe03140aec0; baseClass = UIWindow; frame = (0 0; 428 926); gestureRecognizers = <NSArray: 0x60000185a610>; layer = <UIWindowLayer: 0x60000165cb40>>
 
 _UIEventHIDEnumerateChildren // 遍历子事件, 该函数有三个参数, 遍历出子事件后交由 ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke 处理
+```
 
 ```
 (lldb) po $arg1
@@ -379,7 +573,9 @@ ChildEvents:
  dispose  : 0x7fff23cecea3 (/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore`__destroy_helper_block_e8_32r40r)
 ```
 
-以下是 hitTest 方法触发的调用栈
+以下是 hitTest 方法触发的调用栈:
+
+```
 ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.43
     -[UIWindow _targetWindowForPathIndex:atPoint:forEvent:windowServerHitTestWindow:]
         +[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]
@@ -397,11 +593,10 @@ ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.43
 
 [[_UIRemoteKeyboards sharedRemoteKeyboards] peekApplicationEvent:] // 发送给键盘的 Window 进行处理
 
-// 系统手势更新 ?
-BKSHIDEventGetSystemGestureStatusFromDigitizerEvent
+BKSHIDEventGetSystemGestureStatusFromDigitizerEvent // ?? 系统手势更新
 
 __sendSystemGestureLatentClientUpdate
-
+```
 
 #### 事件分发
 
@@ -455,18 +650,19 @@ if (__UIViewIgnoresTouchEvents(r13, rbx & 0xff) == 0x0) {
         }
 }
 ```
-1. 如果 __UIViewIgnoresTouchEvents 判断 View 忽略事件, 则不处理
-2. - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event 判断下, 点击是否在 View 内
-3. 遍历 subviews 调用 ___38-[UIView(Geometry) hitTest:withEvent:]_block_invoke 
-4. ___38-[UIView(Geometry) hitTest:withEvent:]_block_invoke 会再调用 -[UIView(Geometry) _hitTest:withEvent:windowServerHitTestWindow:] 方法
-5. -[UIView(Geometry) _hitTest:withEvent:windowServerHitTestWindow:] 内会再调用子 View 的 hitTest:withEvent: 方法
+1. 如果 `__UIViewIgnoresTouchEvents` 判断 View 忽略事件, 则不处理
+2. `- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event` 判断点击是否在 View 内
+3. 遍历 subviews 调用 `___38-[UIView(Geometry) hitTest:withEvent:]_block_invoke`
+4. `___38-[UIView(Geometry) hitTest:withEvent:]_block_invoke` 会再调用 `-[UIView(Geometry) _hitTest:withEvent:windowServerHitTestWindow:]` 方法
+5. `-[UIView(Geometry) _hitTest:withEvent:windowServerHitTestWindow:]` 内会再调用子 View 的 `hitTest:withEvent:` 方法
 6. 如上, 重复此过程, 最终遍历到符合条件的 View 并返回
 
-这里有个细节: hitTest 采用的是"逆前序深度遍历".
+**这里有个细节: hitTest 采用的是"逆前序深度遍历".**
 
 ## 手势的处理
 这里以 Tap 手势为例, 同样的主要的逻辑处理在 `__processEventQueue` 函数里面
 
+```
 ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.100
     _AddTouchToEventAndDetermineIfNeedsCancel
         -[UITouchesEvent _addTouch:forDelayedDelivery:]
@@ -476,20 +672,29 @@ ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.100
                         __62-[UITouchesEvent _collectGestureRecognizersForView:withBlock:]_block_invoke
                             __72-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]_block_invoke
                                 -[UIGestureRecognizer _shouldReceiveTouch:forEvent:recognizerView:]
+```
 
 ### UITouch 和手势的关系
 
 UITouch 会持有手势, 具体是在 `-[UITouchesEvent _addGestureRecognizersForView:toTouch:]` 方法里面添加进去的
 
 我们先获取 UITouch 的地址
+
+```
 (lldb) p $arg4
 (unsigned long) $0 = 140359228234352
+```
 
 打印下 `gestureRecognizers`, 此时我们看到为空
+
+```
 (lldb) po [(UITouch *)140359228234352 gestureRecognizers]
  nil
+```
 
 断点执行到 `-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]` 方法之后, 再打印 `gestureRecognizers` 已经有值了
+
+```
 (lldb) po [(UITouch *)140359228234352 gestureRecognizers]
 <__NSArrayI 0x600003601680>(
 <TDTapGestureRecognizer: 0x7fa7f0812d00; baseClass = UITapGestureRecognizer; state = Possible; view = <TDView 0x7fa7f0812b90>; target= <(action=tap:, target=<TDGestureViewController 0x7fa7f0814fc0>)>>,
@@ -498,10 +703,14 @@ UITouch 会持有手势, 具体是在 `-[UITouchesEvent _addGestureRecognizersFo
 <_UISystemGestureGateGestureRecognizer: 0x7fa7edd08450; state = Possible; delaysTouchesEnded = NO; view = <TDWindow 0x7fa7edd09b40>>,
 <_UISystemGestureGateGestureRecognizer: 0x7fa7edd07ae0; state = Possible; delaysTouchesBegan = YES; view = <TDWindow 0x7fa7edd09b40>>
 )
+```
 
 那么手势是在什么时候添加到 UITouch 里面的呢? 参考如下调用:
+
+```
 __72-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]_block_invoke
     -[UITouch _addGestureRecognizer:]
+```
 
 ### 手势更新
 
@@ -528,13 +737,20 @@ __72-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]_blo
 -[UIGestureEnvironment removeGestureRecognizer:]
 
 添加:
+
+```
 -[UIView addGestureRecognizer:]
     -[UIView _addGestureRecognizer:atEnd:]
         -[UIGestureEnvironment addGestureRecognizer:]
+```
+
 移除:
+
+```
 -[UIView dealloc]
     -[UIView(UIViewGestures) removeAllGestureRecognizers]
         -[UIGestureEnvironment removeGestureRecognizer:]
+```
 
 按此判断, 手势最终都会在 UIGestureEnvironment 里面进行统一管理. 
 
@@ -589,34 +805,19 @@ if (rax != 0x0) {
                 rax = (*_objc_msgSend)(r14, var_618);
                 r12 = rax;
         } while (rax != 0x0);
-}
+}>
 ```
+
 断点 `_UIGestureRecognizerSendTargetActions` 看下, 连续触发了几次, 其中有 `state = Began` -> `state = Changed` 的转变
+
 ```
 (lldb) po $arg1
 <TDPanGestureRecognizer: 0x7fbdde70c070; baseClass = UIPanGestureRecognizer; state = Began; view = <TDView 0x7fbdde717fa0>; target= <(action=pan:, target=<TDPanViewController 0x7fbdde424bd0>)>>
 ```
+
 ```
 (lldb) po $arg1
 <TDPanGestureRecognizer: 0x7fbdde70c070; baseClass = UIPanGestureRecognizer; state = Changed; view = <TDView 0x7fbdde717fa0>; target= <(action=pan:, target=<TDPanViewController 0x7fbdde424bd0>)>>
 ```
 
 至此可以大概推测手势更新的一个逻辑
-
-###  UIControl, UIGestureRecognizer 和 UIResponder 的优先级
-
-235_hd_advanced_scrollviews_and_touch_handling_techniques.mov
-235_sd_advanced_scrollviews_and_touch_handling_techniques.mov
-235_advanced_scrollviews_and_touch_handling_techniques.pdf
-
-### Advanced Scrollviews and Touch Handling Techniques
-
-这个是 WWDC 2014 Session 235 的议题, 在线视频已经没有了, 但是还可以下载到, 以下是链接:
-
-[235_hd_advanced_scrollviews_and_touch_handling_techniques.mov](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_hd_advanced_scrollviews_and_touch_handling_techniques.mov?dl=1)
-[235_sd_advanced_scrollviews_and_touch_handling_techniques.mov](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_sd_advanced_scrollviews_and_touch_handling_techniques.mov?dl=1	)
-[235_advanced_scrollviews_and_touch_handling_techniques.pdf](https://devstreaming-cdn.apple.com/videos/wwdc/2014/235xxsugqo8pxak/235/235_advanced_scrollviews_and_touch_handling_techniques.pdf?dl=1)
-
-Demo 我已经集成到了 TouchDemo 工程中 WWDC2014-235 目录下, 可以下载查看.
-
-
