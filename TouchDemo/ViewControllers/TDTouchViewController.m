@@ -24,11 +24,6 @@
     return NO;
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"ℹ️ %@ - nextResponder : %@", self, self.nextResponder);
-    [super touchesBegan:touches withEvent:event];
-}
-
 @end
 
 @interface TDRightTouchView : TDView
@@ -47,11 +42,6 @@
     return NO;
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"ℹ️ %@ - nextResponder : %@", self, self.nextResponder);
-    [super touchesBegan:touches withEvent:event];
-}
-
 @end
 
 @interface TDTouchViewController ()
@@ -64,21 +54,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    // [(TDContainerView *)self.view setEnabledLog:YES];
+    
+    // left touch view
     TDLeftTouchView *viewA = [[TDLeftTouchView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [viewA setEnabledLog:YES];
     viewA.backgroundColor = [UIColor blackColor];
     viewA.center = self.view.center;
     [self.view addSubview:viewA];
     
+    // right touch view
     TDRightTouchView *viewB = [[TDRightTouchView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [viewB setEnabledLog:YES];
     viewB.backgroundColor = [UIColor whiteColor];
     viewB.alpha = 0.5;
     viewB.center = self.view.center;
     [self.view addSubview:viewB];
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"ℹ️ %@ - nextResponder : %@", self, self.nextResponder);
-    [super touchesBegan:touches withEvent:event];
 }
 
 @end

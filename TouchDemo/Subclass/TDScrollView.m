@@ -23,6 +23,7 @@
     if ([otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         return YES;
     }
+    
     return NO;
 }
 

@@ -7,6 +7,7 @@
 
 #import "TDPinchGestureRecognizer.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
+#import "TDLog.h"
 
 @implementation TDPinchGestureRecognizer {
     BOOL _enableLog;
@@ -17,17 +18,13 @@
 }
 
 - (void)setState:(UIGestureRecognizerState)state {
-    if (_enableLog) {
-        NSLog(@"[TDPinchGestureRecognizer] set state : %@", @(state));
-    }
     [super setState:state];
+    TD_D_LOG(_enableLog, @"🟢➡️[TDPinchGestureRecognizer] get state : %@", @(state));
 }
 
 - (UIGestureRecognizerState)state {
     UIGestureRecognizerState state = [super state];
-    if (_enableLog) {
-        NSLog(@"[TDPinchGestureRecognizer] get state : %@", @(state));
-    }
+    TD_D_LOG(_enableLog, @"🟢⬅️[TDPinchGestureRecognizer] get state : %@", @(state));
     return state;
 }
 

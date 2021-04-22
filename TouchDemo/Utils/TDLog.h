@@ -7,15 +7,21 @@
 
 #import <Foundation/Foundation.h>
 
+#define TD_D_LOG(flag, fmt, ...) \
+do { \
+    if (flag) { \
+        NSLog(fmt, ##__VA_ARGS__); \
+    } \
+} while (0);
+
+#define TD_LOG_CURRENT_METHOD \
+do { \
+    if (_enableLog) { \
+        NSLog(@"🟥[%@ : %p] => %s", [self class], self, __func__); \
+    } \
+} while (0);
+
 NS_ASSUME_NONNULL_BEGIN
-
-#define TD_LOG 0
-
-#if TD_LOG
-#define TD_LOG_CURRENT_METHOD NSLog(@"%@ - %s", self, __func__)
-#else
-#define TD_LOG_CURRENT_METHOD
-#endif
 
 @interface TDLog : NSObject
 

@@ -13,6 +13,7 @@
     TDView *_tdView;
     __weak TDTapGestureRecognizer *_singleTap;
     __weak TDTapGestureRecognizer *_doubleTap;
+    __weak UILongPressGestureRecognizer *_longPress;
 }
 
 @end
@@ -46,8 +47,17 @@
         _doubleTap = tap;
     }
     
-    // 如果不加这一行, 双击的时候会先触发单击手势
-    // 注意是 otherGestureRecognizer 让当前调用的 GestureRecognizer 失败
+    // add long press
+    {
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+        longPress.minimumPressDuration = 2;
+        [view addGestureRecognizer:longPress];
+        _longPress = longPress;
+    }
+    
+    // 如果不加这一行, 双击的时候, 单/双击都会被触发
+    // 注意是 otherGestureRecognizer 让当前调用的 gestureRecognizer 失效
+    // 但是 otherGestureRecognizer 会让当前调用的 gestureRecognizer 延时执行
     /*
      This method works fine when gesture recognizers aren’t created elsewhere in the app—or in a framework—and the set of gesture recognizers remains the same. If you need to set up failure requirements lazily or in different view hierarchies, use gestureRecognizer:shouldRequireFailureOfGestureRecognizer: and gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer: instead. (Note that the shouldRequireFailureOfGestureRecognizer: and shouldBeRequiredToFailByGestureRecognizer: methods let subclasses define class-wide failure requirements.)
      This method creates a relationship with another gesture recognizer that delays the receiver’s transition out of UIGestureRecognizerStatePossible. The state that the receiver transitions to depends on what happens with otherGestureRecognizer:
@@ -56,16 +66,21 @@
      An example where this method might be called is when you want a single-tap gesture require that a double-tap gesture fail.
      */
     [_singleTap requireGestureRecognizerToFail:_doubleTap];
+    [_singleTap requireGestureRecognizerToFail:_longPress];
     
     [self.view addSubview:view];
 }
 
 - (void)singleTap:(TDTapGestureRecognizer *)tap {
-    NSLog(@"this is single tap, state : %@.", @(tap.state));
+    NSLog(@"0️⃣this is single tap, state : %@.", @(tap.state));
 }
 
 - (void)doubleTap:(TDTapGestureRecognizer *)tap {
-    NSLog(@"this is double tap, state : %@.", @(tap.state));
+    NSLog(@"1️⃣this is double tap, state : %@.", @(tap.state));
+}
+
+- (void)longPress:(UILongPressGestureRecognizer *)longPress {
+    NSLog(@"2️⃣this is long press, state : %@.", @(longPress.state));
 }
 
 @end

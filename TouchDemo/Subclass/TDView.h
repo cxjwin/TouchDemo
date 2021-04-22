@@ -13,6 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSInteger)viewId;
 
+- (void)setEnabledLog:(BOOL)enableLog;
+
+- (NSString *)shortDescription;
+
 @end
 
 NS_ASSUME_NONNULL_END

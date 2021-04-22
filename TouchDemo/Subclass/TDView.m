@@ -14,20 +14,29 @@
 
 @implementation TDView {
     NSInteger _viewId;
+    BOOL _enableLog;
 }
-
-static NSInteger g_viewId = 0;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _viewId = ++g_viewId;
+        [self commonInit];
     }
     return self;
 }
 
+static NSInteger g_viewId = 0;
+
+- (void)commonInit {
+    _viewId = ++g_viewId;
+}
+
 - (NSInteger)viewId {
     return _viewId;
+}
+
+- (void)setEnabledLog:(BOOL)enableLog {
+    _enableLog = enableLog;
 }
 
 // recursively calls -pointInside:withEvent:. point is in the receiver's coordinate system
@@ -62,9 +71,8 @@ static NSInteger g_viewId = 0;
     [super touchesCancelled:touches withEvent:event];
 }
 
-- (NSString *)description {
-    NSString *desc = [super description];
-    return [NSString stringWithFormat:@"view id : %@ | %@", @(_viewId), desc];
+- (NSString *)shortDescription {
+    return [NSString stringWithFormat:@"view id : %@ | address : %p", @(_viewId), self];
 }
 
 @end

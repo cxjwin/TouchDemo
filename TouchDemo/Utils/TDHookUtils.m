@@ -86,9 +86,9 @@ NSString *shortDesc(id obj) {
                             RSSWArguments(CGPoint point, UIEvent *event),
                             RSSWReplacement(
     {
+        [TDHookUtils catchArgs:self, NSStringFromSelector(sel), [NSValue valueWithCGPoint:point], event, nil];
         // Calling original implementation
         UIView *res = RSSWCallOriginal(point, event);
-        [TDHookUtils catchArgs:self, NSStringFromSelector(sel), [NSValue valueWithCGPoint:point], event, res ?: @"nil", nil];
         return res;
     }), 0, NULL);
 }

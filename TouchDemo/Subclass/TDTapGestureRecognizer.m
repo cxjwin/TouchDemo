@@ -7,6 +7,7 @@
 
 #import "TDTapGestureRecognizer.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
+#import "TDLog.h"
 
 @implementation TDTapGestureRecognizer {
     BOOL _enableLog;
@@ -17,17 +18,13 @@
 }
 
 - (void)setState:(UIGestureRecognizerState)state {
-    if (_enableLog) {
-        NSLog(@"[TDTapGestureRecognizer] set state : %@", @(state));
-    }
     [super setState:state];
+    TD_D_LOG(_enableLog, @"🟡▶️[TDTapGestureRecognizer] set state : %@", @(state));
 }
 
 - (UIGestureRecognizerState)state {
     UIGestureRecognizerState state = [super state];
-    if (_enableLog) {
-        NSLog(@"[TDTapGestureRecognizer] get state : %@", @(state));
-    }
+    TD_D_LOG(_enableLog, @"🟡◀️[TDTapGestureRecognizer] get state : %@", @(state));
     return state;
 }
 

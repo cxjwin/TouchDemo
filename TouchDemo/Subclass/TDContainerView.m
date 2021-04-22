@@ -8,7 +8,13 @@
 #import "TDContainerView.h"
 #import "TDLog.h"
 
-@implementation TDContainerView
+@implementation TDContainerView {
+    BOOL _enableLog;
+}
+
+- (void)setEnabledLog:(BOOL)enableLog {
+    _enableLog = enableLog;
+}
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     TD_LOG_CURRENT_METHOD;

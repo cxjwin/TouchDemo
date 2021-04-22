@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TDContainerView : UIView
 
+- (void)setEnabledLog:(BOOL)enableLog;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -54,12 +54,12 @@
 
 /// This method is called when recognition of a gesture by either gestureRecognizer or otherGestureRecognizer would block the other gesture recognizer from recognizing its gesture. Note that returning YES is guaranteed to allow simultaneous recognition; returning NO, on the other hand, is not guaranteed to prevent simultaneous recognition because the other gesture recognizer's delegate may return YES.
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    if ([gestureRecognizer isKindOfClass:[TDPanGestureRecognizer class]] &&
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] &&
         [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]]) {
         return YES;
     }
     if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] &&
-        [otherGestureRecognizer isKindOfClass:[TDPanGestureRecognizer class]]) {
+        [otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         return YES;
     }
     return NO;
