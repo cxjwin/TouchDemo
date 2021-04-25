@@ -1,0 +1,2456 @@
+int ___processEventQueue(int arg0) {
+    r13 = arg0;
+    var_3B0 = *(arg0 + 0x8);
+    var_3B8 = *(arg0 + 0x10);
+    xmm0 = intrinsic_movsd(xmm0, *(arg0 + 0x48));
+    xmm2 = intrinsic_xorpd(xmm2, xmm2);
+    xmm0 = intrinsic_ucomisd(xmm0, xmm2);
+    if ((xmm0 == 0x0) && (!CPU_FLAGS & P)) {
+            CACurrentMediaTime();
+            xmm2 = intrinsic_xorpd(xmm2, xmm2);
+    }
+    xmm1 = intrinsic_movsd(xmm1, *(r13 + 0x50));
+    xmm1 = intrinsic_ucomisd(xmm1, xmm2);
+    if ((xmm1 == 0x0) && (!CPU_FLAGS & P)) {
+            var_1B8 = intrinsic_movsd(var_1B8, xmm0);
+            __UIQOSMaxFrameDurationSeconds();
+            xmm1 = intrinsic_movapd(xmm1, xmm0);
+            xmm0 = intrinsic_movsd(xmm0, var_1B8);
+            xmm1 = intrinsic_addsd(xmm1, xmm0);
+    }
+    rdx = 0x20;
+    var_26C = [CATransaction startFrameWithReason:rdx beginTime:rcx commitDeadline:r8];
+    var_2A4 = 0x4;
+    var_200 = r13;
+    goto loc_ca3cc5;
+
+loc_ca3cc5:
+    var_2A4 = var_2A4 - 0x1;
+    if ((var_2A4 < 0x0) || ([var_3B8 count] == 0x0)) goto loc_ca82a3;
+
+loc_ca3cef:
+    var_760 = objc_autoreleasePoolPush();
+    r12 = *(r13 + 0x10);
+    rax = [r12 lastObject];
+    rax = [rax retain];
+    r15 = rax;
+    if (rax == 0x0) goto loc_ca3db4;
+
+loc_ca3d27:
+    var_260 = [r12 count];
+    r14 = r12;
+    r12 = IOHIDEventGetType(r15);
+    var_22C = BKSHIDEventGetContextIDFromEvent(r15);
+    rax = BKSHIDEventContainsUpdates(r15);
+    rbx = r15;
+    r15 = r14;
+    var_1B8 = r14;
+    var_248 = rbx;
+    if (rax == 0x0) goto loc_ca3dc6;
+
+loc_ca3d77:
+    r13 = *_objc_msgSend;
+    rax = objc_alloc_init(@class(NSMutableArray));
+    var_228 = rax;
+    r14 = r13;
+    [rax addObject:rbx];
+    var_1D8 = 0x0;
+    goto loc_ca3eaa;
+
+loc_ca3eaa:
+    r13 = 0xffffffffffffffff;
+    rcx = 0xff;
+    rbx = r15;
+    goto loc_ca3f5d;
+
+loc_ca3f5d:
+    if (var_260 < 0x2) goto loc_ca3f98;
+
+loc_ca3f67:
+    if (r12 == 0x6) goto loc_ca422b;
+
+loc_ca3f71:
+    rax = r12;
+    if ((r12 == 0x11) || ((rax == 0xb) && (*(var_200 + 0xb0) <= 0x0))) goto loc_ca422b;
+
+loc_ca3f98:
+    var_1E8 = 0x1;
+    goto loc_ca3fa4;
+
+loc_ca3fa4:
+    var_210 = 0x0;
+    r12 = r14;
+    goto loc_ca3fb0;
+
+loc_ca3fb0:
+    rdi = var_1D8;
+    if (rdi != 0x0) {
+            var_1D8 = rdi;
+            CFRetain(rdi);
+    }
+    else {
+            var_1D8 = 0x0;
+    }
+    goto loc_ca3fd3;
+
+loc_ca3fd3:
+    (r12)(rbx, @selector(removeObjectsInRange:), var_260 - var_1E8, var_1E8);
+    xmm0 = intrinsic_xorpd(xmm0, xmm0);
+    var_180 = intrinsic_movapd(var_180, xmm0);
+    var_190 = intrinsic_movapd(var_190, xmm0);
+    var_1A0 = intrinsic_movapd(var_1A0, xmm0);
+    var_1B0 = intrinsic_movapd(var_1B0, xmm0);
+    rax = (r12)(var_210, @selector(reverseObjectEnumerator));
+    rax = [rax retain];
+    r14 = rax;
+    rdx = &var_1B0;
+    rcx = &var_130;
+    rax = (r12)(rax, @selector(countByEnumeratingWithState:objects:count:), rdx, rcx, 0x10);
+    if (rax != 0x0) {
+            r15 = rax;
+            r12 = *var_1A0;
+            do {
+                    r13 = 0x0;
+                    do {
+                            if (*var_1A0 != r12) {
+                                    objc_enumerationMutation(r14);
+                            }
+                            [var_1B8 addObject:*(var_1A8 + r13 * 0x8)];
+                            r13 = r13 + 0x1;
+                    } while (r13 < r15);
+                    rdx = &var_1B0;
+                    rcx = &var_130;
+                    rax = [r14 countByEnumeratingWithState:rdx objects:rcx count:0x10];
+                    r15 = rax;
+            } while (rax != 0x0);
+    }
+    r8 = 0x10;
+    [r14 release];
+    r14 = objc_retainAutorelease(var_228);
+    r13 = var_1D8;
+    ___applySynthesizedTouchTranslationAndModifyIfNeeded(r13);
+    [var_210 release];
+    [r14 release];
+    r15 = var_248;
+    goto loc_ca4110;
+
+loc_ca4110:
+    [r15 release];
+    rax = [r14 retain];
+    var_260 = rax;
+    if (r13 == 0x0) goto loc_ca4218;
+
+loc_ca412e:
+    var_248 = objc_autoreleasePoolPush();
+    rbx = IOHIDEventGetType(r13);
+    __UIDeviceTimeIntervalForMachTime(IOHIDEventGetTimeStamp(r13));
+    var_210 = intrinsic_movsd(var_210, xmm0);
+    if (rbx == 0xb) {
+            xmm0 = intrinsic_movsd(xmm0, *(var_200 + 0x40));
+            xmm0 = intrinsic_ucomisd(xmm0, *double_value_0);
+            if (xmm0 > 0x0) {
+                    rax = IOHIDEventGetChildren(r13);
+                    rax = [rax retain];
+                    rbx = rax;
+                    if ([rax count] != 0x0) {
+                            rax = [rbx objectAtIndexedSubscript:0x0];
+                            rax = [rax retain];
+                            r14 = rax;
+                            if ((IOHIDEventGetIntegerValue(rax, 0xb0004) != 0x0) && ((([*_UIApp _supportsIndirectInputEvents] == 0x0) || (__UIEventHIDGetDescendantPointerEvent(r13) == 0x0)))) {
+                                    r15 = IOHIDEventGetIntegerValue(r13, 0xb0019);
+                                    [r14 release];
+                                    if ((r15 != 0x0) && ([CATransaction lowLatency] == 0x0)) {
+                                            CACurrentMediaTime();
+                                            xmm0 = intrinsic_addsd(xmm0, *(var_200 + 0x40));
+                                            [CATransaction setEarliestAutomaticCommitTime:0x0];
+                                    }
+                            }
+                            else {
+                                    [r14 release];
+                            }
+                    }
+                    [rbx release];
+            }
+    }
+    alm_stop_tracking_responsive_launch();
+    __UIDeviceTimeIntervalForMachTime(IOHIDEventGetTimeStamp(r13));
+    var_1E8 = intrinsic_movsd(var_1E8, xmm0);
+    [CATransaction setFrameInputTime:var_26C withToken:rcx];
+    r12 = IOHIDEventGetType(r13);
+    rax = -[UIEventEnvironment UIKitEventForHIDEvent:](var_200, @selector(setFrameInputTime:withToken:), r13);
+    rax = [rax retain];
+    rbx = *(var_200 + 0x8);
+    var_1D8 = r13;
+    var_228 = rbx;
+    var_1C0 = rax;
+    if (rax == 0x0) goto loc_ca5d7f;
+
+loc_ca5c2f:
+    rdx = r13;
+    [rax _setHIDEvent:rdx];
+    r15 = [rbx isIgnoringInteractionEvents];
+    r14 = [rbx systemIsAnimatingApplicationLifecycleEvent];
+    var_22C = BKSHIDEventGetIsSystemGestureStateChangeFromDigitizerEvent(r13);
+    if (IOHIDEventGetIntegerValue(r13, 0x4) == 0x0) {
+            rax = IOHIDEventGetSenderID(r13, 0x4);
+            rcx = 0x8000000800a15173;
+            if (rax == rcx) {
+                    rcx = 0x8000000800a15173;
+                    rax = __UIEventHIDShouldTransformEvent(r13);
+            }
+            else {
+                    rax = 0x0;
+            }
+    }
+    else {
+            rax = 0x0;
+    }
+    r15 = r15 | r14;
+    if ((r12 != 0xb) || (var_22C == 0x0)) goto loc_ca5e1c;
+
+loc_ca5cbc:
+    rax = __UIEventHIDUIWindowForHIDEvent(r13);
+    rax = [rax retain];
+    rbx = rax;
+    if (rax == 0x0) {
+            rax = *___dispatchSystemChangeDigitizerEvent.__s_category;
+            if (rax == 0x0) {
+                    rax = ___UILogGetCategoryImpl("Touch", 0x4, rdx, rcx);
+                    *___dispatchSystemChangeDigitizerEvent.__s_category = rax;
+            }
+            r14 = *(rax + 0x8);
+            if (os_log_type_enabled(r14, 0x10) != 0x0) {
+                    var_130 = 0x8400102;
+                    r8 = &var_130;
+                    _os_log_impl(rip - 0xca5d27, r14, 0x10, "unexpected nil window in __dispatchSystemChangeDigitizerEvent, touchesEvent:%@", r8, 0xc);
+            }
+    }
+    rdx = BKSHIDEventGetSystemGestureStatusFromDigitizerEvent(r13) != 0x0 ? 0x1 : 0x0;
+    var_1D0 = 0x0;
+    rsi = rbx;
+    rcx = 0x0;
+    ___sendSystemGestureLatentClientUpdate(var_1C0, rsi, rdx, rcx);
+    [rbx release];
+    goto loc_ca6d6f;
+
+loc_ca6d6f:
+    r12 = 0x0;
+    goto loc_ca6d72;
+
+loc_ca6d72:
+    rax = *___dispatchPreprocessedEventFromEventQueue.__s_category.170;
+    if (rax == 0x0) {
+            rax = ___UILogGetCategoryImpl("EventDispatch", rsi, rdx, rcx);
+            *___dispatchPreprocessedEventFromEventQueue.__s_category.170 = rax;
+    }
+    rbx = *(rax + 0x8);
+    rsi = 0x1;
+    if (os_log_type_enabled(rbx, rsi) != 0x0) {
+            var_1E8 = [rbx retain];
+            rax = [var_1C0 type];
+            var_1B8 = r12;
+            [var_1C0 subtype];
+            IOHIDEventGetType(var_1D8);
+            var_B0 = 0x8000600;
+            r12 = var_1B8;
+            rsi = var_1E8;
+            rdx = 0x1;
+            r8 = &var_B0;
+            _os_log_impl(rip - 0xca6e7a, rsi, rdx, "Dispatching UIEvent type: %li; subtype: %li; backingtype: %i, shouldSend: %d; ignoreInteractionEvents: %d, systemGestureStateChange: %d", r8, 0x2e);
+            [var_1E8 release];
+    }
+    rcx = var_1D0 ^ 0x1 | (r15 != 0x0 ? 0x1 : 0x0);
+    if (rcx == 0x0) {
+            rax = *___dispatchPreprocessedEventFromEventQueue.__s_category.171;
+            if (rax == 0x0) {
+                    rax = ___UILogGetCategoryImpl("Touch", rsi, rdx, rcx);
+                    *___dispatchPreprocessedEventFromEventQueue.__s_category.171 = rax;
+            }
+            rcx = *(int8_t *)rax;
+            if ((rcx & 0x1) != 0x0) {
+                    r14 = *(rax + 0x8);
+                    if (os_log_type_enabled(r14, 0x10) != 0x0) {
+                            var_B0 = 0x8400102;
+                            rcx = "Delivering event %@";
+                            r8 = &var_B0;
+                            _os_log_impl(rip - 0xca7ff2, r14, 0x10, rcx, r8, 0xc);
+                    }
+            }
+            rdx = var_1C0;
+            [var_228 sendEvent:rdx];
+    }
+    if (r12 != 0x0) {
+            (*(r12 + 0x10))(r12);
+    }
+    else {
+            r12 = 0x0;
+    }
+    rsi = @selector(_cleanupAfterDispatch);
+    _objc_msgSend_16fe878(var_1C0, rsi);
+    rdi = r12;
+    goto loc_ca6f37;
+
+loc_ca6f37:
+    [rdi release];
+    goto loc_ca6f3a;
+
+loc_ca6f3a:
+    [var_1C0 release];
+    r14 = var_1D8;
+    r13 = var_200;
+    if ([CATransaction currentState] != 0x0) {
+            if ([CATransaction lowLatency] != 0x0) {
+                    [CATransaction commitTime];
+                    xmm0 = intrinsic_ucomisd(xmm0, *double_value_0);
+                    if (xmm0 > 0x0) {
+                            xmm0 = intrinsic_xorpd(xmm0, xmm0);
+                            [CATransaction setCommitTime:rdx];
+                    }
+                    [CATransaction earliestAutomaticCommitTime];
+                    xmm0 = intrinsic_ucomisd(xmm0, *double_value_0);
+                    if (xmm0 > 0x0) {
+                            xmm0 = intrinsic_xorpd(xmm0, xmm0);
+                            [CATransaction setEarliestAutomaticCommitTime:rdx];
+                    }
+            }
+    }
+    CFRelease(r14);
+    objc_autoreleasePoolPop(var_248);
+    r14 = var_260;
+    xmm0 = intrinsic_movsd(xmm0, var_210);
+    goto loc_ca6ff9;
+
+loc_ca6ff9:
+    if (r14 != 0x0) {
+            var_210 = intrinsic_movsd(var_210, xmm0);
+            rbx = objc_autoreleasePoolPush();
+            var_310 = 0x0;
+            var_308 = &var_310;
+            var_300 = 0x3032000000;
+            var_2F0 = ___Block_byref_object_dispose_.75;
+            xmm0 = intrinsic_xorpd(xmm0, xmm0);
+            var_1B0 = intrinsic_movapd(var_1B0, xmm0);
+            var_1A0 = intrinsic_movapd(var_1A0, xmm0);
+            var_190 = intrinsic_movapd(var_190, xmm0);
+            var_180 = intrinsic_movapd(var_180, xmm0);
+            rax = [r14 retain];
+            var_1C0 = rax;
+            rax = [rax countByEnumeratingWithState:rdx objects:rcx count:r8];
+            rcx = rax;
+            var_1C8 = rbx;
+            if (rax != 0x0) {
+                    var_1E8 = *var_1A0;
+                    do {
+                            r13 = 0x0;
+                            do {
+                                    r14 = rcx;
+                                    if (*var_1A0 != var_1E8) {
+                                            objc_enumerationMutation(var_1C0);
+                                    }
+                                    var_1B8 = @selector(numberWithUnsignedInt:);
+                                    r12 = *(var_1A8 + r13 * 0x8);
+                                    BKSHIDEventGetContextIDFromEvent(r12);
+                                    rax = (*_objc_msgSend)(@class(NSNumber), var_1B8);
+                                    rax = [rax retain];
+                                    var_B0 = *__NSConcreteStackBlock;
+                                    var_A8 = 0xffffffffc2000000;
+                                    var_A0 = _____dispatchEstimationUpdateEvents_block_invoke;
+                                    var_80 = var_200;
+                                    rax = [rax retain];
+                                    rbx = rax;
+                                    var_90 = rax;
+                                    rax = BKSHIDEventEnumerateUpdatesWithBlock(r12, &var_B0);
+                                    [var_90 release];
+                                    [rbx release];
+                                    r13 = r13 + 0x1;
+                                    rcx = r14;
+                            } while (r13 < r14);
+                            rax = [var_1C0 countByEnumeratingWithState:rdx objects:rcx count:r8];
+                            rcx = rax;
+                    } while (rax != 0x0);
+            }
+            else {
+                    r12 = 0x0;
+            }
+            [var_1C0 release];
+            rdx = *(var_308 + 0x28);
+            r13 = var_200;
+            r14 = var_260;
+            xmm0 = intrinsic_movsd(xmm0, var_210);
+            if (rdx != 0x0) {
+                    xmm0 = intrinsic_ucomisd(xmm0, *double_value_0);
+                    if (xmm0 < 0x0) {
+                            __UIDeviceTimeIntervalForMachTime(IOHIDEventGetTimeStamp(r12));
+                            rdx = *(var_308 + 0x28);
+                    }
+                    -[UIEventEnvironment _dispatchAndRemoveStaleEstimationUpdateRecordsWithEventTime:upToRecord:](r13, @selector(countByEnumeratingWithState:objects:count:), rdx);
+                    rdx = *(var_308 + 0x28);
+                    -[UIEventEnvironment _removeEstimatedTouchRecord:](r13, @selector(countByEnumeratingWithState:objects:count:), rdx);
+            }
+            r8 = 0x10;
+            rax = _Block_object_dispose(&var_310, 0x8);
+            [0x0 release];
+            objc_autoreleasePoolPop(var_1C8);
+    }
+    [r14 release];
+    objc_autoreleasePoolPop(var_760);
+    if (__UIApplicationFlushRunLoopCATransactionIfTooLate(var_3B0) == 0x0) goto loc_ca3cc5;
+
+loc_ca82a3:
+    if ([var_3B8 count] != 0x0) {
+            rax = *ivar_offset(_eventDispatcher);
+            rax = *(var_3B0 + rax);
+            if (rax != 0x0) {
+                    CFRunLoopSourceSignal(*(rax + 0x18));
+            }
+    }
+    var_30 = **___stack_chk_guard;
+    [CATransaction finishFrameWithToken:var_26C];
+    rax = *___stack_chk_guard;
+    rax = *rax;
+    if (rax != var_30) {
+            rax = __stack_chk_fail();
+    }
+    return rax;
+
+loc_ca5e1c:
+    if (r12 != 0xb) goto loc_ca5f44;
+
+loc_ca5e26:
+    var_208 = rax;
+    rax = IOHIDEventGetChildren(r13, 0x4);
+    if (rax == 0x0) goto loc_ca6022;
+
+loc_ca5e3d:
+    rbx = rax;
+    if ((CFArrayGetCount(rax) <= 0x0) || (BKSHIDEventDigitizerGetTouchLocus(r13, CFArrayGetValueAtIndex(rbx, 0x0)) == 0x0)) goto loc_ca6022;
+
+loc_ca5e6e:
+    var_1D0 = [var_1C0 _shouldSendEvent];
+    if ((r15 != 0x0) && (var_1D0 != 0x0)) {
+            rdx = var_1C0;
+            [*_UIApp sendEvent:rdx];
+            var_1D0 = 0x0;
+    }
+    rbx = var_1C0;
+    rsi = @selector(_isReadyForReset);
+    if ((*_objc_msgSend)(rbx, rsi) != 0x0) {
+            var_130 = *__NSConcreteStackBlock;
+            var_128 = 0xffffffffc0000000;
+            var_120 = _____dispatchDragEvent_block_invoke;
+            var_118 = ___block_descriptor_48_e5_v8?0lu32l8u40l8;
+            rax = objc_retainBlock(&var_130);
+            rdi = [rax autorelease];
+    }
+    else {
+            rdi = 0x0;
+    }
+    goto loc_ca7f9b;
+
+loc_ca7f9b:
+    r12 = [rdi retain];
+    goto loc_ca6d72;
+
+loc_ca6022:
+    var_1E0 = r15;
+    if (var_208 != 0x0) {
+            rax = __UIEventHIDUIWindowForHIDEvent(r13);
+            rax = [rax retain];
+            rdx = rax;
+            var_1F0 = [var_200 _hoverEventForWindow:rdx];
+            [rax release];
+    }
+    else {
+            var_1F0 = 0x0;
+    }
+    rax = __UIEventHIDUIWindowForHIDEvent(r13);
+    rax = [rax retain];
+    var_250 = [rax _contextId];
+    var_218 = [[rax screen] retain];
+    var_7B0 = 0x0;
+    var_1C8 = rax;
+    rax = [rax _touchMap];
+    r12 = rax;
+    if (rax != 0x0) {
+            rcx = ___Block_byref_object_dispose_;
+            CFRetain(r12);
+    }
+    else {
+            rdx = 0x0;
+            rcx = *_kCFTypeDictionaryValueCallBacks;
+            r12 = CFDictionaryCreateMutable(0x0, 0x0, rdx, rcx);
+    }
+    var_238 = CFDictionaryGetCount(r12) != 0x0 ? 0x1 : 0x0;
+    rdi = *(var_200 + 0x8);
+    var_258 = rdi;
+    if (([rdi _isSpringBoard] != 0x0) && ((objc_opt_isKindOfClass(var_1C8, objc_opt_class(@class(_UIRootWindow))) & 0x1) != 0x0)) {
+            rax = [var_258 _gestureEnvironment];
+            rax = [rax retain];
+            rbx = rax;
+            if (rax != 0x0) {
+                    __UIGestureEnvironmentUpdate();
+            }
+            [rbx release];
+    }
+    [var_1C0 _clearTouches];
+    CFAutorelease(CFDictionaryCreateMutable(0x0, 0x0, 0x0, *_kCFTypeDictionaryValueCallBacks));
+    var_1B8 = rax;
+    var_1D0 = IOHIDEventGetIntegerValue(r13, 0xb0007);
+    var_780 = 0x0;
+    rcx = &var_780;
+    var_778 = rcx;
+    var_3D8 = 0x0;
+    var_3D0 = &var_3D8;
+    var_878 = *__NSConcreteStackBlock;
+    rdx = &var_878;
+    __UIEventHIDEnumerateChildren(r13, 0xb, rdx);
+    var_1F8 = BKSHIDEventGetSystemGestureStatusFromDigitizerEvent(r13);
+    var_4B0 = 0x0;
+    if ((var_1D0 >= 0x0) && (*(var_3D0 + 0x18) != 0x0)) {
+            rax = *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category;
+            if (rax == 0x0) {
+                    rax = ___UILogGetCategoryImpl("Touch", 0xb, rdx, rcx);
+                    *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category = rax;
+            }
+            rcx = *(int8_t *)rax;
+            if ((rcx & 0x1) != 0x0) {
+                    rbx = *(rax + 0x8);
+                    if (os_log_type_enabled(rbx, 0x10) != 0x0) {
+                            var_130 = 0x4000100;
+                            rcx = "\tEvent has %d digtizer child events";
+                            r8 = &var_130;
+                            _os_log_impl(rip - 0xca827d, rbx, 0x10, rcx, r8, 0x8);
+                    }
+            }
+            var_B0 = *__NSConcreteStackBlock;
+            var_A8 = 0xffffffffc2000000;
+            var_A0 = _____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.43;
+            var_90 = [var_1C8 retain];
+            var_80 = &var_4B0;
+            xmm0 = intrinsic_movsd(xmm0, var_1E8);
+            var_50 = intrinsic_movsd(var_50, xmm0);
+            var_88 = [var_218 retain];
+            rdx = &var_B0;
+            __UIEventHIDEnumerateChildren(r13, 0xb, rdx);
+            [var_88 release];
+            [var_90 release];
+    }
+    r14 = IOHIDEventGetSenderID(r13, 0xb);
+    rax = *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.59;
+    if (rax == 0x0) {
+            rax = ___UILogGetCategoryImpl("Touch", 0xb, rdx, rcx);
+            *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.59 = rax;
+    }
+    if ((*(int8_t *)rax & 0x1) != 0x0) {
+            rax = [*(rax + 0x8) retain];
+            r15 = rax;
+            if (os_log_type_enabled(rax, 0x10) != 0x0) {
+                    CFDictionaryGetCount(r12);
+                    var_130 = 0x4000100;
+                    r8 = &var_130;
+                    _os_log_impl(rip - 0xca8055, r15, 0x10, "Current touch count: %d", r8, 0x8);
+            }
+            [r15 release];
+    }
+    rbx = [[[[r12 objectEnumerator] retain] allObjects] retain];
+    [rbx enumerateObjectsUsingBlock:rdx];
+    [rbx release];
+    [rax release];
+    if (__UIEventHIDShouldIgnoreEventsExpectedToBecomeDragEvent() == 0x0) {
+            __UIEventHIDExpectedToBecomeDragEvent();
+            rbx = [[[[r12 objectEnumerator] retain] allObjects] retain];
+            [rbx enumerateObjectsUsingBlock:rdx];
+            [rbx release];
+            [rax release];
+    }
+    var_450 = 0x0;
+    rdx = &var_450;
+    var_448 = rdx;
+    var_848 = *__NSConcreteStackBlock;
+    rax = objc_retainBlock(&var_848);
+    r15 = rax;
+    rax = *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.83;
+    if (rax == 0x0) {
+            rax = ___UILogGetCategoryImpl("Touch", @selector(enumerateObjectsUsingBlock:), rdx, ___Block_byref_object_dispose_.75);
+            *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.83 = rax;
+    }
+    if ((*(int8_t *)rax & 0x1) != 0x0) {
+            rax = [*(rax + 0x8) retain];
+            r14 = rax;
+            if (os_log_type_enabled(rax, 0x10) != 0x0) {
+                    CFDictionaryGetCount(r12);
+                    var_130 = 0x4000100;
+                    r8 = &var_130;
+                    _os_log_impl(rip - 0xca80c1, r14, 0x10, "Current touch count: %d", r8, 0x8);
+            }
+            [r14 release];
+    }
+    var_528 = *__NSConcreteStackBlock;
+    xmm0 = intrinsic_movsd(xmm0, var_1E8);
+    var_500 = intrinsic_movsd(var_500, xmm0);
+    rax = [r15 retain];
+    r15 = rax;
+    var_508 = rax;
+    rdx = &var_528;
+    [r12 enumerateKeysAndObjectsUsingBlock:rdx];
+    rax = *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.99;
+    if (rax == 0x0) {
+            rax = ___UILogGetCategoryImpl("Touch", @selector(enumerateKeysAndObjectsUsingBlock:), rdx, ___block_descriptor_58_e8_32bs_e24_v32?08"UITouch"16^B24lu48l8);
+            *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.99 = rax;
+    }
+    rcx = *(int8_t *)rax;
+    if ((rcx & 0x1) != 0x0) {
+            rax = [*(rax + 0x8) retain];
+            r14 = rax;
+            if (os_log_type_enabled(rax, 0x10) != 0x0) {
+                    CFDictionaryGetCount(var_1B8);
+                    var_130 = 0x4000100;
+                    rcx = "New touch count: %d";
+                    r8 = &var_130;
+                    _os_log_impl(rip - 0xca8131, r14, 0x10, rcx, r8, 0x8);
+            }
+            [r14 release];
+    }
+    var_820 = *__NSConcreteStackBlock;
+    rax = [r15 retain];
+    var_250 = rax;
+    var_800 = rax;
+    rdx = &var_820;
+    [var_1B8 enumerateKeysAndObjectsUsingBlock:rdx];
+    rax = *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.102;
+    if (rax == 0x0) {
+            rax = ___UILogGetCategoryImpl("Touch", @selector(enumerateKeysAndObjectsUsingBlock:), rdx, rcx);
+            *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.102 = rax;
+    }
+    rcx = *(int8_t *)rax;
+    if ((rcx & 0x1) != 0x0) {
+            rax = [*(rax + 0x8) retain];
+            r14 = rax;
+            rsi = 0x10;
+            if (os_log_type_enabled(rax, rsi) != 0x0) {
+                    [*(var_448 + 0x28) count];
+                    var_130 = 0x8000100;
+                    rsi = r14;
+                    rdx = 0x10;
+                    rcx = "Touches to cancel: %lu";
+                    r8 = &var_130;
+                    _os_log_impl(rip - 0xca81aa, rsi, rdx, rcx, r8, 0xc);
+            }
+            [r14 release];
+    }
+    rsi = @selector(count);
+    if (_objc_msgSend_16fe878(*(var_448 + 0x28), rsi) != 0x0) {
+            [var_258 _cancelTouchesOrPresses:*(var_448 + 0x28) withEvent:var_1C0];
+            rdx = var_1F8 != 0x0 ? 0x1 : 0x0;
+            rsi = var_1C8;
+            rcx = 0x1;
+            ___updateSystemGestureRecognitionIsPossible(*(var_448 + 0x28), rsi, rdx, rcx);
+    }
+    else {
+            if (var_1D0 < 0x0) {
+                    rax = [var_1C0 allTouches];
+                    rax = [rax retain];
+                    rsi = var_1C8;
+                    rdx = var_1F8 != 0x0 ? 0x1 : 0x0;
+                    rcx = 0x1;
+                    ___updateSystemGestureRecognitionIsPossible(rax, rsi, rdx, rcx);
+                    [rax release];
+            }
+    }
+    rax = *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.109;
+    if (rax == 0x0) {
+            rax = ___UILogGetCategoryImpl("Touch", rsi, rdx, rcx);
+            *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.109 = rax;
+    }
+    rcx = *(int8_t *)rax;
+    if ((rcx & 0x1) != 0x0) {
+            rax = [*(rax + 0x8) retain];
+            r14 = rax;
+            rsi = 0x10;
+            if (os_log_type_enabled(rax, rsi) != 0x0) {
+                    CFDictionaryGetCount(var_1B8);
+                    var_130 = 0x4000100;
+                    rsi = r14;
+                    rdx = 0x10;
+                    rcx = "+++++++++++   Number of touches in new touch map: %d";
+                    r8 = &var_130;
+                    _os_log_impl(rip - 0xca8217, rsi, rdx, rcx, r8, 0x8);
+            }
+            [r14 release];
+    }
+    rdx = var_1B8;
+    rcx = var_1C8;
+    -[UIEventEnvironment _setTouchMap:forWindow:](var_200, rsi, rdx, rcx);
+    if (var_1D0 >= 0x0) {
+            rax = [var_1C0 allTouches];
+            rax = [rax retain];
+            rdx = var_1F8 != 0x0 ? 0x1 : 0x0;
+            rcx = 0x0;
+            ___updateSystemGestureRecognitionIsPossible(rax, var_1C8, rdx, rcx);
+            [rax release];
+    }
+    else {
+            if (*(var_3D0 + 0x18) == 0x0) {
+                    rdx = var_1F8 != 0x0 ? 0x1 : 0x0;
+                    rcx = 0x1;
+                    ___sendSystemGestureLatentClientUpdate(var_1C0, var_1C8, rdx, rcx);
+            }
+    }
+    var_310 = *__NSConcreteStackBlock;
+    var_308 = 0xffffffffc2000000;
+    var_300 = _____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.110;
+    var_2E0 = &var_4B0;
+    r14 = var_1C0;
+    rax = [var_1C8 retain];
+    var_1F8 = rax;
+    var_2F0 = rax;
+    rax = objc_retainBlock(&var_310);
+    var_238 = [rax autorelease];
+    xmm0 = intrinsic_xorpd(xmm0, xmm0);
+    var_490 = intrinsic_movapd(var_490, xmm0);
+    var_480 = intrinsic_movapd(var_480, xmm0);
+    var_470 = intrinsic_movapd(var_470, xmm0);
+    var_460 = intrinsic_movapd(var_460, xmm0);
+    rax = [r14 allTouches];
+    rax = [rax retain];
+    var_1E8 = rax;
+    rdx = &var_490;
+    rcx = &var_130;
+    rax = [rax countByEnumeratingWithState:rdx objects:rcx count:0x10];
+    r13 = rax;
+    if (rax == 0x0) goto loc_ca6c95;
+
+loc_ca6af0:
+    r14 = *var_480;
+    var_1B8 = 0x0;
+    do {
+            var_1C8 = @selector(_phaseDescription);
+            r15 = 0x0;
+            do {
+                    if (*var_480 != r14) {
+                            objc_enumerationMutation(var_1E8);
+                    }
+                    rbx = *(var_488 + r15 * 0x8);
+                    rax = [rbx phase];
+                    if (rax != 0x2) {
+                            if (rax == 0x3) {
+                                    -[UITouch _willBeDispatchedAsEnded](rbx);
+                            }
+                            rax = *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.116;
+                            if (rax == 0x0) {
+                                    rax = ___UILogGetCategoryImpl("Touch", @selector(phase), rdx, rcx);
+                                    *___updateTouchesWithDigitizerEventAndDetermineIfShouldSend.__s_category.116 = rax;
+                            }
+                            rcx = *(int8_t *)rax;
+                            rdx = 0x1;
+                            var_1B8 = rdx;
+                            if ((rcx & 0x1) != 0x0) {
+                                    rdx = 0x1;
+                                    rax = [*(rax + 0x8) retain];
+                                    var_1D0 = rax;
+                                    if (os_log_type_enabled(rax, 0x10) != 0x0) {
+                                            var_1C8 = @selector(_phaseDescription);
+                                            rbx = [(*_objc_msgSend)(rbx, var_1C8) retain];
+                                            var_1B0 = 0x8400102;
+                                            rdx = 0x10;
+                                            rcx = "Setting shouldSend to YES for touch phase %@";
+                                            rax = _os_log_impl(rip - 0xca6bef, var_1D0, rdx, rcx, &var_1B0, 0xc);
+                                            [rbx release];
+                                    }
+                                    [var_1D0 release];
+                            }
+                    }
+                    r15 = r15 + 0x1;
+            } while (r15 < r13);
+            rdx = &var_490;
+            rcx = &var_130;
+            rax = [var_1E8 countByEnumeratingWithState:rdx objects:rcx count:0x10];
+            r13 = rax;
+    } while (rax != 0x0);
+    [var_1E8 release];
+    if ((var_1B8 & 0x1) != 0x0) goto loc_ca7358;
+
+loc_ca6c80:
+    var_1D0 = 0x0;
+    r14 = var_1C0;
+    goto loc_ca73a7;
+
+loc_ca73a7:
+    xmm0 = intrinsic_xorpd(xmm0, xmm0);
+    var_3F0 = intrinsic_movapd(var_3F0, xmm0);
+    var_400 = intrinsic_movapd(var_400, xmm0);
+    var_410 = intrinsic_movapd(var_410, xmm0);
+    var_420 = intrinsic_movapd(var_420, xmm0);
+    rax = [r14 allTouches];
+    rax = [rax retain];
+    var_1E8 = rax;
+    rdx = &var_420;
+    rcx = &var_1B0;
+    rax = [rax countByEnumeratingWithState:rdx objects:rcx count:0x10];
+    r13 = rax;
+    if (rax != 0x0) {
+            var_1B8 = *var_410;
+            do {
+                    var_1C8 = @selector(coalescedTouchesForTouch:);
+                    r15 = 0x0;
+                    do {
+                            if (*var_410 != var_1B8) {
+                                    objc_enumerationMutation(var_1E8);
+                            }
+                            r14 = *(var_418 + r15 * 0x8);
+                            rax = [r14 type];
+                            rcx = *(int8_t *)(var_778 + 0x18);
+                            if ((rax == 0x2) && (rcx != 0x0)) {
+                                    if (r14 != 0x0) {
+                                            if (*(r14 + 0xe8) != 0x0) {
+                                                    var_1C8 = @selector(coalescedTouchesForTouch:);
+                                                    -[UITouch _updatePredictionsWithCoalescedTouches:](r14, var_1C8, [(*_objc_msgSend)(var_1C0, var_1C8) retain]);
+                                                    [rax release];
+                                            }
+                                    }
+                            }
+                            else {
+                                    if (((r14 != 0x0) && (rax == 0x0)) && (rcx == 0x0)) {
+                                            if (*(r14 + 0xe8) != 0x0) {
+                                                    var_1C8 = @selector(coalescedTouchesForTouch:);
+                                                    -[UITouch _updatePredictionsWithCoalescedTouches:](r14, var_1C8, [(*_objc_msgSend)(var_1C0, var_1C8) retain]);
+                                                    [rax release];
+                                            }
+                                    }
+                            }
+                            r15 = r15 + 0x1;
+                    } while (r15 < r13);
+                    rdx = &var_420;
+                    rcx = &var_1B0;
+                    rax = [var_1E8 countByEnumeratingWithState:rdx objects:rcx count:0x10];
+                    r13 = rax;
+            } while (rax != 0x0);
+    }
+    [var_1E8 release];
+    [var_2F0 release];
+    [var_800 release];
+    [var_508 release];
+    [var_250 release];
+    _Block_object_dispose(&var_450, 0x8);
+    [0x0 release];
+    _Block_object_dispose(&var_4B0, 0x8);
+    _Block_object_dispose(&var_3D8, 0x8);
+    _Block_object_dispose(&var_780, 0x8);
+    _Block_object_dispose(&var_7B0, 0x8);
+    [0x0 release];
+    [var_218 release];
+    [var_1F8 release];
+    rax = [var_238 retain];
+    r12 = rax;
+    var_1B8 = rax;
+    if (var_1E0 == 0x0) goto loc_ca76df;
+
+loc_ca75f7:
+    xmm0 = intrinsic_xorpd(xmm0, xmm0);
+    var_180 = intrinsic_movapd(var_180, xmm0);
+    var_190 = intrinsic_movapd(var_190, xmm0);
+    var_1A0 = intrinsic_movapd(var_1A0, xmm0);
+    var_1B0 = intrinsic_movapd(var_1B0, xmm0);
+    rax = [var_1C0 _windows];
+    rax = [rax retain];
+    r14 = rax;
+    rsi = @selector(countByEnumeratingWithState:objects:count:);
+    rdx = &var_1B0;
+    rcx = &var_130;
+    rax = _objc_msgSend_16fe878(rax, rsi, rdx, rcx, 0x10);
+    if (rax == 0x0) goto loc_ca7780;
+
+loc_ca765f:
+    r15 = rax;
+    r13 = *var_1A0;
+    goto loc_ca766c;
+
+loc_ca766c:
+    r12 = 0x0;
+    goto loc_ca7676;
+
+loc_ca7676:
+    if (*var_1A0 != r13) {
+            objc_enumerationMutation(r14);
+    }
+    rsi = @selector(_canIgnoreInteractionEvents);
+    if ((*_objc_msgSend)(*(var_1A8 + r12 * 0x8), rsi) == 0x0) goto loc_ca76e7;
+
+loc_ca76a2:
+    r12 = r12 + 0x1;
+    if (r12 < r15) goto loc_ca7676;
+
+loc_ca76aa:
+    rsi = @selector(countByEnumeratingWithState:objects:count:);
+    rdx = &var_1B0;
+    rcx = &var_130;
+    rax = (*_objc_msgSend)(r14, rsi);
+    r15 = rax;
+    if (rax != 0x0) goto loc_ca766c;
+
+loc_ca76d6:
+    r15 = var_1E0;
+    goto loc_ca76ea;
+
+loc_ca76ea:
+    r12 = var_1B8;
+    goto loc_ca7783;
+
+loc_ca7783:
+    [r14 release];
+    goto loc_ca7793;
+
+loc_ca7793:
+    var_1E0 = r15;
+    rdi = var_1F0;
+    rax = (rdi == 0x0 ? 0x1 : 0x0) | var_1D0;
+    if (rax != 0x0) {
+            r15 = 0x1;
+            if (rdi == 0x0) {
+                    r8 = 0x10;
+                    r15 = var_1E0;
+            }
+            else {
+                    rax = *___dispatchPreprocessedEventFromEventQueue.__s_category;
+                    if (rax == 0x0) {
+                            rax = ___UILogGetCategoryImpl("EventDispatch", rsi, rdx, rcx);
+                            *___dispatchPreprocessedEventFromEventQueue.__s_category = rax;
+                    }
+                    r8 = 0x10;
+                    rbx = *(rax + 0x8);
+                    rsi = 0x1;
+                    if (os_log_type_enabled(rbx, rsi) != 0x0) {
+                            r14 = [rbx retain];
+                            [var_1F0 type];
+                            [var_1F0 subtype];
+                            IOHIDEventGetType(var_1D8);
+                            var_B0 = 0x8000500;
+                            rsi = r14;
+                            rdx = 0x1;
+                            rcx = "Dispatching UIEvent type: %li; subtype: %li; backingtype: %i, shouldSend: %d; ignoreInteractionEvents: %d";
+                            r8 = &var_B0;
+                            _os_log_impl(rip - 0xca78ab, rsi, rdx, rcx, r8, 0x28);
+                            [r14 release];
+                    }
+                    if ((var_208 & r15) == 0x1) {
+                            [var_1F0 _setHIDEvent:var_1D8];
+                            [var_228 sendEvent:var_1F0];
+                            rsi = @selector(setHasOutstandingUpdates:);
+                            rdx = 0x0;
+                            _objc_msgSend_16fe878(var_1F0, rsi);
+                    }
+                    r15 = var_1E0;
+                    r12 = var_1B8;
+            }
+    }
+    else {
+            rsi = @selector(hasOutstandingUpdates);
+            r15 = _objc_msgSend_16fe878(rdi, rsi);
+            rax = *___dispatchPreprocessedEventFromEventQueue.__s_category;
+            if (rax == 0x0) {
+                    rax = ___UILogGetCategoryImpl("EventDispatch", rsi, rdx, rcx);
+                    *___dispatchPreprocessedEventFromEventQueue.__s_category = rax;
+            }
+            r8 = 0x10;
+            rbx = *(rax + 0x8);
+            rsi = 0x1;
+            if (os_log_type_enabled(rbx, rsi) != 0x0) {
+                    r14 = [rbx retain];
+                    [var_1F0 type];
+                    [var_1F0 subtype];
+                    IOHIDEventGetType(var_1D8);
+                    var_B0 = 0x8000500;
+                    rsi = r14;
+                    rdx = 0x1;
+                    rcx = "Dispatching UIEvent type: %li; subtype: %li; backingtype: %i, shouldSend: %d; ignoreInteractionEvents: %d";
+                    r8 = &var_B0;
+                    _os_log_impl(rip - 0xca78ab, rsi, rdx, rcx, r8, 0x28);
+                    [r14 release];
+            }
+            if ((var_208 & r15) == 0x1) {
+                    [var_1F0 _setHIDEvent:var_1D8];
+                    [var_228 sendEvent:var_1F0];
+                    rsi = @selector(setHasOutstandingUpdates:);
+                    rdx = 0x0;
+                    _objc_msgSend_16fe878(var_1F0, rsi);
+            }
+            r15 = var_1E0;
+            r12 = var_1B8;
+    }
+    goto loc_ca6d72;
+
+loc_ca76e7:
+    r15 = 0x0;
+    goto loc_ca76ea;
+
+loc_ca7780:
+    r15 = 0x1;
+    goto loc_ca7783;
+
+loc_ca76df:
+    rsi = 0x8;
+    r15 = 0x0;
+    goto loc_ca7793;
+
+loc_ca7358:
+    rax = [_UIRemoteKeyboards sharedRemoteKeyboards];
+    rax = [rax retain];
+    var_1E8 = rax;
+    [rax peekApplicationEvent:var_1C0];
+    var_1D0 = 0x1;
+    r14 = var_1C0;
+    goto loc_ca739a;
+
+loc_ca739a:
+    [var_1E8 release];
+    goto loc_ca73a7;
+
+loc_ca6c95:
+    var_1D0 = 0x0;
+    goto loc_ca739a;
+
+loc_ca5f44:
+    rax = IOHIDEventGetType(r13, 0x4);
+    if (rax == 0x3) goto loc_ca72db;
+
+loc_ca5f55:
+    if (rax == 0x11) goto loc_ca6ca3;
+
+loc_ca5f5e:
+    if (rax != 0x1d) goto loc_ca6ce3;
+
+loc_ca5f67:
+    rax = IOHIDEventGetIntegerValue(r13, 0x1d0000);
+    if ((rax == 0x0) || (rax == 0x3)) goto loc_ca6ce3;
+
+loc_ca5f87:
+    rsi = 0x1d0000;
+    goto loc_ca72ed;
+
+loc_ca72ed:
+    r12 = *(int8_t *)(var_200 + 0x38) == 0x0 ? 0x1 : 0x0;
+    var_1C8 = *(var_200 + 0x8);
+    rax = IOHIDEventGetType(r13);
+    var_1E0 = r15;
+    if (rax != 0x11) goto loc_ca7744;
+
+loc_ca7322:
+    rax = IOHIDEventGetEvent();
+    if ((rax == 0x0) || (IOHIDEventIsRepeat(rax, 0x13) == 0x0)) goto loc_ca7957;
+
+loc_ca7345:
+    rsi = 0x13;
+    var_1D0 = 0xffffffffffffffff;
+    r15 = 0x0;
+    goto loc_ca7b32;
+
+loc_ca7b32:
+    var_1F0 = 0x0;
+    goto loc_ca7b77;
+
+loc_ca7b77:
+    if (BKSHIDEventGetButtonIsCancelledFromButtonEvent(r13) != 0x0) {
+            rsi = @selector(_cancelPhysicalButtonsWithType:forPressesEvent:);
+            rdx = var_1D0;
+            (*_objc_msgSend)(var_1C8, rsi);
+            r15 = 0x0;
+    }
+    var_1E0 = var_1E0 & r12;
+    r14 = var_1F0 == 0x0 ? 0x1 : 0x0;
+    if ((IOHIDEventGetPhase(r13) & 0x4) != 0x0) {
+            var_208 = r14;
+            rax = [var_1C0 retain];
+            r14 = rax;
+            xmm0 = intrinsic_xorpd(xmm0, xmm0);
+            var_1B0 = intrinsic_movapd(var_1B0, xmm0);
+            var_1A0 = intrinsic_movapd(var_1A0, xmm0);
+            var_190 = intrinsic_movapd(var_190, xmm0);
+            var_180 = intrinsic_movapd(var_180, xmm0);
+            rax = [rax _terminalRegistrantsForPressType:var_1D0];
+            rax = [rax retain];
+            var_1B8 = rax;
+            rsi = @selector(countByEnumeratingWithState:objects:count:);
+            rdx = &var_1B0;
+            rax = _objc_msgSend_16fe878(rax, rsi);
+            if (rax != 0x0) {
+                    r12 = rax;
+                    r13 = *var_1A0;
+                    do {
+                            r15 = 0x0;
+                            do {
+                                    if (*var_1A0 != r13) {
+                                            objc_enumerationMutation(var_1B8);
+                                    }
+                                    [*(var_1A8 + r15 * 0x8) pressesEventDidReceiveTerminal:r14];
+                                    r15 = r15 + 0x1;
+                            } while (r15 < r12);
+                            rsi = @selector(countByEnumeratingWithState:objects:count:);
+                            rdx = &var_1B0;
+                            rax = (*_objc_msgSend)(var_1B8, rsi);
+                            r12 = rax;
+                    } while (rax != 0x0);
+            }
+            r8 = 0x10;
+            [var_1B8 release];
+            [r14 release];
+            r15 = 0x0;
+            r13 = var_1D8;
+            r14 = var_208;
+    }
+    if (var_1E0 != 0x0) {
+            rsi = @selector(_hidEvent);
+            rax = _objc_msgSend_16fe878(var_1C0, rsi);
+            rax = __UIEventHIDUIWindowForHIDEvent(rax);
+            rax = [rax retain];
+            rdx = var_1D0;
+            rcx = rax;
+            r14 = [-[UIEventEnvironment _pressForType:window:](var_200, rsi, rdx, rcx) retain];
+            [rax release];
+            if (var_1F0 != 0x0) {
+                    rdx = 0x4;
+                    rsi = @selector(setPhase:);
+                    _objc_msgSend_16fe878(r14, rsi, rdx, rcx);
+                    r12 = 0x0;
+                    r15 = 0x0;
+            }
+            else {
+                    r12 = 0x3;
+                    if (r14 != 0x0) {
+                            r12 = 0x3;
+                            rsi = @selector(phase);
+                            if (_objc_msgSend_16fe878(r14, rsi) != 0x4) {
+                                    rbx = *_objc_msgSend;
+                                    rax = [NSSet setWithObject:r14];
+                                    rax = [rax retain];
+                                    r8 = rbx;
+                                    rsi = @selector(_cancelTouchesOrPresses:withEvent:);
+                                    rdx = rax;
+                                    _objc_msgSend_16fe878(var_1C8, rsi, rdx, var_1C0, r8);
+                                    [rax release];
+                                    r12 = 0x4;
+                            }
+                    }
+            }
+            [r14 release];
+    }
+    else {
+            r12 = r14 + r14 * 0x2;
+    }
+    var_B0 = *__NSConcreteStackBlock;
+    var_A8 = 0xffffffffc2000000;
+    var_A0 = _____dispatchButtonEvent_block_invoke;
+    var_90 = var_1C0;
+    rax = objc_retainBlock(&var_B0);
+    rbx = [rax autorelease];
+    if (r15 == 0x0) goto loc_ca7e33;
+
+loc_ca7e0a:
+    rax = IOHIDEventGetType(r13);
+    var_1B8 = rbx;
+    if (rax != 0x1d) goto loc_ca7e41;
+
+loc_ca7e1e:
+    r15 = IOHIDEventGetIntegerValue(r13, 0x1d0004);
+    goto loc_ca7efa;
+
+loc_ca7efa:
+    r13 = 0x0;
+    goto loc_ca7efd;
+
+loc_ca7efd:
+    r14 = r12;
+    xmm0 = intrinsic_movsd(xmm0, *0x130b2e8);
+    if (r12 <= 0x4) {
+            xmm0 = 0x0;
+    }
+    var_1F0 = intrinsic_movsd(var_1F0, xmm0);
+    BKSHIDEventGetContextIDFromEvent([var_1C0 _hidEvent]);
+    rsi = @selector(_prepareButtonEvent:type:phase:timestamp:force:clickCount:longClick:contextID:);
+    rdx = var_1C0;
+    r8 = r14;
+    xmm0 = intrinsic_movsd(xmm0, var_1E8);
+    xmm1 = intrinsic_movsd(xmm1, var_1F0);
+    rax = _objc_msgSend_16fe878(var_1C8, rsi);
+    r15 = var_1E0;
+    rbx = var_1B8;
+    goto loc_ca7f89;
+
+loc_ca7f89:
+    rcx = (r15 ^ 0x1) & rax;
+    var_1D0 = rcx;
+    rdi = rbx;
+    goto loc_ca7f9b;
+
+loc_ca7e41:
+    if (IOHIDEventGetType(r13) != 0x3) goto loc_ca7ef7;
+
+loc_ca7e52:
+    r15 = IOHIDEventGetIntegerValue(r13, 0x30004);
+    r13 = IOHIDEventGetIntegerValue(r13, 0x30005) != 0x0 ? 0x1 : 0x0;
+    goto loc_ca7efd;
+
+loc_ca7ef7:
+    r15 = 0x0;
+    goto loc_ca7efa;
+
+loc_ca7e33:
+    rax = 0x0;
+    r15 = var_1E0;
+    goto loc_ca7f89;
+
+loc_ca7957:
+    rax = __UIEventHIDUIWindowForHIDEvent(r13);
+    rax = [rax retain];
+    rbx = rax;
+    r15 = -[UIEventEnvironment _currentNudgePressTypeForWindow:](var_200, 0x13, rax);
+    if (IOHIDEventGetIntegerValue(r13, 0x110003) != 0x0) {
+            rsi = 0x110003;
+            var_1F0 = 0x1;
+            r14 = 0x4;
+            if (r15 != 0xffffffffffffffff) {
+                    r14 = 0x4;
+                    rsi = @selector(_cancelPhysicalButtonsWithType:forPressesEvent:);
+                    (*_objc_msgSend)(var_1C8, rsi);
+            }
+    }
+    else {
+            rsi = 0x110003;
+            r14 = 0xffffffffffffffff;
+            var_1F0 = 0x0;
+    }
+    rdx = r14;
+    -[UIEventEnvironment _setCurrentNudgePressType:forWindow:](var_200, rsi, rdx, rbx);
+    [rbx release];
+    var_1D0 = 0x4;
+    goto loc_ca7b74;
+
+loc_ca7b74:
+    r15 = 0x1;
+    goto loc_ca7b77;
+
+loc_ca7744:
+    rax = IOHIDEventGetType();
+    rdi = r13;
+    if (rax != 0x3) goto loc_ca7a5e;
+
+loc_ca7755:
+    var_1D0 = __UIEventHIDButtonTypeForKeyboardHIDEvent(rdi, rsi, rdx);
+    rsi = 0x30002;
+    var_1F0 = IOHIDEventGetIntegerValue(r13, rsi) != 0x0 ? 0x1 : 0x0;
+    goto loc_ca7b74;
+
+loc_ca7a5e:
+    if (IOHIDEventGetType() != 0x1d) goto loc_ca7b27;
+
+loc_ca7a6f:
+    r15 = 0x1;
+    rsi = 0x1d0001;
+    IOHIDEventGetFloatValue(r13, rsi);
+    asm { cmpneqsd   xmm0, qword [double_value_0] };
+    var_1F0 = zero_extend_64(xmm0) & 0x1;
+    var_1D0 = 0x69;
+    goto loc_ca7b77;
+
+loc_ca7b27:
+    r15 = 0x1;
+    var_1D0 = 0xffffffffffffffff;
+    goto loc_ca7b32;
+
+loc_ca6ce3:
+    if (IOHIDEventGetType(r13) != 0x3) goto loc_ca6d42;
+
+loc_ca6cf0:
+    rax = IOHIDEventGetIntegerValue(r13, 0x30000);
+    if ((rax == 0x7) || (rax == 0xff)) goto loc_ca6d36;
+
+loc_ca6d0b:
+    if (rax != 0xc) goto loc_ca6d42;
+
+loc_ca6d11:
+    rax = IOHIDEventGetIntegerValue(r13, 0x30001);
+    if (((rax == 0xb8) || (rax == 0x29d)) || (rax == 0x1ae)) goto loc_ca6d36;
+
+loc_ca6d42:
+    if (IOHIDEventGetType(r13) != 0x1e) goto loc_ca76f6;
+
+loc_ca6d53:
+    rdi = rbx;
+    rsi = @selector(_handleUnicodeEvent:);
+    goto loc_ca6d5d;
+
+loc_ca6d5d:
+    rdx = r13;
+    (*_objc_msgSend)(rdi, rsi);
+    goto loc_ca6d66;
+
+loc_ca6d66:
+    var_1D0 = 0x0;
+    goto loc_ca6d6f;
+
+loc_ca76f6:
+    r14 = var_1C0;
+    if ((objc_opt_isKindOfClass(r14, objc_opt_class(@class(UIPencilEvent))) & 0x1) == 0x0) goto loc_ca79ce;
+
+loc_ca771c:
+    rsi = @selector(_sendEventToInteractions);
+    (*_objc_msgSend)(r14, rsi);
+    goto loc_ca6d66;
+
+loc_ca79ce:
+    r12 = @selector(type);
+    rsi = r12;
+    if (_objc_msgSend_16fe878(r14, rsi) == 0xa) {
+            var_130 = *__NSConcreteStackBlock;
+            var_128 = 0xffffffffc2000000;
+            var_120 = _____dispatchPreprocessedEventFromEventQueue_block_invoke;
+            var_118 = ___block_descriptor_40_e8_32s_e5_v8?0l;
+            var_110 = [r14 retain];
+            rax = objc_retainBlock(&var_130);
+            r12 = rax;
+            [var_110 release];
+            var_1D0 = 0x1;
+    }
+    else {
+            rsi = r12;
+            rax = _objc_msgSend_16fe878(r14, rsi);
+            rcx = 0x1;
+            var_1D0 = rcx;
+            if (rax == 0xe) {
+                    rcx = 0x1;
+                    var_130 = *__NSConcreteStackBlock;
+                    var_128 = 0xffffffffc2000000;
+                    var_120 = _____dispatchPreprocessedEventFromEventQueue_block_invoke.166;
+                    var_118 = ___block_descriptor_40_e8_32s_e5_v8?0l;
+                    var_110 = [r14 retain];
+                    rax = objc_retainBlock(&var_130);
+                    r12 = rax;
+                    [var_110 release];
+            }
+            else {
+                    r12 = 0x0;
+            }
+    }
+    goto loc_ca6d72;
+
+loc_ca6d36:
+    rdi = rbx;
+    rsi = @selector(handleKeyHIDEvent:);
+    goto loc_ca6d5d;
+
+loc_ca6ca3:
+    rax = __UIEventHIDUIScreenForHIDEvent(r13);
+    rax = [rax retain];
+    rsi = @selector(_userInterfaceIdiom);
+    r14 = (*_objc_msgSend)(rax, rsi);
+    rbx = var_228;
+    [rax release];
+    if (r14 == 0x3) goto loc_ca72ed;
+    goto loc_ca6ce3;
+
+loc_ca72db:
+    rsi = 0x4;
+    if (__UIEventHIDButtonTypeForKeyboardHIDEvent(r13, rsi, rdx) == 0xffffffffffffffff) goto loc_ca6ce3;
+    goto loc_ca72ed;
+
+loc_ca5d7f:
+    if (r12 == 0x1d) goto loc_ca5f8c;
+
+loc_ca5d89:
+    if (r12 == 0xe) {
+            r12 = (IOHIDEventGetIntegerValue(var_1D8, 0xe0000) & 0x40) >> 0x6;
+            [var_228 proximityStateChanged:r12];
+            rax = [UIDevice currentDevice];
+            rax = [rax retain];
+            rdx = r12;
+            [rax _setProximityState:rdx];
+            [rax release];
+            rsi = @selector(isFrontBoard);
+            if (_objc_msgSend_16fe878(var_228, rsi) != 0x0) {
+                    rsi = @selector(_handleHIDEvent:);
+                    rdx = var_1D8;
+                    _objc_msgSend_16fe878(var_228, rsi, rdx);
+            }
+    }
+    else {
+            rsi = @selector(_handleHIDEvent:);
+            rdx = var_1D8;
+            _objc_msgSend_16fe878(var_228, rsi, rdx);
+    }
+    goto loc_ca6f3a;
+
+loc_ca5f8c:
+    IOHIDEventGetFloatValue(r13, 0x1d0001);
+    var_1B8 = intrinsic_movsd(var_1B8, xmm0);
+    if (IOHIDEventGetIntegerValue(r13, 0x1d0000) != 0x3) goto loc_ca6006;
+
+loc_ca5fc2:
+    rax = [UIScreen _carScreen];
+    rax = [rax retain];
+    xmm0 = intrinsic_movsd(xmm0, var_1B8);
+    xmm0 = intrinsic_ucomisd(xmm0, *double_value_0);
+    rdx = xmm0 > 0x0 ? 0x1 : 0x0;
+    rsi = @selector(_setCarPlayHumanPresenceInRange:);
+    _objc_msgSend_16fe878(rax, rsi, rdx);
+    rdi = rax;
+    goto loc_ca6f37;
+
+loc_ca6006:
+    rsi = @selector(_handleHIDEvent:);
+    rdx = var_1D8;
+    _objc_msgSend_16fe878(var_228, rsi, rdx);
+    goto loc_ca6f3a;
+
+loc_ca4218:
+    r14 = rax;
+    xmm0 = intrinsic_xorpd(xmm0, xmm0);
+    r13 = var_200;
+    goto loc_ca6ff9;
+
+loc_ca422b:
+    var_1E8 = 0x1;
+    var_238 = rcx;
+    rdx = var_260 - 0x2;
+    if (rdx < 0x0) goto loc_ca3fa4;
+
+loc_ca424e:
+    var_258 = r13;
+    var_1E8 = 0x1;
+    var_210 = 0x0;
+    r13 = r12;
+    r12 = r14;
+    var_1D0 = r13;
+    goto loc_ca4303;
+
+loc_ca4303:
+    var_1C0 = rdx;
+    r15 = r12;
+    rax = (r12)(rbx, @selector(objectAtIndex:), rdx);
+    r12 = rax;
+    if (IOHIDEventGetType(rax) != r13) goto loc_ca6076;
+
+loc_ca432e:
+    if (r13 == 0x6) goto loc_ca4423;
+
+loc_ca4338:
+    var_1C8 = r12;
+    if (r13 == 0x11) goto loc_ca439e;
+
+loc_ca4345:
+    if (r13 != 0xb) goto loc_ca46b5;
+
+loc_ca434f:
+    if (BKSHIDEventContainsUpdates(r12) == 0x0) goto loc_ca46cb;
+
+loc_ca435f:
+    if ((var_1D8 != 0x0) && (var_258 != 0x2)) {
+            rdi = var_210;
+            if (rdi == 0x0) {
+                    rdi = [(r15)(@class(NSMutableArray), @selector(array)) retain];
+            }
+            var_210 = rdi;
+    }
+    else {
+            rax = var_228;
+            if (rax == 0x0) {
+                    rax = objc_alloc_init(@class(NSMutableArray));
+            }
+            var_228 = rax;
+            rdi = rax;
+    }
+    goto loc_ca51de;
+
+loc_ca51de:
+    r12 = r15;
+    (r15)(rdi);
+    var_1E8 = var_1E8 + 0x1;
+    rdx = var_1C0;
+    rbx = var_1B8;
+    goto loc_ca5203;
+
+loc_ca5203:
+    COND = rdx > 0x0;
+    rdx = rdx - 0x1;
+    if (COND) goto loc_ca4303;
+    goto loc_ca3fb0;
+
+loc_ca46cb:
+    r13 = var_1D8;
+    if (r13 == 0x0) goto loc_ca4884;
+
+loc_ca46db:
+    rbx = IOHIDEventGetIntegerValue(r13, 0xb0018);
+    rax = IOHIDEventGetIntegerValue(r13, 0xb0007);
+    if (((rax < 0x0) || ((rax & 0x1 | (rbx | rax) & 0x2) != 0x0)) || (BKSHIDEventGetIsSystemGestureStateChangeFromDigitizerEvent(var_1D8, 0xb0007) != 0x0)) goto loc_ca7941;
+
+loc_ca4728:
+    rbx = IOHIDEventGetIntegerValue(r12, 0xb0018);
+    rax = IOHIDEventGetIntegerValue(r12, 0xb0007);
+    if (((rax < 0x0) || ((rax & 0x1 | (rbx | rax) & 0x2) != 0x0)) || (BKSHIDEventGetIsSystemGestureStateChangeFromDigitizerEvent(r12, 0xb0007) != 0x0)) goto loc_ca7941;
+
+loc_ca4771:
+    r14 = var_1D8;
+    if (((IOHIDEventGetIntegerValue(r12, 0xb0007) ^ IOHIDEventGetIntegerValue(r14, 0xb0007)) & 0x83) == 0x0) goto loc_ca4cfa;
+
+loc_ca479f:
+    r13 = var_1D0;
+    goto loc_ca5078;
+
+loc_ca5078:
+    if (var_22C != BKSHIDEventGetContextIDFromEvent(r12)) goto loc_ca51af;
+
+loc_ca508c:
+    rax = IOHIDEventGetChildren(r12);
+    rax = [rax retain];
+    rbx = r15;
+    r15 = rax;
+    if ((rbx)(rax, @selector(count)) == 0x0) goto loc_ca7fa9;
+
+loc_ca50b7:
+    rax = (rbx)(r15, @selector(objectAtIndexedSubscript:), 0x0);
+    rax = [rax retain];
+    r12 = rax;
+    if (IOHIDEventGetIntegerValue(rax, 0xb0004) != 0x0) {
+            r14 = var_1C8;
+            if ((rbx)(*_UIApp, @selector(_supportsIndirectInputEvents), 0x0) != 0x0) {
+                    r13 = 0x3;
+                    if (__UIEventHIDGetDescendantPointerEvent(r14) == 0x0) {
+                            r13 = IOHIDEventGetIntegerValue(r14, 0xb0019, 0x0) == 0x0 ? 0x1 : 0x0;
+                    }
+            }
+            else {
+                    r13 = IOHIDEventGetIntegerValue(r14, 0xb0019, 0x0) == 0x0 ? 0x1 : 0x0;
+            }
+    }
+    else {
+            r13 = 0x2;
+            r14 = var_1C8;
+    }
+    [r12 release];
+    rax = [r15 objectAtIndexedSubscript:0x0];
+    rax = [rax retain];
+    var_1C8 = BKSHIDEventDigitizerGetTouchLocus(r14, rax);
+    [rax release];
+    rdi = r15;
+    r15 = *_objc_msgSend;
+    [rdi release];
+    COND = r13 != var_258;
+    r13 = var_1D0;
+    r12 = r14;
+    if (COND) goto loc_ca51af;
+
+loc_ca519d:
+    r15 = *_objc_msgSend;
+    if (var_1C8 == var_238) goto loc_ca6076;
+
+loc_ca51af:
+    rdi = var_210;
+    if (rdi == 0x0) {
+            rdi = [(r15)(@class(NSMutableArray), @selector(array)) retain];
+    }
+    var_210 = rdi;
+    goto loc_ca51de;
+
+loc_ca6076:
+    rbx = var_1B8;
+    goto loc_ca607d;
+
+loc_ca607d:
+    r12 = r15;
+    goto loc_ca3fb0;
+
+loc_ca7fa9:
+    [r15 release];
+    r12 = rbx;
+    goto loc_ca7738;
+
+loc_ca7738:
+    rbx = var_1B8;
+    goto loc_ca3fb0;
+
+loc_ca4cfa:
+    rbx = IOHIDEventGetIntegerValue(r14, 0xb0009) != 0x0 ? 0x1 : 0x0;
+    rax = IOHIDEventGetIntegerValue(r12, 0xb0009);
+    rax = (rax != 0x0 ? 0x1 : 0x0) ^ rbx;
+    r13 = var_1D0;
+    if (((rax != 0x0) || (BKSHIDEventGetSystemGestureStatusFromDigitizerEvent(r14) != BKSHIDEventGetSystemGestureStatusFromDigitizerEvent(r12))) || (BKSHIDEventGetContextIDFromEvent(r14) != BKSHIDEventGetContextIDFromEvent(r12))) goto loc_ca5078;
+
+loc_ca4d63:
+    rbx = [IOHIDEventGetChildren(r14) retain];
+    var_208 = [IOHIDEventGetChildren(r12) retain];
+    var_1E0 = rbx;
+    rax = (r15)(rbx, @selector(count));
+    rcx = r15;
+    rbx = var_208;
+    r15 = rax;
+    if (r15 != (rcx)(rbx, @selector(count))) goto loc_ca5047;
+
+loc_ca4dc2:
+    r14 = var_1E0;
+    if (r15 <= 0x0) goto loc_ca4e5c;
+
+loc_ca4dd2:
+    rax = [r14 objectAtIndexedSubscript:0x0];
+    rax = [rax retain];
+    r12 = rax;
+    var_1F0 = BKSHIDEventDigitizerGetTouchLocus(var_1D8, rax);
+    rax = [var_208 objectAtIndexedSubscript:0x0];
+    rax = [rax retain];
+    r15 = BKSHIDEventDigitizerGetTouchLocus(var_1C8, rax);
+    [rax release];
+    rdi = r12;
+    r12 = var_1C8;
+    [rdi release];
+    if (var_1F0 != r15) goto loc_ca505c;
+
+loc_ca4e5c:
+    rax = *___areDigitizerEventsCoalescable.children1EventMap;
+    if (rax == 0x0) {
+            rax = CFDictionaryCreateMutable(0x0, 0x0, 0x0, 0x0);
+    }
+    *___areDigitizerEventsCoalescable.children1EventMap = rax;
+    xmm0 = intrinsic_xorpd(xmm0, xmm0);
+    var_B0 = intrinsic_movapd(var_B0, xmm0);
+    var_A0 = intrinsic_movapd(var_A0, xmm0);
+    var_90 = intrinsic_movapd(var_90, xmm0);
+    var_80 = intrinsic_movapd(var_80, xmm0);
+    rax = [r14 retain];
+    var_1E0 = rax;
+    rax = [rax countByEnumeratingWithState:&var_B0 objects:&var_130 count:0x10];
+    if (rax != 0x0) {
+            r14 = rax;
+            r15 = *var_A0;
+            xmm0 = intrinsic_xorpd(xmm0, xmm0);
+            var_1F0 = intrinsic_movsd(var_1F0, xmm0);
+            do {
+                    rbx = 0x0;
+                    do {
+                            if (*var_A0 != r15) {
+                                    objc_enumerationMutation(var_1E0);
+                            }
+                            r12 = *(var_A8 + rbx * 0x8);
+                            if (IOHIDEventGetType(r12) == 0x20) {
+                                    IOHIDEventGetFloatValue(r12, 0x200001);
+                                    var_1F0 = intrinsic_movsd(var_1F0, xmm0);
+                            }
+                            else {
+                                    CFDictionaryAddValue(*___areDigitizerEventsCoalescable.children1EventMap, __UIEventHIDPathIndexForDigitizerEvent(var_1D8, r12), r12);
+                            }
+                            rbx = rbx + 0x1;
+                            r12 = var_1C8;
+                    } while (rbx < r14);
+                    rax = [var_1E0 countByEnumeratingWithState:&var_B0 objects:&var_130 count:0x10];
+                    r14 = rax;
+            } while (rax != 0x0);
+    }
+    else {
+            xmm0 = intrinsic_xorpd(xmm0, xmm0);
+            var_1F0 = intrinsic_movsd(var_1F0, xmm0);
+    }
+    r14 = var_1E0;
+    [r14 release];
+    xmm0 = intrinsic_xorpd(xmm0, xmm0);
+    var_2E0 = intrinsic_movapd(var_2E0, xmm0);
+    var_2F0 = intrinsic_movapd(var_2F0, xmm0);
+    var_300 = intrinsic_movapd(var_300, xmm0);
+    var_310 = intrinsic_movapd(var_310, xmm0);
+    rax = [var_208 retain];
+    rbx = rax;
+    rax = [rax countByEnumeratingWithState:rdx objects:rcx count:r8];
+    var_208 = rax;
+    if (rax == 0x0) goto loc_ca5409;
+
+loc_ca52a0:
+    var_1F8 = *var_300;
+    var_218 = rbx;
+    goto loc_ca52b8;
+
+loc_ca52b8:
+    r14 = 0x0;
+    goto loc_ca52bb;
+
+loc_ca52bb:
+    if (*var_300 != var_1F8) {
+            objc_enumerationMutation(rbx);
+    }
+    r15 = *(var_308 + r14 * 0x8);
+    if (IOHIDEventGetType(r15) != 0x20) goto loc_ca5318;
+
+loc_ca52ee:
+    IOHIDEventGetFloatValue(r15, 0x200001);
+    xmm1 = intrinsic_movsd(xmm1, var_1F0);
+    xmm1 = intrinsic_ucomisd(xmm1, xmm0);
+    if ((xmm1 != 0x0) || (!CPU_FLAGS & NP)) goto loc_ca5ad8;
+
+loc_ca5396:
+    r14 = r14 + 0x1;
+    if (r14 < var_208) goto loc_ca52bb;
+
+loc_ca53ad:
+    rax = [rbx countByEnumeratingWithState:&var_310 objects:&var_1B0 count:0x10];
+    var_208 = rax;
+    if (rax != 0x0) goto loc_ca52b8;
+
+loc_ca53de:
+    [rbx release];
+    CFDictionaryRemoveAllValues(*___areDigitizerEventsCoalescable.children1EventMap);
+    [rbx release];
+    [var_1E0 release];
+    goto loc_ca542e;
+
+loc_ca542e:
+    r14 = var_1E8;
+    rdx = var_1C0;
+    if (var_238 != 0x0) goto loc_ca5aad;
+
+loc_ca5449:
+    rax = __UIEventHIDUIWindowForHIDEvent(var_1D8);
+    rax = [rax retain];
+    var_530 = rax;
+    var_278 = [-[UIEventEnvironment _touchesEventForWindow:](var_200, @selector(countByEnumeratingWithState:objects:count:), rax) retain];
+    __UIDeviceTimeIntervalForMachTime(IOHIDEventGetTimeStamp(var_1D8));
+    var_588 = intrinsic_movsd(var_588, xmm0);
+    rax = __UIEventHIDUIWindowForHIDEvent(var_1D8);
+    rax = [rax retain];
+    var_318 = rax;
+    rax = [rax _touchMap];
+    rbx = rax;
+    if (rax != 0x0) {
+            CFRetain(rbx);
+            CFAutorelease(rbx);
+    }
+    var_5B0 = rbx;
+    rbx = var_1D8;
+    [var_278 _moveCoalescedTouchesFromHidEvent:rbx toHidEvent:r12];
+    rax = IOHIDEventGetChildren(rbx);
+    var_320 = rax;
+    rcx = r14;
+    if (rax != 0x0) {
+            rax = CFArrayGetCount(var_320);
+            rcx = r14;
+            rax = rax & 0xff;
+            if (rax != 0x0) {
+                    r8 = 0x10;
+                    var_5A0 = rax;
+                    rsi = 0x0;
+                    var_1D8 = rbx;
+                    do {
+                            var_208 = rsi;
+                            rax = CFArrayGetValueAtIndex(var_320, rsi);
+                            var_1E0 = rax;
+                            rax = __UIEventHIDPathIndexForDigitizerEvent(rbx, rax);
+                            rbx = rax;
+                            rsi = @selector(_lastPendingCoalescedTouchForIndex:hidEvent:);
+                            rdx = rax;
+                            rcx = r12;
+                            rax = (*_objc_msgSend)(var_278, rsi);
+                            rax = [rax retain];
+                            rdi = var_5B0;
+                            if ((rdi != 0x0) && (rax == 0x0)) {
+                                    rsi = rbx;
+                                    r15 = [CFDictionaryGetValue(rdi, rsi) retain];
+                                    [rax release];
+                                    rax = r15;
+                            }
+                            if (rax != 0x0) {
+                                    var_5D8 = rbx;
+                                    rbx = rax;
+                                    var_1F0 = rax;
+                                    rax = [rax _clone];
+                                    rax = [rax retain];
+                                    r12 = rax;
+                                    [rax _setPreviousTouch:rbx];
+                                    intrinsic_movsd(xmm0, var_588);
+                                    [r12 setTimestamp:rbx];
+                                    rax = [r12 window];
+                                    rax = [rax retain];
+                                    var_1F8 = rax;
+                                    __UITouchSetBasicTouchPropertiesFromEvent(r12, [[rax screen] retain], var_1D8, var_1E0);
+                                    r14 = r12;
+                                    [rax release];
+                                    [var_1F8 release];
+                                    r12 = [[var_1F0 window] retain];
+                                    rcx = *_CGSizeZero;
+                                    rax = *rcx;
+                                    var_1A8 = *(rcx + 0x8);
+                                    var_1B0 = rax;
+                                    rax = ___baseTouchPointTripleForChild(&var_130, var_1E0, var_1D8, r12, r14, &var_1B0);
+                                    rax = [var_318 _scene];
+                                    rax = [rax retain];
+                                    xmm0 = intrinsic_movsd(xmm0, var_130);
+                                    var_1F8 = intrinsic_movsd(var_1F8, xmm0);
+                                    xmm0 = intrinsic_movsd(xmm0, var_128);
+                                    var_218 = intrinsic_movsd(var_218, xmm0);
+                                    rax = [rax retain];
+                                    r15 = rax;
+                                    intrinsic_movsd(xmm0, var_1F8);
+                                    intrinsic_movsd(xmm1, var_218);
+                                    __UIConvertScenePointToWindow(rax, r12);
+                                    var_1F8 = intrinsic_movsd(var_1F8, xmm0);
+                                    var_218 = intrinsic_movsd(var_218, xmm1);
+                                    [r15 release];
+                                    xmm0 = intrinsic_movsd(xmm0, var_1F8);
+                                    var_130 = intrinsic_movsd(var_130, xmm0);
+                                    xmm0 = intrinsic_movsd(xmm0, var_218);
+                                    var_128 = intrinsic_movsd(var_128, xmm0);
+                                    xmm0 = intrinsic_movsd(xmm0, var_120);
+                                    intrinsic_movsd(xmm1, var_118);
+                                    var_5D0 = r12;
+                                    __UIConvertScenePointToWindow(r15, r12);
+                                    var_5C8 = intrinsic_movsd(var_5C8, xmm1);
+                                    var_338 = intrinsic_movsd(var_338, xmm0);
+                                    var_120 = intrinsic_movsd(var_120, xmm0);
+                                    var_118 = intrinsic_movsd(var_118, xmm1);
+                                    [var_1F0 locationInView:0x0];
+                                    var_5C0 = intrinsic_movsd(var_5C0, xmm0);
+                                    var_5B8 = intrinsic_movsd(var_5B8, xmm1);
+                                    [var_1F0 preciseLocationInView:0x0];
+                                    var_590 = intrinsic_movsd(var_590, xmm0);
+                                    var_598 = intrinsic_movsd(var_598, xmm1);
+                                    IOHIDEventGetFloatValue(var_1E0, 0xb000a);
+                                    var_330 = intrinsic_movsd(var_330, xmm0);
+                                    [var_1F0 _pressure];
+                                    xmm4 = intrinsic_movsd(xmm4, var_5C8);
+                                    xmm2 = intrinsic_movsd(xmm2, var_218);
+                                    xmm1 = intrinsic_movsd(xmm1, var_1F8);
+                                    r12 = var_1C8;
+                                    xmm1 = intrinsic_ucomisd(xmm1, var_5C0);
+                                    if ((xmm1 == 0x0) && (!CPU_FLAGS & P)) {
+                                            xmm2 = intrinsic_ucomisd(xmm2, var_5B8);
+                                            if ((xmm2 == 0x0) && (!CPU_FLAGS & P)) {
+                                                    xmm4 = intrinsic_ucomisd(xmm4, var_598);
+                                                    if ((xmm4 == 0x0) && (!CPU_FLAGS & P)) {
+                                                            xmm3 = intrinsic_movsd(xmm3, var_338);
+                                                            xmm3 = intrinsic_ucomisd(xmm3, var_590);
+                                                            if ((xmm3 == 0x0) && (!CPU_FLAGS & P)) {
+                                                                    xmm3 = intrinsic_movsd(xmm3, var_330);
+                                                                    xmm3 = intrinsic_ucomisd(xmm3, xmm0);
+                                                                    if (xmm3 == 0x0) {
+                                                                            rdx = 0x2;
+                                                                            if (!CPU_FLAGS & NP) {
+                                                                                    rdx = 0x1;
+                                                                                    if (r14 != 0x0) {
+                                                                                            rdx = 0x1;
+                                                                                            rax = *(r14 + 0x68);
+                                                                                            *(r14 + 0x80) = *(r14 + 0x70);
+                                                                                            *(r14 + 0x78) = rax;
+                                                                                            *(r14 + 0x98) = *(r14 + 0x88);
+                                                                                            *(r14 + 0xa0) = *(r14 + 0x90);
+                                                                                            *(r14 + 0x68) = intrinsic_movsd(*(r14 + 0x68), xmm1);
+                                                                                            *(r14 + 0x70) = intrinsic_movsd(*(r14 + 0x70), xmm2);
+                                                                                            xmm0 = intrinsic_movsd(xmm0, var_338);
+                                                                                            *(r14 + 0x88) = intrinsic_movsd(*(r14 + 0x88), xmm0);
+                                                                                            *(r14 + 0x90) = intrinsic_movsd(*(r14 + 0x90), xmm4);
+                                                                                            xmm1 = intrinsic_movsd(xmm1, var_330);
+                                                                                            xmm0 = intrinsic_movapd(xmm0, xmm1);
+                                                                                            xmm0 = intrinsic_maxsd(xmm0, *(r14 + 0xd8));
+                                                                                            *(r14 + 0xd8) = intrinsic_movsd(*(r14 + 0xd8), xmm0);
+                                                                                            *(r14 + 0xa8) = *(r14 + 0xd0);
+                                                                                            *(r14 + 0xd0) = intrinsic_movsd(*(r14 + 0xd0), xmm1);
+                                                                                    }
+                                                                            }
+                                                                    }
+                                                                    else {
+                                                                            rdx = 0x1;
+                                                                            if (r14 != 0x0) {
+                                                                                    rdx = 0x1;
+                                                                                    rax = *(r14 + 0x68);
+                                                                                    *(r14 + 0x80) = *(r14 + 0x70);
+                                                                                    *(r14 + 0x78) = rax;
+                                                                                    *(r14 + 0x98) = *(r14 + 0x88);
+                                                                                    *(r14 + 0xa0) = *(r14 + 0x90);
+                                                                                    *(r14 + 0x68) = intrinsic_movsd(*(r14 + 0x68), xmm1);
+                                                                                    *(r14 + 0x70) = intrinsic_movsd(*(r14 + 0x70), xmm2);
+                                                                                    xmm0 = intrinsic_movsd(xmm0, var_338);
+                                                                                    *(r14 + 0x88) = intrinsic_movsd(*(r14 + 0x88), xmm0);
+                                                                                    *(r14 + 0x90) = intrinsic_movsd(*(r14 + 0x90), xmm4);
+                                                                                    xmm1 = intrinsic_movsd(xmm1, var_330);
+                                                                                    xmm0 = intrinsic_movapd(xmm0, xmm1);
+                                                                                    xmm0 = intrinsic_maxsd(xmm0, *(r14 + 0xd8));
+                                                                                    *(r14 + 0xd8) = intrinsic_movsd(*(r14 + 0xd8), xmm0);
+                                                                                    *(r14 + 0xa8) = *(r14 + 0xd0);
+                                                                                    *(r14 + 0xd0) = intrinsic_movsd(*(r14 + 0xd0), xmm1);
+                                                                            }
+                                                                    }
+                                                            }
+                                                            else {
+                                                                    rdx = 0x1;
+                                                                    if (r14 != 0x0) {
+                                                                            rdx = 0x1;
+                                                                            rax = *(r14 + 0x68);
+                                                                            *(r14 + 0x80) = *(r14 + 0x70);
+                                                                            *(r14 + 0x78) = rax;
+                                                                            *(r14 + 0x98) = *(r14 + 0x88);
+                                                                            *(r14 + 0xa0) = *(r14 + 0x90);
+                                                                            *(r14 + 0x68) = intrinsic_movsd(*(r14 + 0x68), xmm1);
+                                                                            *(r14 + 0x70) = intrinsic_movsd(*(r14 + 0x70), xmm2);
+                                                                            xmm0 = intrinsic_movsd(xmm0, var_338);
+                                                                            *(r14 + 0x88) = intrinsic_movsd(*(r14 + 0x88), xmm0);
+                                                                            *(r14 + 0x90) = intrinsic_movsd(*(r14 + 0x90), xmm4);
+                                                                            xmm1 = intrinsic_movsd(xmm1, var_330);
+                                                                            xmm0 = intrinsic_movapd(xmm0, xmm1);
+                                                                            xmm0 = intrinsic_maxsd(xmm0, *(r14 + 0xd8));
+                                                                            *(r14 + 0xd8) = intrinsic_movsd(*(r14 + 0xd8), xmm0);
+                                                                            *(r14 + 0xa8) = *(r14 + 0xd0);
+                                                                            *(r14 + 0xd0) = intrinsic_movsd(*(r14 + 0xd0), xmm1);
+                                                                    }
+                                                            }
+                                                    }
+                                                    else {
+                                                            rdx = 0x1;
+                                                            if (r14 != 0x0) {
+                                                                    rdx = 0x1;
+                                                                    rax = *(r14 + 0x68);
+                                                                    *(r14 + 0x80) = *(r14 + 0x70);
+                                                                    *(r14 + 0x78) = rax;
+                                                                    *(r14 + 0x98) = *(r14 + 0x88);
+                                                                    *(r14 + 0xa0) = *(r14 + 0x90);
+                                                                    *(r14 + 0x68) = intrinsic_movsd(*(r14 + 0x68), xmm1);
+                                                                    *(r14 + 0x70) = intrinsic_movsd(*(r14 + 0x70), xmm2);
+                                                                    xmm0 = intrinsic_movsd(xmm0, var_338);
+                                                                    *(r14 + 0x88) = intrinsic_movsd(*(r14 + 0x88), xmm0);
+                                                                    *(r14 + 0x90) = intrinsic_movsd(*(r14 + 0x90), xmm4);
+                                                                    xmm1 = intrinsic_movsd(xmm1, var_330);
+                                                                    xmm0 = intrinsic_movapd(xmm0, xmm1);
+                                                                    xmm0 = intrinsic_maxsd(xmm0, *(r14 + 0xd8));
+                                                                    *(r14 + 0xd8) = intrinsic_movsd(*(r14 + 0xd8), xmm0);
+                                                                    *(r14 + 0xa8) = *(r14 + 0xd0);
+                                                                    *(r14 + 0xd0) = intrinsic_movsd(*(r14 + 0xd0), xmm1);
+                                                            }
+                                                    }
+                                            }
+                                            else {
+                                                    rdx = 0x1;
+                                                    if (r14 != 0x0) {
+                                                            rdx = 0x1;
+                                                            rax = *(r14 + 0x68);
+                                                            *(r14 + 0x80) = *(r14 + 0x70);
+                                                            *(r14 + 0x78) = rax;
+                                                            *(r14 + 0x98) = *(r14 + 0x88);
+                                                            *(r14 + 0xa0) = *(r14 + 0x90);
+                                                            *(r14 + 0x68) = intrinsic_movsd(*(r14 + 0x68), xmm1);
+                                                            *(r14 + 0x70) = intrinsic_movsd(*(r14 + 0x70), xmm2);
+                                                            xmm0 = intrinsic_movsd(xmm0, var_338);
+                                                            *(r14 + 0x88) = intrinsic_movsd(*(r14 + 0x88), xmm0);
+                                                            *(r14 + 0x90) = intrinsic_movsd(*(r14 + 0x90), xmm4);
+                                                            xmm1 = intrinsic_movsd(xmm1, var_330);
+                                                            xmm0 = intrinsic_movapd(xmm0, xmm1);
+                                                            xmm0 = intrinsic_maxsd(xmm0, *(r14 + 0xd8));
+                                                            *(r14 + 0xd8) = intrinsic_movsd(*(r14 + 0xd8), xmm0);
+                                                            *(r14 + 0xa8) = *(r14 + 0xd0);
+                                                            *(r14 + 0xd0) = intrinsic_movsd(*(r14 + 0xd0), xmm1);
+                                                    }
+                                            }
+                                    }
+                                    else {
+                                            rdx = 0x1;
+                                            if (r14 != 0x0) {
+                                                    rdx = 0x1;
+                                                    rax = *(r14 + 0x68);
+                                                    *(r14 + 0x80) = *(r14 + 0x70);
+                                                    *(r14 + 0x78) = rax;
+                                                    *(r14 + 0x98) = *(r14 + 0x88);
+                                                    *(r14 + 0xa0) = *(r14 + 0x90);
+                                                    *(r14 + 0x68) = intrinsic_movsd(*(r14 + 0x68), xmm1);
+                                                    *(r14 + 0x70) = intrinsic_movsd(*(r14 + 0x70), xmm2);
+                                                    xmm0 = intrinsic_movsd(xmm0, var_338);
+                                                    *(r14 + 0x88) = intrinsic_movsd(*(r14 + 0x88), xmm0);
+                                                    *(r14 + 0x90) = intrinsic_movsd(*(r14 + 0x90), xmm4);
+                                                    xmm1 = intrinsic_movsd(xmm1, var_330);
+                                                    xmm0 = intrinsic_movapd(xmm0, xmm1);
+                                                    xmm0 = intrinsic_maxsd(xmm0, *(r14 + 0xd8));
+                                                    *(r14 + 0xd8) = intrinsic_movsd(*(r14 + 0xd8), xmm0);
+                                                    *(r14 + 0xa8) = *(r14 + 0xd0);
+                                                    *(r14 + 0xd0) = intrinsic_movsd(*(r14 + 0xd0), xmm1);
+                                            }
+                                    }
+                                    [r14 setPhase:rdx];
+                                    -[UITouch _updateWithChildEvent:](r14, @selector(setPhase:), var_1E0);
+                                    rsi = @selector(_addCoalescedTouch:forIndex:hidEvent:);
+                                    rdx = r14;
+                                    rcx = var_5D8;
+                                    r8 = r12;
+                                    _objc_msgSend_16fe878(var_278, rsi);
+                                    [r15 release];
+                                    [var_5D0 release];
+                                    [r14 release];
+                                    rax = var_1F0;
+                            }
+                            [rax release];
+                            rsi = var_208 + 0x1;
+                            rbx = var_1D8;
+                            r13 = var_1D0;
+                            rcx = var_1E8;
+                    } while (var_5A0 != rsi);
+            }
+    }
+    r14 = rcx;
+    [var_318 release];
+    [var_278 release];
+    [var_530 release];
+    rdx = var_1C0;
+    goto loc_ca5aad;
+
+loc_ca5aad:
+    var_1E8 = r14 + 0x1;
+    var_1D8 = r12;
+    rbx = var_1B8;
+    r12 = *_objc_msgSend;
+    goto loc_ca5203;
+
+loc_ca5ad8:
+    [rbx release];
+    CFDictionaryRemoveAllValues(*___areDigitizerEventsCoalescable.children1EventMap);
+    [rbx release];
+    [var_1E0 release];
+    goto loc_ca5071;
+
+loc_ca5071:
+    r15 = *_objc_msgSend;
+    goto loc_ca5078;
+
+loc_ca5318:
+    rax = __UIEventHIDPathIndexForDigitizerEvent(r12, r15);
+    rax = CFDictionaryGetValue(*___areDigitizerEventsCoalescable.children1EventMap, rax);
+    if (rax == 0x0) goto loc_ca5ad1;
+
+loc_ca533b:
+    rbx = rax;
+    if (__UIEventHIDTouchEdgeTypeForHIDEvent() != __UIEventHIDTouchEdgeTypeForHIDEvent()) goto loc_ca5b06;
+
+loc_ca535a:
+    rbx = IOHIDEventGetIntegerValue(rbx, 0xb0009) != 0x0 ? 0x1 : 0x0;
+    rax = IOHIDEventGetIntegerValue(r15, 0xb0009);
+    rax = (rax != 0x0 ? 0x1 : 0x0) ^ rbx;
+    COND = rax != 0x0;
+    r12 = var_1C8;
+    rbx = var_218;
+    if (COND) goto loc_ca5ad8;
+    goto loc_ca5396;
+
+loc_ca5b06:
+    [var_218 release];
+    CFDictionaryRemoveAllValues(*___areDigitizerEventsCoalescable.children1EventMap);
+    [var_218 release];
+    [var_1E0 release];
+    r15 = *_objc_msgSend;
+    r12 = var_1C8;
+    goto loc_ca5078;
+
+loc_ca5ad1:
+    rbx = var_218;
+    goto loc_ca5ad8;
+
+loc_ca5409:
+    [rbx release];
+    CFDictionaryRemoveAllValues(*___areDigitizerEventsCoalescable.children1EventMap);
+    [rbx release];
+    [r14 release];
+    goto loc_ca542e;
+
+loc_ca505c:
+    [var_208 release];
+    rdi = r14;
+    goto loc_ca506f;
+
+loc_ca506f:
+    [rdi release];
+    goto loc_ca5071;
+
+loc_ca5047:
+    [rbx release];
+    rdi = var_1E0;
+    goto loc_ca506f;
+
+loc_ca7941:
+    rdi = var_1D8;
+    rbx = var_1B8;
+    r12 = r15;
+    var_1D8 = rdi;
+    CFRetain(rdi);
+    goto loc_ca3fd3;
+
+loc_ca4884:
+    rax = IOHIDEventGetChildren(r12);
+    rax = [rax retain];
+    r14 = r12;
+    r12 = r15;
+    r15 = rax;
+    COND = (r12)(rax, @selector(count)) == 0x0;
+    r13 = var_1D0;
+    rax = var_1E8;
+    if (!COND) {
+            rax = (r12)(r15, @selector(objectAtIndexedSubscript:), 0x0);
+            rax = [rax retain];
+            rbx = rax;
+            if (IOHIDEventGetIntegerValue(rax, 0xb0004) != 0x0) {
+                    r14 = var_210;
+                    r13 = var_1C8;
+                    if ((r12)(*_UIApp, @selector(_supportsIndirectInputEvents), 0x0) != 0x0) {
+                            rax = __UIEventHIDGetDescendantPointerEvent(r13);
+                            rcx = 0x3;
+                            if (rax == 0x0) {
+                                    rcx = IOHIDEventGetIntegerValue(r13, 0xb0019, 0x0) == 0x0 ? 0x1 : 0x0;
+                            }
+                    }
+                    else {
+                            rcx = IOHIDEventGetIntegerValue(r13, 0xb0019, 0x0) == 0x0 ? 0x1 : 0x0;
+                    }
+            }
+            else {
+                    r14 = var_210;
+                    rcx = 0x2;
+                    r13 = var_1C8;
+            }
+            var_210 = r14;
+            var_258 = rcx;
+            [rbx release];
+            r12 = *_objc_msgSend;
+            rax = [r15 objectAtIndexedSubscript:0x0];
+            rax = [rax retain];
+            r14 = r13;
+            var_238 = BKSHIDEventDigitizerGetTouchLocus(r13, rax);
+            [rax release];
+            r13 = var_1D0;
+            rax = var_1E8;
+    }
+    var_1E8 = rax + 0x1;
+    [r15 release];
+    var_1D8 = r14;
+    rbx = var_1B8;
+    goto loc_ca4cee;
+
+loc_ca4cee:
+    rdx = var_1C0;
+    goto loc_ca5203;
+
+loc_ca46b5:
+    rdx = var_1C0;
+    rbx = var_1B8;
+    r12 = r15;
+    goto loc_ca5203;
+
+loc_ca439e:
+    var_130 = 0x0;
+    var_1B0 = 0x0;
+    var_B0 = 0x0;
+    rax = __UIEventHIDGetTransformEventComponents(var_1D8, &var_130, &var_1B0, &var_B0);
+    rax = var_130;
+    rdi = var_1B0;
+    rbx = var_1B8;
+    if (((rax != 0x0) || (rdi != 0x0)) || (var_B0 != 0x0)) goto loc_ca4403;
+    goto loc_ca607d;
+
+loc_ca4403:
+    if (rax != 0x0) {
+            r14 = IOHIDEventGetPhase(rax);
+            rdi = var_1B0;
+    }
+    else {
+            r14 = 0x0;
+    }
+    if (rdi != 0x0) {
+            rbx = IOHIDEventGetPhase();
+    }
+    else {
+            rbx = 0x0;
+    }
+    if (var_B0 != 0x0) {
+            rax = IOHIDEventGetPhase();
+    }
+    else {
+            rax = 0x0;
+    }
+    r15 = rbx & 0xffff;
+    r12 = rax & 0xffff;
+    var_1E0 = __UIEventHIDTransformPhaseForComponentPhases(r14 & 0xffff, r15, r12);
+    var_310 = 0x0;
+    var_490 = 0x0;
+    var_420 = 0x0;
+    rax = __UIEventHIDGetTransformEventComponents(var_1C8, &var_310, &var_490, &var_420);
+    rax = var_310;
+    rdi = var_490;
+    rdx = var_1E8;
+    if ((rax == 0x0) && (rdi == 0x0)) {
+            rbx = 0x0;
+            rcx = 0x0;
+            if (var_420 != 0x0) {
+                    var_1F0 = r14;
+                    if (rax != 0x0) {
+                            rbx = IOHIDEventGetPhase(rax);
+                            rdi = var_490;
+                    }
+                    else {
+                            rbx = 0x0;
+                    }
+                    r14 = 0x0;
+                    if (rdi != 0x0) {
+                            r14 = IOHIDEventGetPhase() & 0xffff;
+                    }
+                    if (var_420 != 0x0) {
+                            r13 = IOHIDEventGetPhase() & 0xffff;
+                            rdx = var_420;
+                    }
+                    else {
+                            rdx = 0x0;
+                            r13 = 0x0;
+                    }
+                    rsi = var_1E0 != __UIEventHIDTransformPhaseForComponentPhases(rbx & 0xffff, var_490, rdx) ? 0x1 : 0x0;
+                    rcx = (var_1F0 != (rbx & 0xffff) ? 0x1 : 0x0) | (r14 != r15 ? 0x1 : 0x0) | (r13 != r12 ? 0x1 : 0x0) | rsi;
+                    rbx = 0xe;
+                    if (rcx != 0x0) {
+                            rbx = 0x0;
+                    }
+                    rcx = rcx ^ 0x1;
+                    r13 = var_1D0;
+                    rdx = var_1E8;
+            }
+    }
+    else {
+            var_1F0 = r14;
+            if (rax != 0x0) {
+                    rbx = IOHIDEventGetPhase(rax);
+                    rdi = var_490;
+            }
+            else {
+                    rbx = 0x0;
+            }
+            r14 = 0x0;
+            if (rdi != 0x0) {
+                    r14 = IOHIDEventGetPhase() & 0xffff;
+            }
+            if (var_420 != 0x0) {
+                    r13 = IOHIDEventGetPhase() & 0xffff;
+                    rdx = var_420;
+            }
+            else {
+                    rdx = 0x0;
+                    r13 = 0x0;
+            }
+            rsi = var_1E0 != __UIEventHIDTransformPhaseForComponentPhases(rbx & 0xffff, var_490, rdx) ? 0x1 : 0x0;
+            rcx = (var_1F0 != (rbx & 0xffff) ? 0x1 : 0x0) | (r14 != r15 ? 0x1 : 0x0) | (r13 != r12 ? 0x1 : 0x0) | rsi;
+            rbx = 0xe;
+            if (rcx != 0x0) {
+                    rbx = 0x0;
+            }
+            rcx = rcx ^ 0x1;
+            r13 = var_1D0;
+            rdx = var_1E8;
+    }
+    var_1E8 = rdx;
+    if (rcx == 0x0) goto loc_ca7731;
+
+loc_ca49e2:
+    COND = rbx != 0xe;
+    rbx = var_1B8;
+    if (!COND) {
+            rbx = var_1D8;
+            r12 = var_1C8;
+            CMP(IOHIDEventGetTimeStamp(rbx), IOHIDEventGetTimeStamp(r12));
+            r14 = rbx;
+            asm { cmova      r14, r12 };
+            asm { cmova      r12, rbx };
+            var_130 = 0x0;
+            var_1B0 = 0x0;
+            var_B0 = 0x0;
+            rax = __UIEventHIDGetTransformEventComponents(r12, &var_130, &var_1B0, &var_B0);
+            var_310 = 0x0;
+            var_490 = 0x0;
+            var_420 = 0x0;
+            rax = __UIEventHIDGetTransformEventComponents(r14, &var_310, &var_490, &var_420);
+            rax = IOHIDEventCreateCopy(0x0, r12);
+            r15 = rax;
+            var_528 = 0x0;
+            var_7E8 = 0x0;
+            var_4E8 = 0x0;
+            rax = __UIEventHIDGetTransformEventComponents(rax, &var_528, &var_7E8, &var_4E8);
+            if (((var_130 != 0x0) && (var_310 != 0x0)) && (var_528 != 0x0)) {
+                    IOHIDEventGetDoubleValue();
+                    var_1C8 = intrinsic_movsd(var_1C8, xmm0);
+                    IOHIDEventGetDoubleValue(var_310, 0x70002);
+                    xmm0 = intrinsic_addsd(xmm0, var_1C8);
+                    IOHIDEventSetDoubleValue();
+            }
+            if ((var_1B0 != 0x0) && ((var_490 != 0x0) && (var_7E8 != 0x0))) {
+                    IOHIDEventGetDoubleValue();
+                    var_1C8 = intrinsic_movsd(var_1C8, xmm0);
+                    IOHIDEventGetDoubleValue(var_490, 0x50002);
+                    xmm0 = intrinsic_addsd(xmm0, var_1C8);
+                    IOHIDEventSetDoubleValue();
+            }
+            rbx = var_1B8;
+            if ((var_B0 != 0x0) && ((var_420 != 0x0) && (var_4E8 != 0x0))) {
+                    IOHIDEventGetDoubleValue();
+                    var_1D8 = intrinsic_movsd(var_1D8, xmm0);
+                    IOHIDEventGetDoubleValue(var_B0, 0x40001);
+                    var_1C8 = intrinsic_movsd(var_1C8, xmm0);
+                    IOHIDEventGetDoubleValue(var_420, 0x40000);
+                    var_1F0 = intrinsic_movsd(var_1F0, xmm0);
+                    IOHIDEventGetDoubleValue(var_420, 0x40001);
+                    var_1E0 = intrinsic_movsd(var_1E0, xmm0);
+                    xmm0 = intrinsic_movsd(xmm0, var_1F0);
+                    intrinsic_addsd(xmm0, var_1D8);
+                    IOHIDEventSetDoubleValue();
+                    xmm0 = intrinsic_movsd(xmm0, var_1E0);
+                    xmm0 = intrinsic_addsd(xmm0, var_1C8);
+                    IOHIDEventSetDoubleValue();
+            }
+            var_1D8 = CFAutorelease(r15);
+    }
+    else {
+            r14 = [[NSAssertionHandler currentHandler] retain];
+            rax = [NSString stringWithUTF8String:"IOHIDEventRef __nextEventToDeliverAfterCoalescing(NSMutableArray *const __strong, NSArray *__autoreleasing *, UIEventEnvironment *__unsafe_unretained)"];
+            rax = [rax retain];
+            [r14 handleFailureInFunction:rax file:@"UIEventDispatcher.m" lineNumber:0x98f description:@"Invalid coalesced event type"];
+            [rax release];
+            [r14 release];
+    }
+    r12 = *_objc_msgSend;
+    var_1E8 = var_1E8 + 0x1;
+    goto loc_ca4cee;
+
+loc_ca7731:
+    r12 = *_objc_msgSend;
+    goto loc_ca7738;
+
+loc_ca4423:
+    r14 = IOHIDEventGetPhase(var_1D8);
+    r15 = IOHIDEventGetPhase(r12);
+    rbx = __UIEventHIDGetChildScrollEvent(var_1D8) != 0x0 ? 0x1 : 0x0;
+    rax = __UIEventHIDGetChildScrollEvent(r12);
+    rax = rax != 0x0 ? 0x1 : 0x0;
+    if (r14 != r15) goto loc_ca7731;
+
+loc_ca4466:
+    rbx = rbx ^ rax;
+    if (rbx != 0x0) goto loc_ca7731;
+
+loc_ca446e:
+    r15 = var_1D8;
+    CMP(IOHIDEventGetTimeStamp(r15), IOHIDEventGetTimeStamp(r12));
+    rbx = r12;
+    asm { cmova      rbx, r15 };
+    IOHIDEventGetFloatValue(r15, 0x60000);
+    var_1F0 = intrinsic_movsd(var_1F0, xmm0);
+    IOHIDEventGetFloatValue(r15, 0x60001);
+    var_1E0 = intrinsic_movsd(var_1E0, xmm0);
+    IOHIDEventGetFloatValue(r15, 0x60002);
+    var_1C8 = intrinsic_movsd(var_1C8, xmm0);
+    IOHIDEventGetFloatValue(r12, 0x60000);
+    var_218 = intrinsic_movsd(var_218, xmm0);
+    IOHIDEventGetFloatValue(r12, 0x60001);
+    var_1F8 = intrinsic_movsd(var_1F8, xmm0);
+    IOHIDEventGetFloatValue(r12, 0x60002);
+    var_208 = intrinsic_movsd(var_208, xmm0);
+    rax = IOHIDEventCreateCopy(0x0, rbx);
+    r14 = rax;
+    xmm0 = intrinsic_movsd(xmm0, var_218);
+    intrinsic_addsd(xmm0, var_1F0);
+    IOHIDEventSetFloatValue(rax, 0x60000);
+    xmm0 = intrinsic_movsd(xmm0, var_1F8);
+    intrinsic_addsd(xmm0, var_1E0);
+    IOHIDEventSetFloatValue(r14, 0x60001);
+    xmm0 = intrinsic_movsd(xmm0, var_208);
+    xmm0 = intrinsic_addsd(xmm0, var_1C8);
+    IOHIDEventSetFloatValue(r14, 0x60002);
+    r13 = __UIEventHIDGetChildScrollEvent(r14);
+    rbx = __UIEventHIDGetChildScrollEvent(r15);
+    rax = __UIEventHIDGetChildScrollEvent(r12);
+    if ((r13 != 0x0) && (rbx != 0x0)) {
+            r12 = rax;
+            if (rax != 0x0) {
+                    IOHIDEventGetFloatValue(rbx, 0x60000);
+                    var_1E0 = intrinsic_movsd(var_1E0, xmm0);
+                    IOHIDEventGetFloatValue(rbx, 0x60001);
+                    var_1D8 = intrinsic_movsd(var_1D8, xmm0);
+                    IOHIDEventGetFloatValue(rbx, 0x60002);
+                    var_1C8 = intrinsic_movsd(var_1C8, xmm0);
+                    IOHIDEventGetFloatValue(r12, 0x60000);
+                    var_1F8 = intrinsic_movsd(var_1F8, xmm0);
+                    IOHIDEventGetFloatValue(r12, 0x60001);
+                    var_208 = intrinsic_movsd(var_208, xmm0);
+                    IOHIDEventGetFloatValue(r12, 0x60002);
+                    var_1F0 = intrinsic_movsd(var_1F0, xmm0);
+                    xmm0 = intrinsic_movsd(xmm0, var_1F8);
+                    intrinsic_addsd(xmm0, var_1E0);
+                    IOHIDEventSetFloatValue(r13, 0x60000);
+                    xmm0 = intrinsic_movsd(xmm0, var_208);
+                    intrinsic_addsd(xmm0, var_1D8);
+                    IOHIDEventSetFloatValue(r13, 0x60001);
+                    xmm0 = intrinsic_movsd(xmm0, var_1F0);
+                    xmm0 = intrinsic_addsd(xmm0, var_1C8);
+                    IOHIDEventSetFloatValue(r13, 0x60002);
+            }
+    }
+    var_1D8 = CFAutorelease(r14);
+    var_1E8 = var_1E8 + 0x1;
+    r12 = *_objc_msgSend;
+    rbx = var_1B8;
+    r13 = var_1D0;
+    goto loc_ca4cee;
+
+loc_ca3dc6:
+    r14 = *_objc_msgSend;
+    var_1D0 = r12;
+    if (r12 != 0xb) goto loc_ca3e83;
+
+loc_ca3dda:
+    r14 = *_objc_msgSend;
+    rax = IOHIDEventGetChildren(var_248);
+    rax = [rax retain];
+    rbx = r14;
+    r15 = rax;
+    rsi = @selector(count);
+    if ((r14)(rax, rsi) != 0x0) {
+            rax = (rbx)(r15, @selector(objectAtIndexedSubscript:), 0x0);
+            rax = [rax retain];
+            r14 = rax;
+            if (IOHIDEventGetIntegerValue(rax, 0xb0004) != 0x0) {
+                    r12 = var_248;
+                    if ((rbx)(*_UIApp, @selector(_supportsIndirectInputEvents), 0x0) != 0x0) {
+                            r13 = 0x3;
+                            if (__UIEventHIDGetDescendantPointerEvent(r12) == 0x0) {
+                                    r13 = IOHIDEventGetIntegerValue(r12, 0xb0019, 0x0) == 0x0 ? 0x1 : 0x0;
+                            }
+                    }
+                    else {
+                            r13 = IOHIDEventGetIntegerValue(r12, 0xb0019, 0x0) == 0x0 ? 0x1 : 0x0;
+                    }
+            }
+            else {
+                    r13 = 0x2;
+                    r12 = var_248;
+            }
+            [r14 release];
+            rdx = 0x0;
+            rax = [r15 objectAtIndexedSubscript:rdx];
+            rax = [rax retain];
+            rsi = rax;
+            var_238 = BKSHIDEventDigitizerGetTouchLocus(r12, rsi);
+            [rax release];
+    }
+    else {
+            r13 = 0xffffffffffffffff;
+            var_238 = 0xff;
+            r12 = var_248;
+    }
+    var_22C = BKSHIDEventGetContextIDFromEvent(r12);
+    [r15 release];
+    var_228 = 0x0;
+    var_1D8 = r12;
+    r14 = *_objc_msgSend;
+    rbx = var_1B8;
+    r12 = var_1D0;
+    rcx = var_238;
+    goto loc_ca3f5d;
+
+loc_ca3e83:
+    var_228 = 0x0;
+    var_1D8 = var_248;
+    r12 = var_1D0;
+    goto loc_ca3eaa;
+
+loc_ca3db4:
+    r14 = 0x0;
+    r13 = 0x0;
+    goto loc_ca4110;
+}
