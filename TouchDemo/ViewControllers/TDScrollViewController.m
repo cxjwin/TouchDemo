@@ -30,6 +30,18 @@
         [self.view addSubview:_scrollView];
     }
     
+    // add button1
+    {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.backgroundColor = [UIColor greenColor];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [button setTitle:@"BUTTON-1" forState:UIControlStateNormal];
+        [button sizeToFit];
+        button.center = CGPointMake(CGRectGetMidX(_scrollView.bounds), 150);
+        [_scrollView addSubview:button];
+    }
+    
     // sub scroll view
     {
         CGRect frame = CGRectMake(0, 0, 200, 200);
@@ -42,6 +54,38 @@
         
         [_scrollView addSubview:_subScrollView];
     }
+    
+    // add button2
+    {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.backgroundColor = [UIColor greenColor];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [button setTitle:@"BUTTON-2" forState:UIControlStateNormal];
+        [button sizeToFit];
+        button.center = CGPointMake(CGRectGetMidX(_subScrollView.bounds), 50);
+        [_subScrollView addSubview:button];
+    }
+    
+    [self printAllScrollViewGestures];
+    
+    [self hookAllScrollViewGestures];
+}
+
+- (void)printAllScrollViewGestures {
+    NSArray<__kindof UIGestureRecognizer *> *gestures = [_scrollView gestureRecognizers];
+    NSLog(@"ScrollView gestureRecognizers : %@", gestures);
+}
+
+- (void)hookAllScrollViewGestures {
+    NSArray<__kindof UIGestureRecognizer *> *gestures = [_scrollView gestureRecognizers];
+    [gestures enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj addTarget:self action:@selector(hookGestureRecognizer:)];
+    }];
+}
+
+- (void)hookGestureRecognizer:(UIGestureRecognizer *)gesture {
+    NSLog(@"gesture : %@", gesture);
 }
 
 @end

@@ -43,6 +43,19 @@
     self.state = UIGestureRecognizerStateFailed;
 }
 
+// called automatically by the runtime after the gesture state has been set to UIGestureRecognizerStateEnded
+// any internal state should be reset to prepare for a new attempt to recognize the gesture
+// after this is received all remaining active touches will be ignored (no further updates will be received for touches that had already begun but haven't ended)
+- (void)reset {
+    //
+}
+
+// if a touch isn't part of this gesture it can be passed to this method to be ignored. ignored touches won't be cancelled on the view even if cancelsTouchesInView is YES
+- (void)ignoreTouch:(UITouch*)touch forEvent:(UIEvent*)event {
+    NSArray *gestureRecognizers = [touch gestureRecognizers];
+    NSLog(@"gestureRecognizers : %@", gestureRecognizers);
+}
+
 #pragma mark - Preventing exclusion
 
 /// Overriding these methods enables the same behavior as implementing the UIGestureRecognizerDelegate methods gestureRecognizerShouldBegin: and gestureRecognizer:shouldReceiveTouch:. However, by overriding them, subclasses can define class-wide prevention rules. For example, a UITapGestureRecognizer object never prevents another UITapGestureRecognizer object with a higher tap count.

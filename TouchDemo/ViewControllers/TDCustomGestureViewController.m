@@ -26,14 +26,14 @@
     view.backgroundColor = [UIColor blueColor];
     view.center = self.view.center;
     
-    // add one finger single tap gesture
+    // tap1
     {
         TDSimpleTapGestureRecognizer *tap = [[TDSimpleTapGestureRecognizer alloc] initWithTarget:self action:@selector(oneFingerTap:)];
         tap.numberOfTapsRequired = 1;
         [view addGestureRecognizer:tap];
     }
     
-    // add two fingers single tap gesture
+    // tap2
     {
         TDSimpleTapGestureRecognizer *tap = [[TDSimpleTapGestureRecognizer alloc] initWithTarget:self action:@selector(twoFingersTap:)];
         tap.numberOfTapsRequired = 2;
@@ -44,11 +44,11 @@
 }
 
 - (void)oneFingerTap:(TDSimpleTapGestureRecognizer *)tap {
-    NSLog(@"one finger tap");
+    NSLog(@"tap1");
 }
 
 - (void)twoFingersTap:(TDSimpleTapGestureRecognizer *)tap {
-    NSLog(@"two fingers tap");
+    NSLog(@"tap2");
 }
 
 @end

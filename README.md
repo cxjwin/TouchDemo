@@ -15,6 +15,12 @@
 
 ### hitTesting 流程
 
+> This method traverses the view hierarchy by calling the pointInside:withEvent: method of each subview to determine which subview should receive a touch event. If pointInside:withEvent: returns YES, then the subview’s hierarchy is similarly traversed until the frontmost view containing the specified point is found. If a view does not contain the point, its branch of the view hierarchy is ignored. You rarely need to call this method yourself, but you might override it to hide touch events from subviews.
+
+> This method ignores view objects that are hidden, that have disabled user interactions, or have an alpha level less than 0.01. This method does not take the view’s content into account when determining a hit. Thus, a view can still be returned even if the specified point is in a transparent portion of that view’s content.
+
+> Points that lie outside the receiver’s bounds are never reported as hits, even if they actually lie within one of the receiver’s subviews. This can occur if the current view’s clipsToBounds property is set to NO and the affected subview extends beyond the view’s bounds.
+
 hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历, 具体伪代码如下:
 
 ```
@@ -44,6 +50,23 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 }
 ```
 
+### 其他相关属性
+
+```
+
+@property(nonatomic,getter=isUserInteractionEnabled) BOOL userInteractionEnabled;  // default is YES. if set to NO, user events (touch, keys) are ignored and removed from the event queue.
+@property(nonatomic,getter=isHidden) BOOL              hidden;                     // default is NO. doesn't check superviews
+@property(nonatomic)                 CGFloat           alpha;                      // animatable. default is 1.0
+@property(nonatomic,getter=isMultipleTouchEnabled) BOOL multipleTouchEnabled API_UNAVAILABLE(tvos);   // default is NO
+
+typedef NS_OPTIONS(NSUInteger, UIViewAnimationOptions) {
+    // ...
+    UIViewAnimationOptionAllowUserInteraction      = 1 <<  1, // turn on user interaction while animating
+    // ...
+}
+
+```
+
 #### 解决问题 2
 
 可以利用 `- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event` 方法解决,
@@ -51,44 +74,47 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 ### 事件分发流程
 
-**响应者链**
+**发送事件**  
+![send_touch_event](./pics/send_touch_event.png)
+
+**响应者链**  
 ![响应者链](./pics/responder_chain.png)
 
 ### 以 Single Touch 为例
 
-**touch down**
+**touch down**  
 ![touch_down](./pics/single_touch_down.png)
 
-**touch began**
+**touch began**  
 ![touch_began](./pics/single_touch_began.png)
 
-**touch moves**
+**touch moves**  
 ![touch_moves](./pics/single_touch_moves.png)
 
-**touch ended**
+**touch ended**  
 ![touch_ended](./pics/single_touch_ended.png)
 
-**touch cancelled**
+**touch cancelled**  
 ![touch_cancelled](./pics/single_touch_cancelled.png)
 
-**summary**
+**summary**  
 ![touch_summary](./pics/single_touch_summary.png)
 
 ### 加入手势以后
 
-**touch down**
+**touch down**  
 ![touch_down](./pics/gesture_touch_down.png)
 
-**touch began**
+**touch began**  
 ![touch_began](./pics/gesture_touch_began.png)
 
-**touch move**
+**touch move**  
 ![touch_moves](./pics/gesture_touch_move.png)
 
-**touch move again**
+**touch move again**  
 ![touch_ended](./pics/gesture_touch_move_again.png)
 
-**touch lift**
+**touch lift**  
 ![touch_cancelled](./pics/gesture_touch_lift.png)
 
 ### 多手势
@@ -141,6 +167,31 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 ![muti_gesture_handle_state](./pics/muti_gesture_handle_state.png)
 
+### 手势开启
+
+```
+@protocol UIGestureRecognizerDelegate <NSObject>
+@optional
+// called when a gesture recognizer attempts to transition out of UIGestureRecognizerStatePossible. returning NO causes it to transition to UIGestureRecognizerStateFailed
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer;
+
+// called before touchesBegan:withEvent: is called on the gesture recognizer for a new touch. return NO to prevent the gesture recognizer from seeing this touch
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch;
+
+// ...
+@end
+
+
+@property(nonatomic, getter=isEnabled) BOOL enabled;  // default is YES. disabled gesture recognizers will not receive touches. when changed to NO the gesture recognizer will be cancelled if it's currently recognizing a gesture
+
+@property(nonatomic, copy) NSArray<NSNumber *> *allowedTouchTypes API_AVAILABLE(ios(9.0)); // Array of UITouchTypes as NSNumbers.
+
+// Indicates whether the gesture recognizer will consider touches of different touch types simultaneously.
+// If NO, it receives all touches that match its allowedTouchTypes.
+// If YES, once it receives a touch of a certain type, it will ignore new touches of other types, until it is reset to UIGestureRecognizerStatePossible.
+@property (nonatomic) BOOL requiresExclusiveTouchType API_AVAILABLE(ios(9.2)); // defaults to YES
+```
+
 ### 手势的状态
 
 `@property(nonatomic,readonly) UIGestureRecognizerState state;`
@@ -170,15 +221,15 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 下面我们来看下几个手势的例子
 
-#### CASE1: Single Tap 和 Double Tap
+#### CASE1: Single Tap, Double Tap, LongPress
 
 参考 TDTapGestureViewController
 
-#### CASE2: Single Tap 和 Pinch 
+#### CASE2: Single Tap, Pinch 
 
 参考 TDMutiGestureViewController
 
-#### CASE3: Pan 和 Pinch
+#### CASE3: Pan, Pinch
 
 参考 TDPanPinchViewController
 
@@ -186,18 +237,16 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 ### Touch
 
-简单的点击事件可以使用 Touch 处理, 鉴于 View 中的 Touch 方法可能会被手势 Cancelled 掉, 一般建议优先使用 UIControl 或者手势.
+简单的点击事件可以使用 Touch 处理. 鉴于 View 中的 Touch 方法可能会被手势 Cancelled 掉, 一般建议优先使用 UIControl 或者手势.
 
 ### UIControl
 
 UIKit 提供了比较丰富的 UIControl 子类控件, 基本可以满足日常开发需求. 
 
-UIButton, UIPageControl, UISegmentedControl, UIStepper
-    ( Prevents single taps using one finger )
+UIButton, UIPageControl, UISegmentedControl, UIStepper (Prevents single taps using one finger)  
 以上控件会拦截掉单指的单击手势
 
-UISlider
-    ( Prevents swipes and pans using one finger )
+UISlider (Prevents swipes and pans using one finger)  
 以上控件会拦截掉单指的 swipe 和 pan 手势
 
 UIControl 有个好处, 点击或者滑动后, 对应的 UI 可以进行更新, 以达到良好的交互体验.
@@ -220,7 +269,7 @@ UIControl 有个好处, 点击或者滑动后, 对应的 UI 可以进行更新, 
 ### 主动调用方法
 
 ```
-// 如果不加这一行, 双击的时候会先触发单击手势
+// 如果不加这一行, 双击的时候会同时触发单击手势
 [_singleTap requireGestureRecognizerToFail:_doubleTap];
 ```
 
@@ -389,6 +438,11 @@ po (SEL)$rsi // 第二个参数
 po $rax // 查看返回值
 ```
 
+## 源码
+
+- 目前 RunLoop 的源码参考的: https://github.com/apple/swift-corelibs-foundation
+- 汇编代码主要逆向的 UIKitCore
+
 ## iOS 手势原生响应机制处理流程
 
 在 com.apple.uikit.eventfetch-thread 线程下苹果注册了一个 Source1(基于 mach port 的)用来接收系统事件, 其回调函数为 __IOHIDEventSystemClientQueueCallback()，"HID" 是 Human Interface Devices "人机交互" 的首字母缩写.
@@ -398,10 +452,12 @@ _UIApplicationHandleEventQueue 会把 IOHIDEvent 处理并包装成 UIEvent 进�
 
 ### com.apple.uikit.eventfetch-thread 线程
 
--[UIEventFetcher threadMain] 方法会单起了一个线程, 该线程有自己的 RunLoop, 是一个常驻线程, Xcode Debug 模式下可以挂起线程进行测试, 所有的点击事件都不响应了.  
-IOHIDEventSystemClientScheduleWithRunLoop 函数执行 RunLoop  
-IOHIDEventSystemClientRegisterEventCallback 函数注册回调  
+```
+-[UIEventFetcher threadMain] // 方法会单起了一个线程, 该线程有自己的 RunLoop, 是一个常驻线程, Xcode Debug 模式下可以挂起线程进行测试, 所有的点击事件都不响应了.  
+IOHIDEventSystemClientScheduleWithRunLoop // 启动 RunLoop  
+IOHIDEventSystemClientRegisterEventCallback // 注册回调  
 -[UIEventFetcher _setupFilterChain] // 设置 __UILogGetCategoryImpl  
+```
 
 ### 点击触发 Source1
 
@@ -409,6 +465,16 @@ IOHIDEventSystemClientRegisterEventCallback 函数注册回调
 
 Source1 是基于 mach port 的, 用来接收系统事件. 
 从 RunLoop 源码分析应该是 __CFRunLoopModeFindSourceForMachPort 触发的, 但是断点并没有执行.
+
+```
+// call with rl and rlm locked
+static CFRunLoopSourceRef __CFRunLoopModeFindSourceForMachPort(CFRunLoopRef rl, CFRunLoopModeRef rlm, __CFPort port) {	/* DOES CALLOUT */
+    CHECK_FOR_FORK();
+    CFRunLoopSourceRef found = rlm->_portToV1SourceMap ? (CFRunLoopSourceRef)CFDictionaryGetValue(rlm->_portToV1SourceMap, (const void *)(uintptr_t)port) : NULL;
+    return found;
+}
+```
+
 从其上一步 CFDictionaryGetValue 调用分析, 都是通过 port 取 CFRunLoopSource, 和 __CFRunLoopModeFindSourceForMachPort 实现一致, 初步推测可能是编译器给优化掉了, 但是实现并没有变:
 
 ```
@@ -429,18 +495,16 @@ Source1 是基于 mach port 的, 用来接收系统事件.
 
 #### 触发 Source1
 
-然后触发 __CFRunLoopDoSource1
-
+```
 __CFRunLoopDoSource1
-
-__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__
-
-__CFMachPortPerform
+    __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__
+        __CFMachPortPerform
+```
 
 #### Source1 转 Source0
 
 ```
-__IOHIDEventSystemClientQueueCallback
+__IOHIDEventSystemClientQueueCallback // 回调处理
     -[UIEventFetcher _receiveHIDEventInternal:] // 接收事件
     (lldb) po $arg3
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -454,13 +518,13 @@ __IOHIDEventSystemClientQueueCallback
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     (lldb) po [$arg3 class]
-    HIDServiceClient
+    HIDServiceClient // 这里可以看出 HID 事件处理应该是个 C/S 架构
 
     __30-[UIEventFetcher filterEvents]_block_invoke // 过滤事件
 
     -[UIEventFetcher signalEventsAvailableWithReason:filteredEventCount:] // 发送事件
 
-    -[UIEventDispatcher eventFetcherDidReceiveEvents:] // 派发事件
+    -[UIEventDispatcher eventFetcherDidReceiveEvents:] // 派发事件, 入参是 UIEventFetcher
     (lldb) po $arg3
     <UIEventFetcher: 0x60000074c100>
 
@@ -478,32 +542,30 @@ __IOHIDEventSystemClientQueueCallback
 
 主线程 RunLoop 被唤醒后, 开始处理 Source0
 
+```
 __CFRunLoopDoSource0
-
-__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__
-
-__eventFetcherSourceCallback
-
--[UIEventFetcher drainEventsIntoEnvironment:] 
-
-__processEventQueue // 关键函数
+    __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__
+        __eventFetcherSourceCallback
+            -[UIEventFetcher drainEventsIntoEnvironment:] // 入参 UIEventEnvironment, 参考 https://github.com/w0lfschild/macOS_headers/blob/master/macOS/PrivateFrameworks/UIKitCore/61000/UIEventEnvironment.h
+            __processEventQueue // 关键函数
+```
 
 #### 确定响应事件的 View
 
 整个主要的逻辑都在 __processEventQueue 里面, 通过汇编查看这个函数体非常的大, 也很复杂, 主要挑几个重点看一下吧
 
+```
 -[UIEventEnvironment UIKitEventForHIDEvent:] // 会将 HIDEvent 转成 UITouchesEvent
-
-_UIEventHIDUIWindowForHIDEvent // 通过 HIDEvent 获取处理该事件的 Window
+``` 
 
 ```
+_UIEventHIDUIWindowForHIDEvent // 通过 HIDEvent 获取处理该事件的 Window, 可以断点在调用处的下一行查看返回值
 (lldb) po $rax
 <TDWindow: 0x7fe03140aec0; baseClass = UIWindow; frame = (0 0; 428 926); gestureRecognizers = <NSArray: 0x60000185a610>; layer = <UIWindowLayer: 0x60000165cb40>>
-
-_UIEventHIDEnumerateChildren // 遍历子事件, 该函数有三个参数, 遍历出子事件后交由 ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke 处理
 ```
 
 ```
+_UIEventHIDEnumerateChildren // 遍历子事件 (log 中的 ChildEvents), 该函数有三个参数, 遍历出子事件后交由 ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke 处理
 (lldb) po $arg1
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Timestamp:           37267037826054
@@ -578,29 +640,14 @@ ChildEvents:
  dispose  : 0x7fff23cecea3 (/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore`__destroy_helper_block_e8_32r40r)
 ```
 
-以下是 hitTest 方法触发的调用栈:
+其他一些调用:
 
 ```
-____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.43
-    -[UIWindow _targetWindowForPathIndex:atPoint:forEvent:windowServerHitTestWindow:]
-        +[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]
-            -[UIWindowScene _topVisibleWindowPassingTest:]
-                -[UIWindowScene _enumerateWindowsIncludingInternalWindows:onlyVisibleWindows:asCopy:stopped:withBlock:]
-                    __46-[UIWindowScene _topVisibleWindowPassingTest:]_block_invoke
-                        __63+[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]_block_invoke
-                            -[UIWindow _hitTestLocation:inScene:withWindowServerHitTestWindow:event:]
-                                -[UIView(Geometry) _hitTest:withEvent:windowServerHitTestWindow:]
-                                    -[UIView(Geometry) hitTest:withEvent:]
-
 -[UIEventEnvironment _setTouchMap:forWindow:] // 将 UITouch 缓存到当前 Window 中, 下面事件分发的时候需要使用
-
 -[UITouch _willBeDispatchedAsEnded] // 点击为 end 状态时会触发
-
 [[_UIRemoteKeyboards sharedRemoteKeyboards] peekApplicationEvent:] // 发送给键盘的 Window 进行处理
-
-BKSHIDEventGetSystemGestureStatusFromDigitizerEvent // ?? 系统手势更新
-
-__sendSystemGestureLatentClientUpdate
+BKSHIDEventGetSystemGestureStatusFromDigitizerEvent // 获取系统手势状态
+__sendSystemGestureLatentClientUpdate // 系统手势更新
 ```
 
 #### 事件分发
@@ -616,14 +663,29 @@ __sendSystemGestureLatentClientUpdate
             -[UITouchesEvent touchesForWindow:] // 从 _keyedTouchesByWindow 这个字典里面获取 UITouch, key 是 Window, Value 是 Touch, 如果能取到 Touch, 走下面的方法
         -[UITouchesEvent _touchesForView:withPhase:] 
             -[UITouchesEvent touchesForView:] // 从 _keyedTouches 字典里面获取 UITouch
-            // 通过上面获取的 View & Touch 调用 touchesBegan/touchesMoved/touchesEnded/touchesCancelled 等方法
+        // ...
+        // 通过上面获取的 View & Touch 调用 touchesBegan/touchesMoved/touchesEnded/touchesCancelled 等方法
 ```
 
 ## hitTest 流程分析
 
-我们先从汇编代码看下 hitTest 方法的
+以下是 hitTest 方法触发的调用栈:
 
-主要核心代码如下
+```
+____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.43
+    -[UIWindow _targetWindowForPathIndex:atPoint:forEvent:windowServerHitTestWindow:]
+        +[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]
+            -[UIWindowScene _topVisibleWindowPassingTest:]
+                -[UIWindowScene _enumerateWindowsIncludingInternalWindows:onlyVisibleWindows:asCopy:stopped:withBlock:]
+                    __46-[UIWindowScene _topVisibleWindowPassingTest:]_block_invoke
+                        __63+[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]_block_invoke
+                            -[UIWindow _hitTestLocation:inScene:withWindowServerHitTestWindow:event:]
+                                -[UIView(Geometry) _hitTest:withEvent:windowServerHitTestWindow:]
+                                    -[UIView(Geometry) hitTest:withEvent:]
+```
+
+我们先从汇编代码看下 hitTest 方法的主要核心代码如下:
+
 ```
 if (__UIViewIgnoresTouchEvents(r13, rbx & 0xff) == 0x0) {
         xmm0 = intrinsic_movsd(xmm0, var_30);
@@ -655,6 +717,7 @@ if (__UIViewIgnoresTouchEvents(r13, rbx & 0xff) == 0x0) {
         }
 }
 ```
+
 1. 如果 `__UIViewIgnoresTouchEvents` 判断 View 忽略事件, 则不处理
 2. `- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event` 判断点击是否在 View 内
 3. 遍历 subviews 调用 `___38-[UIView(Geometry) hitTest:withEvent:]_block_invoke`
@@ -665,6 +728,7 @@ if (__UIViewIgnoresTouchEvents(r13, rbx & 0xff) == 0x0) {
 **这里有个细节: hitTest 采用的是"逆前序深度遍历".**
 
 ## 手势的处理
+
 这里以 Tap 手势为例, 同样的主要的逻辑处理在 `__processEventQueue` 函数里面
 
 ```
@@ -776,6 +840,7 @@ loc_7276d9:
 ```
 
 其中 var_628 变量就是 UIGestureEnvironment, 偏移 0x10 就是第二个实例变量对应 `_gestureRecognizersNeedingUpdate`, 在对应 `rax = [*(var_628 + 0x10) allObjects];` 代码处断点, 我们打印下
+
 ```
 (lldb) po $rax
 <UIGestureEnvironment: 0x60000144c000>
@@ -788,8 +853,10 @@ loc_7276d9:
     <_UISystemGestureGateGestureRecognizer: 0x7fbdde70b470; state = Failed; delaysTouchesBegan = YES; view = <TDWindow 0x7fbdde70ec40>>
 )}
 ```
+
 中间还会对手势有一些额外的处理, 然后将手势添加到上述的 `NSMutableOrderedSet` 中, 这里不详细讲了, 定位起来也比较麻烦.
 然后遍历 `NSMutableOrderedSet` 调用 `-[UIGestureRecognizer _updateGestureForActiveEvents]`
+
 ```
 rax = [var_5E8 retain];
 r14 = rax;
@@ -815,11 +882,13 @@ if (rax != 0x0) {
 
 断点 `_UIGestureRecognizerSendTargetActions` 看下, 连续触发了几次, 其中有 `state = Began` -> `state = Changed` 的转变
 
+Began: 
 ```
 (lldb) po $arg1
 <TDPanGestureRecognizer: 0x7fbdde70c070; baseClass = UIPanGestureRecognizer; state = Began; view = <TDView 0x7fbdde717fa0>; target= <(action=pan:, target=<TDPanViewController 0x7fbdde424bd0>)>>
 ```
 
+Changed: 
 ```
 (lldb) po $arg1
 <TDPanGestureRecognizer: 0x7fbdde70c070; baseClass = UIPanGestureRecognizer; state = Changed; view = <TDView 0x7fbdde717fa0>; target= <(action=pan:, target=<TDPanViewController 0x7fbdde424bd0>)>>
