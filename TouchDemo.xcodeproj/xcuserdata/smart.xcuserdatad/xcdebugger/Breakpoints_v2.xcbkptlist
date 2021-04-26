@@ -28,23 +28,24 @@
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.AddressBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
          <BreakpointContent
-            uuid = "97583EA5-3386-4BC8-A40F-9FD8F46524B1"
+            uuid = "096D2AC2-59F9-4DB5-8985-47848BDEF5A4"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            symbolName = "*0x10fea4bd5">
+            symbolName = "-[UIGestureRecognizer _updateGestureForActiveEvents]"
+            moduleName = "">
             <Locations>
                <Location
-                  uuid = "97583EA5-3386-4BC8-A40F-9FD8F46524B1 - c36e452042eac878"
+                  uuid = "096D2AC2-59F9-4DB5-8985-47848BDEF5A4 - 8d0be9a68cf8c1df"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "_UIEventHIDShouldTransformEvent"
+                  symbolName = "-[UIGestureRecognizer _updateGestureForActiveEvents]"
                   moduleName = "UIKitCore"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "15">
+                  offsetFromSymbolStart = "0">
                </Location>
             </Locations>
          </BreakpointContent>

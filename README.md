@@ -23,7 +23,7 @@
 
 hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历, 具体伪代码如下:
 
-```
+```objective-c
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event { 
     if (/* point is in our bounds */) {
         for (/* each subview, in reverse order */) {
@@ -44,7 +44,7 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 从上面的伪代码可以看到, 最开始的判断就是 `point is in our bounds` 的逻辑, 那么这个对应到 UIView 中的方法是:
 
-```
+```objective-c
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
     /* point is in our bounds */
 }
@@ -52,7 +52,7 @@ hitTest 采用的是"逆前序深度遍历", 从最底部的 window 开始遍历
 
 ### 其他相关属性
 
-```
+```objective-c
 
 @property(nonatomic,getter=isUserInteractionEnabled) BOOL userInteractionEnabled;  // default is YES. if set to NO, user events (touch, keys) are ignored and removed from the event queue.
 @property(nonatomic,getter=isHidden) BOOL              hidden;                     // default is NO. doesn't check superviews
@@ -169,7 +169,7 @@ typedef NS_OPTIONS(NSUInteger, UIViewAnimationOptions) {
 
 ### 手势开启
 
-```
+```objective-c
 @protocol UIGestureRecognizerDelegate <NSObject>
 @optional
 // called when a gesture recognizer attempts to transition out of UIGestureRecognizerStatePossible. returning NO causes it to transition to UIGestureRecognizerStateFailed
@@ -268,14 +268,14 @@ UIControl 有个好处, 点击或者滑动后, 对应的 UI 可以进行更新, 
 
 ### 主动调用方法
 
-```
+```objective-c
 // 如果不加这一行, 双击的时候会同时触发单击手势
 [_singleTap requireGestureRecognizerToFail:_doubleTap];
 ```
 
 ### 代理方法处理
 
-```
+```objective-c
 // called once per attempt to recognize, so failure requirements can be determined lazily and may be set up between recognizers across view hierarchies
 // return YES to set up a dynamic failure requirement between gestureRecognizer and otherGestureRecognizer
 //
@@ -298,7 +298,7 @@ UIControl 有个好处, 点击或者滑动后, 对应的 UI 可以进行更新, 
 
 ### 子类方法处理
 
-```
+```objective-c
 #pragma mark - Preventing exclusion
 
 /// Overriding these methods enables the same behavior as implementing the UIGestureRecognizerDelegate methods gestureRecognizerShouldBegin: and gestureRecognizer:shouldReceiveTouch:. However, by overriding them, subclasses can define class-wide prevention rules. For example, a UITapGestureRecognizer object never prevents another UITapGestureRecognizer object with a higher tap count.
@@ -404,7 +404,7 @@ Modern User Interaction on iOS : https://developer.apple.com/videos/play/wwdc201
 
 #### 方法断点入口打印
 
-```
+```objective-c
 po $arg1  // 调用对象
 po (SEL)$arg2 // 方法签名
 po $arg3 // 第一个参数
@@ -426,7 +426,7 @@ po $arg4 // 第二个参数
 
 所以使用 po 进行查看, 入参查看, 断点在 `callq` 之前:
 
-```
+```objective-c
 po $rdi // 第一个参数
 po (SEL)$rsi // 第二个参数
 ... // 以此类推
@@ -434,7 +434,7 @@ po (SEL)$rsi // 第二个参数
 
 返回值查看, 断点在 `callq` 下一行:
 
-```
+```objective-c
 po $rax // 查看返回值
 ```
 
@@ -452,7 +452,7 @@ _UIApplicationHandleEventQueue 会把 IOHIDEvent 处理并包装成 UIEvent 进�
 
 ### com.apple.uikit.eventfetch-thread 线程
 
-```
+```objective-c
 -[UIEventFetcher threadMain] // 方法会单起了一个线程, 该线程有自己的 RunLoop, 是一个常驻线程, Xcode Debug 模式下可以挂起线程进行测试, 所有的点击事件都不响应了.  
 IOHIDEventSystemClientScheduleWithRunLoop // 启动 RunLoop  
 IOHIDEventSystemClientRegisterEventCallback // 注册回调  
@@ -466,7 +466,7 @@ IOHIDEventSystemClientRegisterEventCallback // 注册回调
 Source1 是基于 mach port 的, 用来接收系统事件. 
 从 RunLoop 源码分析应该是 __CFRunLoopModeFindSourceForMachPort 触发的, 但是断点并没有执行.
 
-```
+```objective-c
 // call with rl and rlm locked
 static CFRunLoopSourceRef __CFRunLoopModeFindSourceForMachPort(CFRunLoopRef rl, CFRunLoopModeRef rlm, __CFPort port) {	/* DOES CALLOUT */
     CHECK_FOR_FORK();
@@ -477,7 +477,7 @@ static CFRunLoopSourceRef __CFRunLoopModeFindSourceForMachPort(CFRunLoopRef rl, 
 
 从其上一步 CFDictionaryGetValue 调用分析, 都是通过 port 取 CFRunLoopSource, 和 __CFRunLoopModeFindSourceForMachPort 实现一致, 初步推测可能是编译器给优化掉了, 但是实现并没有变:
 
-```
+```objective-c
 断点 CFDictionaryGetValue 函数, 取 $arg1 (即字典本身), 取 allValues:
 <__NSArrayI_Transfer 0x283d96d00>(
 <CFRunLoopSource 0x2808a0540 [0x1ea4f5b20]>{signalled = No, valid = Yes, order = 0, context = <CFMachPort 0x280aa42c0 [0x1ea4f5b20]>{valid = Yes, port = 480f, source = 0x2808a0540, callout = <redacted> (0x1a3575770), context = <CFMachPort context 0x125e056d0>}},
@@ -488,14 +488,14 @@ static CFRunLoopSourceRef __CFRunLoopModeFindSourceForMachPort(CFRunLoopRef rl, 
 
 打印 $arg2 port 值为 18447 转化成 16进制 = 0x480F, 在字典中能够找到:
 
-```
+```objective-c
 (lldb) p $arg2
 (unsigned long) $14 = 18447
-``` 
+```
 
 #### 触发 Source1
 
-```
+```objective-c
 __CFRunLoopDoSource1
     __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__
         __CFMachPortPerform
@@ -542,7 +542,7 @@ __IOHIDEventSystemClientQueueCallback // 回调处理
 
 主线程 RunLoop 被唤醒后, 开始处理 Source0
 
-```
+```objective-c
 __CFRunLoopDoSource0
     __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__
         __eventFetcherSourceCallback
@@ -556,7 +556,7 @@ __CFRunLoopDoSource0
 
 ```
 -[UIEventEnvironment UIKitEventForHIDEvent:] // 会将 HIDEvent 转成 UITouchesEvent
-``` 
+```
 
 ```
 _UIEventHIDUIWindowForHIDEvent // 通过 HIDEvent 获取处理该事件的 Window, 可以断点在调用处的下一行查看返回值
@@ -564,7 +564,7 @@ _UIEventHIDUIWindowForHIDEvent // 通过 HIDEvent 获取处理该事件的 Windo
 <TDWindow: 0x7fe03140aec0; baseClass = UIWindow; frame = (0 0; 428 926); gestureRecognizers = <NSArray: 0x60000185a610>; layer = <UIWindowLayer: 0x60000165cb40>>
 ```
 
-```
+```objective-c
 _UIEventHIDEnumerateChildren // 遍历子事件 (log 中的 ChildEvents), 该函数有三个参数, 遍历出子事件后交由 ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke 处理
 (lldb) po $arg1
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -640,6 +640,21 @@ ChildEvents:
  dispose  : 0x7fff23cecea3 (/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore`__destroy_helper_block_e8_32r40r)
 ```
 
+hitTest 方法触发的调用栈:
+
+```objective-c
+____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.43
+    -[UIWindow _targetWindowForPathIndex:atPoint:forEvent:windowServerHitTestWindow:]
+        +[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]
+            -[UIWindowScene _topVisibleWindowPassingTest:]
+                -[UIWindowScene _enumerateWindowsIncludingInternalWindows:onlyVisibleWindows:asCopy:stopped:withBlock:]
+                    __46-[UIWindowScene _topVisibleWindowPassingTest:]_block_invoke
+                        __63+[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]_block_invoke
+                            -[UIWindow _hitTestLocation:inScene:withWindowServerHitTestWindow:event:]
+                                -[UIView(Geometry) _hitTest:withEvent:windowServerHitTestWindow:]
+                                    -[UIView(Geometry) hitTest:withEvent:]
+```
+
 其他一些调用:
 
 ```
@@ -652,7 +667,7 @@ __sendSystemGestureLatentClientUpdate // 系统手势更新
 
 #### 事件分发
 
-```
+```objective-c
 // 先由 UIApplication sendEvent:
 - [UIApplication sendEvent:]
 
@@ -667,26 +682,11 @@ __sendSystemGestureLatentClientUpdate // 系统手势更新
         // 通过上面获取的 View & Touch 调用 touchesBegan/touchesMoved/touchesEnded/touchesCancelled 等方法
 ```
 
-## hitTest 流程分析
-
-以下是 hitTest 方法触发的调用栈:
-
-```
-____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.43
-    -[UIWindow _targetWindowForPathIndex:atPoint:forEvent:windowServerHitTestWindow:]
-        +[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]
-            -[UIWindowScene _topVisibleWindowPassingTest:]
-                -[UIWindowScene _enumerateWindowsIncludingInternalWindows:onlyVisibleWindows:asCopy:stopped:withBlock:]
-                    __46-[UIWindowScene _topVisibleWindowPassingTest:]_block_invoke
-                        __63+[UIWindow _hitTestToPoint:forEvent:windowServerHitTestWindow:]_block_invoke
-                            -[UIWindow _hitTestLocation:inScene:withWindowServerHitTestWindow:event:]
-                                -[UIView(Geometry) _hitTest:withEvent:windowServerHitTestWindow:]
-                                    -[UIView(Geometry) hitTest:withEvent:]
-```
+## hitTest 代码分析
 
 我们先从汇编代码看下 hitTest 方法的主要核心代码如下:
 
-```
+```objective-c
 if (__UIViewIgnoresTouchEvents(r13, rbx & 0xff) == 0x0) {
         xmm0 = intrinsic_movsd(xmm0, var_30);
         intrinsic_movsd(xmm1, var_38);
@@ -731,7 +731,7 @@ if (__UIViewIgnoresTouchEvents(r13, rbx & 0xff) == 0x0) {
 
 这里以 Tap 手势为例, 同样的主要的逻辑处理在 `__processEventQueue` 函数里面
 
-```
+```objective-c
 ____updateTouchesWithDigitizerEventAndDetermineIfShouldSend_block_invoke.100
     _AddTouchToEventAndDetermineIfNeedsCancel
         -[UITouchesEvent _addTouch:forDelayedDelivery:]
@@ -749,21 +749,21 @@ UITouch 会持有手势, 具体是在 `-[UITouchesEvent _addGestureRecognizersFo
 
 我们先获取 UITouch 的地址
 
-```
+```objective-c
 (lldb) p $arg4
 (unsigned long) $0 = 140359228234352
 ```
 
 打印下 `gestureRecognizers`, 此时我们看到为空
 
-```
+```objective-c
 (lldb) po [(UITouch *)140359228234352 gestureRecognizers]
- nil
+nil
 ```
 
 断点执行到 `-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]` 方法之后, 再打印 `gestureRecognizers` 已经有值了
 
-```
+```objective-c
 (lldb) po [(UITouch *)140359228234352 gestureRecognizers]
 <__NSArrayI 0x600003601680>(
 <TDTapGestureRecognizer: 0x7fa7f0812d00; baseClass = UITapGestureRecognizer; state = Possible; view = <TDView 0x7fa7f0812b90>; target= <(action=tap:, target=<TDGestureViewController 0x7fa7f0814fc0>)>>,
@@ -776,7 +776,7 @@ UITouch 会持有手势, 具体是在 `-[UITouchesEvent _addGestureRecognizersFo
 
 那么手势是在什么时候添加到 UITouch 里面的呢? 参考如下调用:
 
-```
+```objective-c
 __72-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]_block_invoke
     -[UITouch _addGestureRecognizer:]
 ```
@@ -785,7 +785,7 @@ __72-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]_blo
 
 这里以 Pan 手势为例, Pan 手势触发时候的调用栈:
 
-```
+```objective-c
 -[UIApplication sendEvent:]
     -[UIWindow sendEvent:]
         -[UIGestureEnvironment _updateForEvent:window:]
@@ -802,12 +802,12 @@ __72-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]_blo
 从属性和方法来看, 手势的集中管理就在这个类中.
 
 我们简单验证下, 将以下两个方法加一下断点:
--[UIGestureEnvironment addGestureRecognizer:]
--[UIGestureEnvironment removeGestureRecognizer:]
+`-[UIGestureEnvironment addGestureRecognizer:]`
+`-[UIGestureEnvironment removeGestureRecognizer:]`
 
 添加:
 
-```
+```objective-c
 -[UIView addGestureRecognizer:]
     -[UIView _addGestureRecognizer:atEnd:]
         -[UIGestureEnvironment addGestureRecognizer:]
@@ -815,7 +815,7 @@ __72-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]_blo
 
 移除:
 
-```
+```objective-c
 -[UIView dealloc]
     -[UIView(UIViewGestures) removeAllGestureRecognizers]
         -[UIGestureEnvironment removeGestureRecognizer:]
@@ -825,7 +825,7 @@ __72-[UITouchesEvent _addGestureRecognizersForView:toTouch:forContinuation:]_blo
 
 从调用栈可知, UIGenerateEnviromonent 需要找出对应的 GestureRecognizer 进行手势处理, 可以看下 hooper 的汇编伪代码:
 
-```
+```objective-c
 loc_7276d9:
     var_5E8 = objc_opt_new(@class(NSMutableOrderedSet));
     var_600 = @selector(removeAllObjects);
@@ -841,7 +841,7 @@ loc_7276d9:
 
 其中 var_628 变量就是 UIGestureEnvironment, 偏移 0x10 就是第二个实例变量对应 `_gestureRecognizersNeedingUpdate`, 在对应 `rax = [*(var_628 + 0x10) allObjects];` 代码处断点, 我们打印下
 
-```
+```objective-c
 (lldb) po $rax
 <UIGestureEnvironment: 0x60000144c000>
 
@@ -857,7 +857,8 @@ loc_7276d9:
 中间还会对手势有一些额外的处理, 然后将手势添加到上述的 `NSMutableOrderedSet` 中, 这里不详细讲了, 定位起来也比较麻烦.
 然后遍历 `NSMutableOrderedSet` 调用 `-[UIGestureRecognizer _updateGestureForActiveEvents]`
 
-```
+```objective-c
+// _UIGestureEnvironmentUpdate 方法内部
 rax = [var_5E8 retain];
 r14 = rax;
 rax = _objc_msgSend_16fe878(rax, var_618, &var_8B0, &var_5B0, 0x10);
@@ -883,13 +884,13 @@ if (rax != 0x0) {
 断点 `_UIGestureRecognizerSendTargetActions` 看下, 连续触发了几次, 其中有 `state = Began` -> `state = Changed` 的转变
 
 Began: 
-```
+```objective-c
 (lldb) po $arg1
 <TDPanGestureRecognizer: 0x7fbdde70c070; baseClass = UIPanGestureRecognizer; state = Began; view = <TDView 0x7fbdde717fa0>; target= <(action=pan:, target=<TDPanViewController 0x7fbdde424bd0>)>>
 ```
 
 Changed: 
-```
+```objective-c
 (lldb) po $arg1
 <TDPanGestureRecognizer: 0x7fbdde70c070; baseClass = UIPanGestureRecognizer; state = Changed; view = <TDView 0x7fbdde717fa0>; target= <(action=pan:, target=<TDPanViewController 0x7fbdde424bd0>)>>
 ```
