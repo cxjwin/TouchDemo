@@ -52,8 +52,8 @@
 
 // if a touch isn't part of this gesture it can be passed to this method to be ignored. ignored touches won't be cancelled on the view even if cancelsTouchesInView is YES
 - (void)ignoreTouch:(UITouch*)touch forEvent:(UIEvent*)event {
-    NSArray *gestureRecognizers = [touch gestureRecognizers];
-    NSLog(@"gestureRecognizers : %@", gestureRecognizers);
+    // NSArray *gestureRecognizers = [touch gestureRecognizers];
+    // NSLog(@"gestureRecognizers : %@", gestureRecognizers);
 }
 
 #pragma mark - Preventing exclusion
@@ -61,7 +61,7 @@
 /// Overriding these methods enables the same behavior as implementing the UIGestureRecognizerDelegate methods gestureRecognizerShouldBegin: and gestureRecognizer:shouldReceiveTouch:. However, by overriding them, subclasses can define class-wide prevention rules. For example, a UITapGestureRecognizer object never prevents another UITapGestureRecognizer object with a higher tap count.
 - (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer {
     if ([preventedGestureRecognizer isKindOfClass:[TDSimpleTapGestureRecognizer class]] &&
-        preventedGestureRecognizer.numberOfTouches > self.numberOfTapsRequired) {
+        ((TDSimpleTapGestureRecognizer *)preventedGestureRecognizer).numberOfTapsRequired > self.numberOfTapsRequired) {
         return NO;
     }
     return YES;

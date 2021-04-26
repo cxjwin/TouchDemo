@@ -28,26 +28,26 @@
     
     // tap1
     {
-        TDSimpleTapGestureRecognizer *tap = [[TDSimpleTapGestureRecognizer alloc] initWithTarget:self action:@selector(oneFingerTap:)];
-        tap.numberOfTapsRequired = 1;
+        TDSimpleTapGestureRecognizer *tap = [[TDSimpleTapGestureRecognizer alloc] initWithTarget:self action:@selector(tap1:)];
+        tap.numberOfTapsRequired = 2;
         [view addGestureRecognizer:tap];
     }
     
     // tap2
     {
-        TDSimpleTapGestureRecognizer *tap = [[TDSimpleTapGestureRecognizer alloc] initWithTarget:self action:@selector(twoFingersTap:)];
-        tap.numberOfTapsRequired = 2;
+        TDSimpleTapGestureRecognizer *tap = [[TDSimpleTapGestureRecognizer alloc] initWithTarget:self action:@selector(tap2:)];
+        tap.numberOfTapsRequired = 3;
         [view addGestureRecognizer:tap];
     }
     
     [self.view addSubview:view];
 }
 
-- (void)oneFingerTap:(TDSimpleTapGestureRecognizer *)tap {
+- (void)tap1:(TDSimpleTapGestureRecognizer *)tap {
     NSLog(@"tap1");
 }
 
-- (void)twoFingersTap:(TDSimpleTapGestureRecognizer *)tap {
+- (void)tap2:(TDSimpleTapGestureRecognizer *)tap {
     NSLog(@"tap2");
 }
 

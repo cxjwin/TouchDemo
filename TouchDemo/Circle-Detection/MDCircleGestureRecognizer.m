@@ -90,9 +90,9 @@
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super touchesMoved:touches withEvent:event];
+    [super touchesMoved:touches withEvent:event]; // super 方法中会自动改变状态为 changed, 这里没有主动设置 self.state
     CGPoint startPoint = [[touches anyObject] locationInView:self.view];
-    [points_ addObject:NSStringFromCGPoint(startPoint)];    
+    [points_ addObject:NSStringFromCGPoint(startPoint)];
 }
 
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event

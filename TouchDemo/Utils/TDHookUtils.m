@@ -10,6 +10,7 @@
 
 @implementation TDHookUtils
 
+// 打开 HOOK 开关
 #define HOOK_FLAG 0
 
 + (void)setup {
@@ -89,6 +90,7 @@ NSString *shortDesc(id obj) {
         [TDHookUtils catchArgs:self, NSStringFromSelector(sel), [NSValue valueWithCGPoint:point], event, nil];
         // Calling original implementation
         UIView *res = RSSWCallOriginal(point, event);
+        // NSLog(@"❄️hitTest view : %@", res);
         return res;
     }), 0, NULL);
 }
