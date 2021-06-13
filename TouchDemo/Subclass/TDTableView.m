@@ -1,14 +1,13 @@
 //
-//  TDScrollView.m
+//  TDTableView.m
 //  TouchDemo
 //
-//  Created by smart on 2021/4/21.
+//  Created by smart on 2021/6/13.
 //
 
-#import "TDScrollView.h"
+#import "TDTableView.h"
 
-// !!!: ScrollView 的 panGestureRecognizer 的 delegate 只能在 ScrollView 内部处理
-@implementation TDScrollView
+@implementation TDTableView
 
 #pragma mark - UIGestureRecognizerDelegate
 
@@ -26,7 +25,7 @@
 //    if ([otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
 //        return YES;
 //    }
-//
+//    
 //    return NO;
 //}
 

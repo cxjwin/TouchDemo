@@ -1,15 +1,15 @@
 //
-//  TDScrollView.h
+//  TDTableView.h
 //  TouchDemo
 //
-//  Created by smart on 2021/4/21.
+//  Created by smart on 2021/6/13.
 //
 
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TDScrollView : UIScrollView
+@interface TDTableView : UITableView
 
 @property (nonatomic, assign) BOOL lock;
 

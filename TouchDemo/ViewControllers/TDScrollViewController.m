@@ -7,10 +7,15 @@
 
 #import "TDScrollViewController.h"
 #import "TDScrollView.h"
+#import "TDTableView.h"
 
-@interface TDScrollViewController () {
-    UIScrollView *_scrollView;
-    UIScrollView *_subScrollView;
+@interface TDScrollViewController () <
+UITableViewDataSource,
+UITableViewDelegate,
+UIScrollViewDelegate
+> {
+    TDScrollView *_scrollView;
+    TDTableView *_tableView;
 }
 
 @end
@@ -21,12 +26,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.view.backgroundColor = [UIColor redColor];
+    
+    CGRect frame = self.view.bounds;
+
     // scroll view
     {
-        CGRect frame = self.view.bounds;
-        _scrollView = [[UIScrollView alloc] initWithFrame:frame];
+        CGRect sFrame = CGRectMake(0, 100, CGRectGetWidth(frame), 500);
+        _scrollView = [[TDScrollView alloc] initWithFrame:sFrame];
         _scrollView.backgroundColor = [UIColor yellowColor];
-        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(frame), CGRectGetHeight(frame) * 2);
+        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(frame), 1500);
+        _scrollView.delegate = self;
+        _scrollView.bounces = NO;
         [self.view addSubview:_scrollView];
     }
     
@@ -44,27 +55,15 @@
     
     // sub scroll view
     {
-        CGRect frame = CGRectMake(0, 0, 200, 200);
-        _subScrollView = [[TDScrollView alloc] initWithFrame:frame];
-        _subScrollView.backgroundColor = [UIColor redColor];
-        _subScrollView.contentSize = CGSizeMake(200, 800);
-        _subScrollView.center = _scrollView.center;
+        CGRect tframe = CGRectMake(0, 1000, CGRectGetWidth(_scrollView.frame), 500);
+        _tableView = [[TDTableView alloc] initWithFrame:tframe];
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        _tableView.backgroundColor = [UIColor redColor];
         // 控制回弹效果, 这样子 ScrollView 滚动到上下边界的时候 pan 手势失效, 直接启用父 ScrollView 的 pan 手势
-        _subScrollView.bounces = NO;
-        
-        [_scrollView addSubview:_subScrollView];
-    }
-    
-    // add button2
-    {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-        button.backgroundColor = [UIColor greenColor];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [button setTitle:@"BUTTON-2" forState:UIControlStateNormal];
-        [button sizeToFit];
-        button.center = CGPointMake(CGRectGetMidX(_subScrollView.bounds), 50);
-        [_subScrollView addSubview:button];
+        _tableView.bounces = NO;
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+        [_scrollView addSubview:_tableView];
     }
     
     [self printAllScrollViewGestures];
@@ -86,6 +85,46 @@
 
 - (void)hookGestureRecognizer:(UIGestureRecognizer *)gesture {
     NSLog(@"gesture : %@", gesture);
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 40;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    cell.textLabel.text = @(indexPath.row).stringValue;
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 40;
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == _scrollView) {
+        if (scrollView.contentOffset.y < 1000) {
+            _tableView.lock = YES;
+        } else {
+            _tableView.lock = NO;
+        }
+    } else if (scrollView == _tableView) {
+        if (scrollView.contentOffset.y >= 0.001) {
+            _scrollView.lock = YES;
+        } else {
+            _scrollView.lock = NO;
+        }
+    }
 }
 
 @end
