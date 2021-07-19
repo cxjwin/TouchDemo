@@ -38,6 +38,8 @@ UIScrollViewDelegate
         _scrollView.contentSize = CGSizeMake(CGRectGetWidth(frame), 1500);
         _scrollView.delegate = self;
         _scrollView.bounces = NO;
+        _scrollView.showsVerticalScrollIndicator = NO;
+        [self.view addGestureRecognizer:_scrollView.panGestureRecognizer];
         [self.view addSubview:_scrollView];
     }
     
@@ -62,7 +64,10 @@ UIScrollViewDelegate
         _tableView.backgroundColor = [UIColor redColor];
         // 控制回弹效果, 这样子 ScrollView 滚动到上下边界的时候 pan 手势失效, 直接启用父 ScrollView 的 pan 手势
         _tableView.bounces = NO;
+        _tableView.showsVerticalScrollIndicator = NO;
+        [self.view addGestureRecognizer:_tableView.panGestureRecognizer];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+        _tableView.lock = YES;
         [_scrollView addSubview:_tableView];
     }
     
